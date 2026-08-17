@@ -1,10 +1,4 @@
-import { DifficultyLevel } from '../types/learning-word.types';
-
-export interface DifficultyDefinition {
-  value: DifficultyLevel;
-  label: string;
-  description: string;
-}
+import { DifficultyDefinition, DifficultyLevel } from '../types/learning-word.types';
 
 export const REVEAL_DELAY_MS = 5000;
 

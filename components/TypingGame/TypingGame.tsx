@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { REVEAL_DELAY_MS } from '../../constants/difficulty-levels';
 import { LEARNING_WORDS } from '../../constants/learning-words';
 import { DifficultyLevel } from '../../types/learning-word.types';
@@ -12,6 +12,7 @@ import classes from './TypingGame.module.css';
 
 const CELEBRATION_DURATION_MS = 1500;
 const FEEDBACK_DURATION_MS = 350;
+const ERROR_MESSAGE_DURATION_MS = 2000;
 
 function getStatusMessage(
   completed: boolean,
@@ -35,20 +36,32 @@ export function TypingGame() {
   const [revealCount, setRevealCount] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
   const [feedback, setFeedback] = useState<'none' | 'shake' | 'celebrate'>('none');
+  const [hasErrorStatus, setHasErrorStatus] = useState(false);
+
+  const errorStatusTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const currentWord = LEARNING_WORDS[wordIndex % LEARNING_WORDS.length];
 
+  const clearErrorStatusTimer = useCallback(() => {
+    if (errorStatusTimerRef.current) {
+      clearTimeout(errorStatusTimerRef.current);
+      errorStatusTimerRef.current = null;
+    }
+  }, []);
+
   const handleNextWord = useCallback(() => {
+    clearErrorStatusTimer();
     setWordIndex((prev) => (prev + 1) % LEARNING_WORDS.length);
     setNextIndex(0);
     setRevealCount(1);
     setIsCompleted(false);
     setFeedback('none');
-  }, []);
+    setHasErrorStatus(false);
+  }, [clearErrorStatusTimer]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (isCompleted || event.repeat) {
+      if (isCompleted || event.repeat || event.ctrlKey || event.metaKey || event.altKey) {
         return;
       }
 
@@ -59,7 +72,10 @@ export function TypingGame() {
       });
 
       if (result.kind === 'advanced') {
+        clearErrorStatusTimer();
+        setHasErrorStatus(false);
         setNextIndex(result.nextIndex);
+        setRevealCount((prev) => Math.max(prev, result.nextIndex + 1));
         setFeedback('none');
         if (result.completed) {
           setIsCompleted(true);
@@ -67,13 +83,31 @@ export function TypingGame() {
         }
       } else if (result.kind === 'incorrect') {
         setFeedback('shake');
-        setTimeout(() => {
-          setFeedback((current) => (current === 'shake' ? 'none' : current));
-        }, FEEDBACK_DURATION_MS);
+        setHasErrorStatus(true);
+        clearErrorStatusTimer();
+        errorStatusTimerRef.current = setTimeout(() => {
+          setHasErrorStatus(false);
+        }, ERROR_MESSAGE_DURATION_MS);
       }
     },
-    [currentWord.word, isCompleted, nextIndex]
+    [clearErrorStatusTimer, currentWord.word, isCompleted, nextIndex]
   );
+
+  useEffect(() => {
+    return () => {
+      clearErrorStatusTimer();
+    };
+  }, [clearErrorStatusTimer]);
+
+  useEffect(() => {
+    if (feedback === 'shake') {
+      const id = setTimeout(() => {
+        setFeedback('none');
+      }, FEEDBACK_DURATION_MS);
+      return () => clearTimeout(id);
+    }
+    return undefined;
+  }, [feedback]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -84,7 +118,7 @@ export function TypingGame() {
 
   useEffect(() => {
     if (!isCompleted) {
-      return;
+      return undefined;
     }
     const timer = setTimeout(handleNextWord, CELEBRATION_DURATION_MS);
     return () => clearTimeout(timer);
@@ -92,10 +126,10 @@ export function TypingGame() {
 
   useEffect(() => {
     if (difficulty !== 'reveal' || isCompleted) {
-      return;
+      return undefined;
     }
     if (revealCount >= currentWord.word.length) {
-      return;
+      return undefined;
     }
 
     const timer = setTimeout(() => {
@@ -103,13 +137,13 @@ export function TypingGame() {
     }, REVEAL_DELAY_MS);
 
     return () => clearTimeout(timer);
-  }, [difficulty, revealCount, currentWord.word.length, isCompleted]);
+  }, [difficulty, revealCount, nextIndex, currentWord.word.length, isCompleted]);
 
   const statusText = getStatusMessage(
     isCompleted,
     nextIndex,
     currentWord.word.length,
-    feedback === 'shake'
+    hasErrorStatus
   );
 
   return (

@@ -1,6 +1,12 @@
 export type DifficultyLevel = 'full-outline' | 'outline' | 'faint' | 'reveal';
 export type ProgressionKind = 'advanced' | 'incorrect' | 'ignored';
 
+export interface DifficultyDefinition {
+  value: DifficultyLevel;
+  label: string;
+  description: string;
+}
+
 export interface LearningWord {
   id: string;
   word: string;

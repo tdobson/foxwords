@@ -8,6 +8,10 @@ describe('TypingGame', () => {
     jest.clearAllTimers();
   });
 
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('renders initial game state with JAMES prompt', () => {
     render(<TypingGame />);
     expect(screen.getByRole('region', { name: /prompt for james/i })).toBeInTheDocument();
@@ -19,6 +23,18 @@ describe('TypingGame', () => {
     fireEvent.keyDown(window, { key: 'j' });
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'completed');
     expect(screen.getByRole('status')).toHaveTextContent(/1 of 5/i);
+  });
+
+  it('ignores modifier key combinations', () => {
+    render(<TypingGame />);
+    fireEvent.keyDown(window, { key: 'j', ctrlKey: true });
+    expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
+
+    fireEvent.keyDown(window, { key: 'j', metaKey: true });
+    expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
+
+    fireEvent.keyDown(window, { key: 'j', altKey: true });
+    expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
   });
 
   it('leaves progress unchanged for an incorrect key', () => {
@@ -44,8 +60,6 @@ describe('TypingGame', () => {
 
     expect(screen.getByRole('region', { name: /prompt for grandma/i })).toBeInTheDocument();
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
-
-    jest.useRealTimers();
   });
 
   it('resets and moves to the next word when New word is selected', async () => {
@@ -72,7 +86,5 @@ describe('TypingGame', () => {
 
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'faint');
     expect(screen.getByTestId('letter-tile-2')).toHaveAttribute('data-state', 'hidden');
-
-    jest.useRealTimers();
   });
 });

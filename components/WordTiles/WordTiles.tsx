@@ -9,14 +9,16 @@ export interface WordTilesProps {
   revealCount?: number;
 }
 
-type TileState = 'completed' | 'active' | 'outline' | 'faint' | 'hidden';
+export type TileState = 'completed' | 'active' | 'full-outline' | 'outline' | 'faint' | 'hidden';
 
-function getTileState(
-  index: number,
-  nextIndex: number,
-  difficulty: DifficultyLevel,
-  revealCount: number
-): TileState {
+export interface TileStateOptions {
+  index: number;
+  nextIndex: number;
+  difficulty: DifficultyLevel;
+  revealCount: number;
+}
+
+function getTileState({ index, nextIndex, difficulty, revealCount }: TileStateOptions): TileState {
   if (index < nextIndex) {
     return 'completed';
   }
@@ -26,6 +28,7 @@ function getTileState(
 
   switch (difficulty) {
     case 'full-outline':
+      return 'full-outline';
     case 'outline':
       return 'outline';
     case 'faint':
@@ -44,6 +47,9 @@ function getAriaLabel(letter: string, state: TileState): string {
   if (state === 'active') {
     return `Letter ${letter}, current letter`;
   }
+  if (state === 'full-outline') {
+    return `Letter ${letter}, full outline`;
+  }
   return `Letter ${letter}, ${state}`;
 }
 
@@ -56,14 +62,19 @@ export function WordTiles({
   const letters = word.toUpperCase().split('');
 
   return (
-    <div className={classes.tilesContainer} role="group" aria-label="Word letter tiles">
+    <ol className={classes.tilesContainer} aria-label="Word letter tiles">
       {letters.map((letter, index) => {
-        const state = getTileState(index, nextIndex, difficulty, revealCount);
+        const state = getTileState({
+          index,
+          nextIndex,
+          difficulty,
+          revealCount,
+        });
         const ariaLabel = getAriaLabel(letter, state);
         const isHidden = state === 'hidden';
 
         return (
-          <div
+          <li
             key={`${letter}-${index}`}
             className={classes.tile}
             data-testid={`letter-tile-${index}`}
@@ -71,9 +82,9 @@ export function WordTiles({
             aria-label={ariaLabel}
           >
             {isHidden ? '' : letter}
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }

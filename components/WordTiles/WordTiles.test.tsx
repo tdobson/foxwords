@@ -16,22 +16,27 @@ describe('WordTiles', () => {
     expect(tileA).toHaveAttribute('data-state', 'active');
     expect(tileA).toHaveAttribute('aria-label', 'Letter A, current letter');
 
-    expect(tileM).toHaveAttribute('data-state', 'outline');
-    expect(tileM).toHaveAttribute('aria-label', 'Letter M, outline');
+    expect(tileM).toHaveAttribute('data-state', 'full-outline');
+    expect(tileM).toHaveAttribute('aria-label', 'Letter M, full outline');
   });
 
-  it('renders unfinished letters as outline in full-outline mode', () => {
+  it('renders unfinished letters as full-outline in full-outline mode', () => {
     render(<WordTiles word="CAT" nextIndex={0} difficulty="full-outline" />);
 
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
-    expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'outline');
-    expect(screen.getByTestId('letter-tile-2')).toHaveAttribute('data-state', 'outline');
+    expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'full-outline');
+    expect(screen.getByTestId('letter-tile-1')).toHaveAttribute(
+      'aria-label',
+      'Letter A, full outline'
+    );
+    expect(screen.getByTestId('letter-tile-2')).toHaveAttribute('data-state', 'full-outline');
   });
 
   it('renders unfinished letters as outline in outline mode', () => {
     render(<WordTiles word="CAT" nextIndex={0} difficulty="outline" />);
 
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'outline');
+    expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('aria-label', 'Letter A, outline');
   });
 
   it('renders unfinished letters as faint in faint mode', () => {
