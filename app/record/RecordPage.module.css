@@ -15,6 +15,20 @@
   margin-bottom: 1.5rem;
 }
 
+.intro kbd {
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 0.875em;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+}
+
+.doneHeading {
+  color: #334155;
+}
+
 .micError {
   text-align: center;
   margin-bottom: 1rem;

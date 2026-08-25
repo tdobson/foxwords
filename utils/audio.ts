@@ -20,3 +20,31 @@ export function playAudio(path: string): void {
     // Ignore playback errors (e.g. missing file or autoplay restrictions)
   });
 }
+
+export async function saveAudio(kind: 'phoneme' | 'word', id: string, blob: Blob): Promise<void> {
+  const audioBase64 = await blobToBase64(blob);
+  const response = await fetch('/api/audio', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ kind, id, audioBase64 }),
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to save audio for ${id}`);
+  }
+}
+
+function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result === 'string') {
+        resolve(result.split(',')[1] ?? '');
+      } else {
+        reject(new Error('Failed to read audio blob'));
+      }
+    };
+    reader.onerror = () => reject(new Error('Failed to read audio blob'));
+    reader.readAsDataURL(blob);
+  });
+}
