@@ -7,6 +7,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'James',
     accentColor: '#4A90E2',
     promptImage: '👦',
+    ipa: ['dʒ', 'eɪ', 'm', '', 'z'],
   },
   {
     id: 'grandma',
@@ -14,6 +15,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Grandma',
     accentColor: '#C71585',
     promptImage: '👵',
+    ipa: ['g', 'r', 'æ', 'n', 'd', 'm', 'ɑː'],
   },
   {
     id: 'granddad',
@@ -21,6 +23,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Granddad',
     accentColor: '#6C3483',
     promptImage: '👴',
+    ipa: ['g', 'r', 'æ', 'n', 'd', 'd', 'æ', 'd'],
   },
   {
     id: 'mummy',
@@ -28,6 +31,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Mummy',
     accentColor: '#E91E63',
     promptImage: '👩',
+    ipa: ['m', 'ʌ', 'm', 'm', 'iː'],
   },
   {
     id: 'daddy',
@@ -35,13 +39,15 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Daddy',
     accentColor: '#27AE60',
     promptImage: '👨',
+    ipa: ['d', 'æ', 'd', 'd', 'iː'],
   },
   {
     id: 'sarah',
     word: 'SARAH',
     promptLabel: 'Sarah',
     accentColor: '#D6336C',
-    promptImage: '👩🏻',
+    promptImage: '👩‍🏻',
+    ipa: ['s', 'eə', 'r', 'ə'],
   },
   {
     id: 'grandpa',
@@ -49,6 +55,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Grandpa',
     accentColor: '#8B4513',
     promptImage: '👨‍🦳',
+    ipa: ['g', 'r', 'æ', 'n', 'p', 'ɑː'],
   },
   {
     id: 'granny',
@@ -56,6 +63,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Granny',
     accentColor: '#8E4585',
     promptImage: '👩‍🦳',
+    ipa: ['g', 'r', 'æ', 'n', 'n', 'iː'],
   },
   {
     id: 'meg',
@@ -63,6 +71,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Meg',
     accentColor: '#A0522D',
     promptImage: '🐕‍🦺',
+    ipa: ['m', 'e', 'g'],
   },
   {
     id: 'fox',
@@ -70,6 +79,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Fox',
     accentColor: '#E67E22',
     promptImage: '🦊',
+    ipa: ['f', 'ɒ', 'ks'],
   },
   {
     id: 'bed',
@@ -77,6 +87,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Bed',
     accentColor: '#8E44AD',
     promptImage: '🛏️',
+    ipa: ['b', 'e', 'd'],
   },
   {
     id: 'milk',
@@ -84,6 +95,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Milk',
     accentColor: '#F8F9FA',
     promptImage: '🥛',
+    ipa: ['m', 'ɪ', 'l', 'k'],
   },
   {
     id: 'orange',
@@ -91,6 +103,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Orange',
     accentColor: '#F39C12',
     promptImage: '🍊',
+    ipa: ['ɒ', 'r', 'ɪ', 'n', 'dʒ'],
   },
   {
     id: 'banana',
@@ -98,13 +111,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Banana',
     accentColor: '#F1C40F',
     promptImage: '🍌',
-  },
-  {
-    id: 'cat',
-    word: 'CAT',
-    promptLabel: 'Cat',
-    accentColor: '#F2994A',
-    promptImage: '🐱',
+    ipa: ['b', 'ə', 'n', 'ɑː', 'n', 'ə'],
   },
   {
     id: 'dog',
@@ -112,6 +119,15 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Dog',
     accentColor: '#8D5524',
     promptImage: '🐶',
+    ipa: ['d', 'ɒ', 'g'],
+  },
+  {
+    id: 'cat',
+    word: 'CAT',
+    promptLabel: 'Cat',
+    accentColor: '#F2994A',
+    promptImage: '🐱',
+    ipa: ['k', 'æ', 't'],
   },
   {
     id: 'bike',
@@ -119,6 +135,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Bike',
     accentColor: '#E67E22',
     promptImage: '🚲',
+    ipa: ['b', 'aɪ', 'k', ''],
   },
   {
     id: 'book',
@@ -126,6 +143,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Book',
     accentColor: '#2980B9',
     promptImage: '📗',
+    ipa: ['b', 'ʊ', 'k'],
   },
   {
     id: 'tractor',
@@ -133,6 +151,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Tractor',
     accentColor: '#F39C12',
     promptImage: '🚜',
+    ipa: ['t', 'r', 'æ', 'k', 't', 'ə'],
   },
   {
     id: 'crane',
@@ -140,6 +159,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Crane',
     accentColor: '#E67E22',
     promptImage: '🏗️',
+    ipa: ['k', 'r', 'eɪ', 'n', ''],
   },
   {
     id: 'apple',
@@ -147,6 +167,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Apple',
     accentColor: '#E74C3C',
     promptImage: '🍎',
+    ipa: ['æ', 'p', 'l', ''],
   },
   {
     id: 'jam',
@@ -154,6 +175,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Jam',
     accentColor: '#CB4335',
     promptImage: '🫙',
+    ipa: ['dʒ', 'æ', 'm'],
   },
   {
     id: 'big',
@@ -161,6 +183,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Big',
     accentColor: '#2C3E50',
     promptImage: '🦕',
+    ipa: ['b', 'ɪ', 'g'],
   },
   {
     id: 'splash',
@@ -168,6 +191,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Splash',
     accentColor: '#3498DB',
     promptImage: '💦',
+    ipa: ['s', 'p', 'l', 'æ', 'ʃ'],
   },
   {
     id: 'rain',
@@ -175,6 +199,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Rain',
     accentColor: '#5DADE2',
     promptImage: '🌧️',
+    ipa: ['r', 'eɪ', 'n'],
   },
   {
     id: 'games',
@@ -182,6 +207,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Games',
     accentColor: '#8E44AD',
     promptImage: '🎲',
+    ipa: ['g', 'eɪ', 'm', '', 'z'],
   },
   {
     id: 'jigsaw',
@@ -189,6 +215,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Jigsaw',
     accentColor: '#D35400',
     promptImage: '🧩',
+    ipa: ['dʒ', 'ɪ', 'g', 's', 'ɔː'],
   },
   {
     id: 'tram',
@@ -196,6 +223,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Tram',
     accentColor: '#16A085',
     promptImage: '🚊',
+    ipa: ['t', 'r', 'æ', 'm'],
   },
   {
     id: 'train',
@@ -203,6 +231,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Train',
     accentColor: '#2980B9',
     promptImage: '🚂',
+    ipa: ['t', 'r', 'eɪ', 'n'],
   },
   {
     id: 'rail',
@@ -210,6 +239,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Rail',
     accentColor: '#7F8C8D',
     promptImage: '🛤️',
+    ipa: ['r', 'eɪ', 'l'],
   },
   {
     id: 'track',
@@ -217,5 +247,6 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Track',
     accentColor: '#5D6D7E',
     promptImage: '🚆',
+    ipa: ['t', 'r', 'æ', 'k'],
   },
 ];

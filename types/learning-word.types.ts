@@ -13,13 +13,14 @@ export interface LearningWord {
   promptLabel: string;
   accentColor: string;
   promptImage?: string;
-  audioSrc?: string;
+  ipa: string[];
 }
 
-export interface LetterSound {
-  letter: string;
+export interface Phoneme {
+  symbol: string;
+  slug: string;
   label: string;
-  word: string;
+  examples: string[];
 }
 
 export interface ProgressionInput {

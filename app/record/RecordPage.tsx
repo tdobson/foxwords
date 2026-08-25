@@ -2,9 +2,9 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
-import { LETTER_SOUNDS } from '../../constants/letter-sounds';
+import { PHONEMES } from '../../constants/phonemes';
 import { LEARNING_WORDS } from '../../constants/learning-words';
-import { getLetterAudioPath, getWordAudioPath } from '../../utils/audio';
+import { getPhonemeAudioPath, getWordAudioPath } from '../../utils/audio';
 import classes from './RecordPage.module.css';
 
 interface RecordingState {
@@ -93,19 +93,19 @@ export default function RecordPage() {
     };
   }, [stream]);
 
-  const letterItems = LETTER_SOUNDS.map(({ letter, label, word }) => ({
-    key: `letter-${letter}`,
-    name: `${label} (${word})`,
-    file: getLetterAudioPath(letter),
+  const phonemeItems = PHONEMES.map((phoneme) => ({
+    key: `phoneme-${phoneme.slug}`,
+    name: `${phoneme.label} (${phoneme.examples.join(', ')})`,
+    file: getPhonemeAudioPath(phoneme.slug),
   }));
 
   const wordItems = LEARNING_WORDS.map((learningWord) => ({
     key: `word-${learningWord.id}`,
-    name: learningWord.promptLabel,
+    name: `${learningWord.promptLabel} (${learningWord.ipa.join(' ')})`,
     file: getWordAudioPath(learningWord.id),
   }));
 
-  const items = [...letterItems, ...wordItems];
+  const items = [...phonemeItems, ...wordItems];
 
   return (
     <main className={classes.page}>
@@ -113,8 +113,9 @@ export default function RecordPage() {
         Record sounds
       </Title>
       <Text className={classes.intro}>
-        Record a short sound for each letter and word. Download each file and drop it into the{' '}
-        <code>public/audio</code> folder with the shown filename.
+        Record each phoneme and each word once. Download each file and drop it into the{' '}
+        <code>public/audio</code> folder with the shown filename. Each phoneme is stored once and
+        reused across every word that contains it.
       </Text>
 
       {micError && (

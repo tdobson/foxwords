@@ -2,9 +2,10 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { LEARNING_WORDS } from '../../constants/learning-words';
+import { getPhonemeSlug } from '../../constants/phonemes';
 import { DifficultyLevel } from '../../types/learning-word.types';
 import { getProgressionResult } from '../../utils/progression';
-import { getLetterAudioPath, getWordAudioPath, playAudio } from '../../utils/audio';
+import { getPhonemeAudioPath, getWordAudioPath, playAudio } from '../../utils/audio';
 import { GameControls } from '../GameControls/GameControls';
 import { PromptCard } from '../PromptCard/PromptCard';
 import { WordTiles } from '../WordTiles/WordTiles';
@@ -49,7 +50,10 @@ export function TypingGame() {
       if (result.kind === 'advanced') {
         setNextIndex(result.nextIndex);
         setFeedback('none');
-        playAudio(getLetterAudioPath(currentWord.word[nextIndex] ?? ''));
+        const phonemeSlug = getPhonemeSlug(currentWord.ipa[nextIndex] ?? '');
+        if (phonemeSlug) {
+          playAudio(getPhonemeAudioPath(phonemeSlug));
+        }
         if (result.completed) {
           setIsCompleted(true);
           setFeedback('celebrate');

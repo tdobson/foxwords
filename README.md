@@ -45,9 +45,9 @@ Every 6 words form a level. The game shows a level label so each group of words 
 
 ## Audio
 
-When you press a correct key, the game plays that letter's sound from `public/audio/letters/{LETTER}.webm`. When a word starts and when it is completed, it plays the word sound from `public/audio/words/{id}.webm`.
+When you press a correct key, the game plays the phoneme for that letter from `public/audio/phonemes/{slug}.webm`. When a word starts and when it is completed, it plays the word sound from `public/audio/words/{id}.webm`.
 
-The game plays audio only when the file exists. You can record every letter and word sound using the recording interface at [http://localhost:3000/record](http://localhost:3000/record): record, preview, and download each clip, then drop the files into the matching folder. Files are named exactly as shown on the page.
+The game plays audio only when the file exists. You can record every phoneme and every word sound using the recording interface at [http://localhost:3000/record](http://localhost:3000/record): record, preview, and download each clip, then drop the files into the matching folder. Files are named exactly as shown on the page. Each phoneme is recorded once and reused across every word that contains it.
 
 ## Word Data
 

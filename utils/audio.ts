@@ -3,11 +3,11 @@
  * @module utils/audio
  */
 
-const LETTER_AUDIO_DIR = '/audio/letters';
+const PHONEME_AUDIO_DIR = '/audio/phonemes';
 const WORD_AUDIO_DIR = '/audio/words';
 
-export function getLetterAudioPath(letter: string): string {
-  return `${LETTER_AUDIO_DIR}/${letter.toUpperCase()}.webm`;
+export function getPhonemeAudioPath(slug: string): string {
+  return `${PHONEME_AUDIO_DIR}/${slug}.webm`;
 }
 
 export function getWordAudioPath(wordId: string): string {
