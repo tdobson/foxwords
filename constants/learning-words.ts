@@ -93,10 +93,17 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptImage: '📗',
   },
   {
-    id: 'digger',
-    word: 'DIGGER',
-    promptLabel: 'Digger',
+    id: 'tractor',
+    word: 'TRACTOR',
+    promptLabel: 'Tractor',
     accentColor: '#F39C12',
+    promptImage: '🚜',
+  },
+  {
+    id: 'crane',
+    word: 'CRANE',
+    promptLabel: 'Crane',
+    accentColor: '#E67E22',
     promptImage: '🏗️',
   },
   {
