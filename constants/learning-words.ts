@@ -16,25 +16,11 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptImage: '👵',
   },
   {
-    id: 'granny',
-    word: 'GRANNY',
-    promptLabel: 'Granny',
-    accentColor: '#8E4585',
-    promptImage: '👵🏼',
-  },
-  {
     id: 'granddad',
     word: 'GRANDDAD',
     promptLabel: 'Granddad',
     accentColor: '#6C3483',
     promptImage: '👴',
-  },
-  {
-    id: 'grandpa',
-    word: 'GRANDPA',
-    promptLabel: 'Grandpa',
-    accentColor: '#8B4513',
-    promptImage: '👴🏻',
   },
   {
     id: 'mummy',
@@ -56,6 +42,20 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Sarah',
     accentColor: '#D6336C',
     promptImage: '👩🏻',
+  },
+  {
+    id: 'grandpa',
+    word: 'GRANDPA',
+    promptLabel: 'Grandpa',
+    accentColor: '#8B4513',
+    promptImage: '👴🏻',
+  },
+  {
+    id: 'granny',
+    word: 'GRANNY',
+    promptLabel: 'Granny',
+    accentColor: '#8E4585',
+    promptImage: '👵🏼',
   },
   {
     id: 'meg',
@@ -126,6 +126,20 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Splash',
     accentColor: '#3498DB',
     promptImage: '💦',
+  },
+  {
+    id: 'games',
+    word: 'GAMES',
+    promptLabel: 'Games',
+    accentColor: '#8E44AD',
+    promptImage: '🎲',
+  },
+  {
+    id: 'jigsaw',
+    word: 'JIGSAW',
+    promptLabel: 'Jigsaw',
+    accentColor: '#D35400',
+    promptImage: '🧩',
   },
   {
     id: 'tram',
