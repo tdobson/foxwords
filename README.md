@@ -2,7 +2,7 @@
 
 Letter Trail is a gentle, single-user typing and spelling game designed for toddlers and early learners using a physical keyboard.
 
-A child sees a familiar visual prompt (such as a picture or emoji of James, Grandma, Mum, Dad, or Cat) and completes the target word by pressing the matching keys on a physical keyboard in sequence.
+A child sees a familiar visual prompt (such as a picture or emoji of James, Grandma, Granny, Granddad, Grandpa, Mummy, Daddy, Sarah, Meg, or a Dog or Cat) and completes the target word by pressing the matching keys on a physical keyboard in sequence.
 
 ## Prerequisites
 
@@ -62,5 +62,5 @@ npm run build
 
 - Physical keyboard input only (no on-screen touch keyboard).
 - No backend, user accounts, persistence, or external APIs.
-- Starter word set only (`JAMES`, `GRANDMA`, `MUM`, `DAD`, `CAT`).
+- Starter word set only (`JAMES`, `GRANNY`, `GRANDDAD`, `GRANDPA`, `MUMMY`, `DADDY`, `SARAH`, `MEG`, `DOG`, `CAT`, `BIKE`, `BOOK`, `DIGGER`, `APPLE`, `JAM`, `BIG`, `SPLASH`, `TRAM`, `TRAIN`, `RAIL`, `TRACK`, `ENGINE`).
 - Uppercase matching only (case-insensitive for typing).
