@@ -87,10 +87,35 @@ describe('TypingGame', () => {
         fireEvent.keyDown(window, { key });
       }
       act(() => {
-        jest.advanceTimersByTime(1500);
+        jest.advanceTimersByTime(word === 'SARAH' ? 3200 : 1600);
       });
     }
 
     expect(screen.getByText(/^Level 2$/)).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /prompt for grandpa/i })).toBeInTheDocument();
+  });
+
+  it('shows a level-complete celebration when a level finishes', () => {
+    jest.useFakeTimers();
+    render(<TypingGame />);
+
+    const firstLevelWords = ['JAMES', 'GRANDMA', 'GRANDDAD', 'MUMMY', 'DADDY', 'SARAH'];
+    for (const word of firstLevelWords) {
+      for (const key of word) {
+        fireEvent.keyDown(window, { key });
+      }
+      act(() => {
+        jest.advanceTimersByTime(word === 'SARAH' ? 0 : 1600);
+      });
+    }
+
+    expect(screen.getByRole('status')).toHaveTextContent(/level 1 complete/i);
+
+    act(() => {
+      jest.advanceTimersByTime(3200);
+    });
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /prompt for grandpa/i })).toBeInTheDocument();
   });
 });

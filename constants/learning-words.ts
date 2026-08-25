@@ -183,11 +183,4 @@ export const LEARNING_WORDS: LearningWord[] = [
     accentColor: '#5D6D7E',
     promptImage: '🚆',
   },
-  {
-    id: 'engine',
-    word: 'ENGINE',
-    promptLabel: 'Engine',
-    accentColor: '#1ABC9C',
-    promptImage: '🚃',
-  },
 ];
