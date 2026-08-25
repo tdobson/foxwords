@@ -1,60 +1,71 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ActionIcon, Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
+import { Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { PHONEMES } from '../../constants/phonemes';
 import { LEARNING_WORDS } from '../../constants/learning-words';
-import { getPhonemeAudioPath, getWordAudioPath, saveAudio } from '../../utils/audio';
+import { getPhonemeAudioPath, getWordAudioPath, playAudio, saveAudio } from '../../utils/audio';
 import classes from './RecordPage.module.css';
 
-interface SaveState {
-  saving: boolean;
-  error: string | null;
+interface RecordingItem {
+  key: string;
+  kind: 'phoneme' | 'word';
+  id: string;
+  name: string;
+  hint: string;
+  file: string;
+  path: string;
 }
 
-function createInitialState(): RecordingState {
-  return { isRecording: false, url: null, isPlaying: false };
-}
-
-interface RecordingState {
-  isRecording: boolean;
-  url: string | null;
-  isPlaying: boolean;
+function createItems(): RecordingItem[] {
+  const phonemes = PHONEMES.map((phoneme) => ({
+    key: `phoneme-${phoneme.slug}`,
+    kind: 'phoneme' as const,
+    id: phoneme.slug,
+    name: phoneme.label,
+    hint: phoneme.examples.join(', '),
+    file: getPhonemeAudioPath(phoneme.slug),
+    path: `public/audio/phonemes/${phoneme.slug}.webm`,
+  }));
+  const words = LEARNING_WORDS.map((learningWord) => ({
+    key: `word-${learningWord.id}`,
+    kind: 'word' as const,
+    id: learningWord.id,
+    name: learningWord.promptLabel,
+    hint: learningWord.word,
+    file: getWordAudioPath(learningWord.id),
+    path: `public/audio/words/${learningWord.id}.webm`,
+  }));
+  return [...phonemes, ...words];
 }
 
 export default function RecordPage() {
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null);
-  const [state, setState] = useState<Record<string, RecordingState>>({});
+  const items = useMemo(() => createItems(), []);
+  const [index, setIndex] = useState(0);
+  const [recordingKey, setRecordingKey] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [micError, setMicError] = useState<string | null>(null);
-  const [saveState, setSaveState] = useState<SaveState>({ saving: false, error: null });
-  const [queueIndex, setQueueIndex] = useState(0);
-  const [history, setHistory] = useState<number[]>([]);
+  const [recorderRef, setRecorderRef] = useState<MediaRecorder | null>(null);
+  const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const streamRef = useRef<MediaStream | null>(null);
 
-  const recordingKey = Object.entries(state).find(([, item]) => item.isRecording)?.[0];
+  const item = items[index];
+  const isDone = index >= items.length;
+  const prevItem = index > 0 ? items[index - 1] : null;
 
-  const getState = (key: string): RecordingState => state[key] ?? createInitialState();
+  const itemByKey = useMemo(() => new Map(items.map((item) => [item.key, item])), [items]);
 
-  const updateState = (key: string, patch: Partial<RecordingState>) => {
-    setState((prev) => ({
-      ...prev,
-      [key]: { ...createInitialState(), ...prev[key], ...patch },
-    }));
-  };
-
-  const stopStream = (streamToStop: MediaStream) => {
-    streamToStop.getTracks().forEach((track) => track.stop());
-  };
-
-  const startRecording = async (key: string) => {
-    if (recordingKey) {
+  const startRecording = async (itemToRecord: RecordingItem) => {
+    if (recordingKey || saving) {
       return;
     }
-
+    setSaveError(null);
+    setMicError(null);
     try {
-      const userStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(userStream);
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
       chunksRef.current = [];
 
       recorder.ondataavailable = (event) => {
@@ -65,44 +76,71 @@ export default function RecordPage() {
 
       recorder.onstop = async () => {
         const blob = new Blob(chunksRef.current, { type: recorder.mimeType || 'audio/webm' });
-        const url = URL.createObjectURL(blob);
-        updateState(key, { url, isRecording: false });
-        stopStream(userStream);
-        setStream(null);
-        setMediaRecorder(null);
-        await saveBlob(key, blob);
+        setRecorderRef(null);
+        streamRef.current = null;
+        stream.getTracks().forEach((track) => track.stop());
+        await finishRecording(itemToRecord, blob);
       };
 
       recorder.start();
-      setMediaRecorder(recorder);
-      setStream(userStream);
-      updateState(key, { isRecording: true });
-      setMicError(null);
+      setRecorderRef(recorder);
+      streamRef.current = stream;
+      setRecordingKey(itemToRecord.key);
+      setRecordingUrl(null);
     } catch {
       setMicError('Could not access the microphone. Allow microphone access and try again.');
     }
   };
 
-  const stopRecording = () => {
-    mediaRecorder?.stop();
+  const finishRecording = async (recordedItem: RecordingItem, blob: Blob) => {
+    const url = URL.createObjectURL(blob);
+    setRecordingKey(null);
+    setRecordingUrl(url);
+    playAudio(url);
+    setSaving(true);
+    try {
+      await saveAudio(recordedItem.kind, recordedItem.id, blob);
+      setSaving(false);
+      if (index < items.length - 1) {
+        setIndex((prev) => prev + 1);
+      } else {
+        setIndex(items.length);
+      }
+    } catch {
+      setSaving(false);
+      setSaveError('Could not save. Check the server is running, then press Retry.');
+    }
   };
 
-  const saveBlob = async (key: string, blob: Blob) => {
-    const item = itemByKey.get(key);
-    if (!item) {
-      return;
-    }
-    setSaveState({ saving: true, error: null });
-    try {
-      await saveAudio(item.kind, item.id, blob);
-      setSaveState({ saving: false, error: null });
-    } catch {
-      setSaveState({
-        saving: false,
-        error: 'Could not save. Check the server is running and try again.',
-      });
+  const stopRecording = () => {
+    if (recorderRef) {
+      recorderRef.stop();
     }
   };
+
+  const retrySave = async () => {
+    if (!recordingUrl) {
+      return;
+    }
+    const currentItem = itemByKey.get(recordingKey ?? '');
+    if (!currentItem) {
+      return;
+    }
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const response = await fetch(recordingUrl);
+      const blob = await response.blob();
+      await saveAudio(currentItem.kind, currentItem.id, blob);
+      setSaving(false);
+      setIndex((prev) => prev + 1);
+    } catch {
+      setSaving(false);
+      setSaveError('Could not save. Check the server is running, then press Retry.');
+    }
+  };
+
+  const isRecording = recordingKey !== null;
 
   const download = (url: string, filename: string) => {
     const anchor = document.createElement('a');
@@ -111,96 +149,15 @@ export default function RecordPage() {
     anchor.click();
   };
 
-  useEffect(() => {
-    return () => {
-      if (stream) {
-        stopStream(stream);
-      }
-    };
-  }, [stream]);
-
-  const phonemeItems = useMemo(
-    () =>
-      PHONEMES.map((phoneme) => ({
-        key: `phoneme-${phoneme.slug}`,
-        kind: 'phoneme' as const,
-        id: phoneme.slug,
-        name: phoneme.label,
-        hint: phoneme.examples.join(', '),
-        file: getPhonemeAudioPath(phoneme.slug),
-        path: `public/audio/phonemes/${phoneme.slug}.webm`,
-      })),
-    []
-  );
-
-  const wordItems = useMemo(
-    () =>
-      LEARNING_WORDS.map((learningWord) => ({
-        key: `word-${learningWord.id}`,
-        kind: 'word' as const,
-        id: learningWord.id,
-        name: learningWord.promptLabel,
-        hint: learningWord.word,
-        file: getWordAudioPath(learningWord.id),
-        path: `public/audio/words/${learningWord.id}.webm`,
-      })),
-    []
-  );
-
-  const allItems = useMemo(() => [...phonemeItems, ...wordItems], [phonemeItems, wordItems]);
-  const itemByKey = useMemo(() => new Map(allItems.map((item) => [item.key, item])), [allItems]);
-
-  const pendingItems = useMemo(
-    () => allItems.filter((item) => !state[item.key]?.url),
-    [allItems, state]
-  );
-
-  const doneItems = useMemo(
-    () => allItems.filter((item) => Boolean(state[item.key]?.url)),
-    [allItems, state]
-  );
-
-  const guidedItem = pendingItems[queueIndex];
-
-  const hasRecording = (key: string): boolean => Boolean(state[key]?.url);
-
-  const recordNext = () => {
-    const item = guidedItem;
-    if (!item) {
-      return;
-    }
-    if (hasRecording(item.key)) {
-      const nextItem = pendingItems[queueIndex + 1];
-      if (nextItem) {
-        setHistory((prev) => [...prev, queueIndex]);
-        setQueueIndex((prev) => prev + 1);
-      }
-    } else {
-      startRecording(item.key);
-    }
-  };
-
-  const undo = () => {
-    if (history.length === 0) {
-      return;
-    }
-    const prevIndex = history[history.length - 1];
-    const prevItem = pendingItems[prevIndex];
-    if (prevItem && hasRecording(prevItem.key)) {
-      setHistory((prev) => prev.slice(0, -1));
-      setQueueIndex(prevIndex);
-    }
-  };
-
-  const rerecord = (key: string) => {
-    startRecording(key);
-  };
-
-  const toggleRecord = (key: string) => {
-    if (recordingKey) {
+  const toggleRecord = () => {
+    if (isRecording) {
       stopRecording();
-    } else {
-      startRecording(key);
+    } else if (!isDone) {
+      if (saveError && recordingUrl) {
+        retrySave();
+      } else {
+        startRecording(item);
+      }
     }
   };
 
@@ -210,7 +167,7 @@ export default function RecordPage() {
     }
     if (event.code === 'Space') {
       event.preventDefault();
-      toggleRecord(guidedItem?.key ?? '');
+      toggleRecord();
     }
   };
 
@@ -219,89 +176,109 @@ export default function RecordPage() {
     return () => window.removeEventListener('keydown', spaceKey);
   });
 
+  const progressLabel = isDone
+    ? `${items.length} of ${items.length}`
+    : `${index} of ${items.length}`;
+  const progressPercent = Math.round((index / items.length) * 100);
+
   return (
     <main className={classes.page}>
       <Title order={1} className={classes.title}>
         Record sounds
       </Title>
-      <Text className={classes.intro}>
-        Record each sound once. Press <kbd>Space</kbd> (or tap the button) to start, say the sound,
-        then press <kbd>Space</kbd> again to stop and save. Each recording drops straight into the
-        right folder — no downloading or moving files. Use <b>Undo</b> to go back and re-record.
-      </Text>
+
+      <Group justify="space-between" align="center" className={classes.progressRow}>
+        <Text className={classes.progressLabel} data-testid="progress-label">
+          {progressLabel}
+        </Text>
+        <div
+          className={classes.progressBar}
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={items.length}
+          aria-valuenow={index}
+        >
+          <div className={classes.progressFill} style={{ width: `${progressPercent}%` }} />
+        </div>
+      </Group>
 
       {micError && (
         <Text c="red" className={classes.micError}>
           {micError}
         </Text>
       )}
-      {saveState.error && (
+      {saveError && (
         <Text c="red" className={classes.micError}>
-          {saveState.error}
+          {saveError}
         </Text>
       )}
 
-      <Paper className={classes.guide} p="lg">
-        <Group justify="space-between" align="flex-start">
-          <div>
+      <div className={classes.guide} data-testid="guide">
+        {isDone ? (
+          <>
             <Text fw={700} size="lg" className={classes.guideTitle}>
-              Guided recording
+              All sounds recorded!
             </Text>
-            <Text className={classes.guideItem} data-testid="guide-item">
-              {guidedItem
-                ? `${pendingItems.indexOf(guidedItem) + 1} of ${pendingItems.length}: ${guidedItem.name} (${guidedItem.hint})`
-                : 'All sounds recorded!'}
+            <Text className={classes.guideItem}>🎉</Text>
+          </>
+        ) : (
+          <>
+            <Text className={classes.guideItem}>
+              Say: <span className={classes.promptName}>{item.name}</span>
             </Text>
             <Text size="sm" c="dimmed" className={classes.guideFile}>
-              {guidedItem?.path}
+              {item.path}
             </Text>
-          </div>
+          </>
+        )}
+      </div>
 
-          <Group gap="xs">
-            {guidedItem && (
-              <>
-                {recordingKey === guidedItem.key ? (
-                  <Button color="red" onClick={stopRecording}>
-                    Stop
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => recordNext()}
-                    disabled={saveState.saving || Boolean(recordingKey)}
-                  >
-                    {hasRecording(guidedItem.key) ? 'Next' : 'Record'}
-                  </Button>
-                )}
-                {hasRecording(guidedItem.key) && (
-                  <>
-                    <Button
-                      variant="outline"
-                      onClick={() => rerecord(guidedItem.key)}
-                      disabled={saveState.saving || Boolean(recordingKey)}
-                    >
-                      Re-record
-                    </Button>
-                    <Button
-                      variant="subtle"
-                      onClick={undo}
-                      disabled={history.length === 0 || Boolean(recordingKey) || saveState.saving}
-                    >
-                      Undo
-                    </Button>
-                  </>
-                )}
-              </>
-            )}
-          </Group>
+      <div className={classes.recordArea}>
+        <Button
+          size="xl"
+          className={classes.recordButton}
+          data-testid="record-button"
+          onClick={toggleRecord}
+          disabled={saving}
+        >
+          {isRecording ? 'Stop' : isDone ? 'Play all' : saveError ? 'Retry' : 'Record'}
+        </Button>
+        <Text size="xs" c="dimmed" className={classes.spaceHint}>
+          (space)
+        </Text>
+      </div>
+
+      {prevItem && (
+        <Group justify="center" gap="md" className={classes.prevRow} data-testid="prev-row">
+          <Button
+            variant="subtle"
+            onClick={() => {
+              if (recordingUrl) {
+                playAudio(recordingUrl);
+              }
+            }}
+            disabled={!recordingUrl || saving}
+          >
+            ▶ replay last
+          </Button>
+          <Button
+            variant="subtle"
+            onClick={() => {
+              if (!isRecording && !saving) {
+                setIndex((prev) => prev - 1);
+              }
+            }}
+            disabled={isRecording || saving}
+          >
+            ⏮ undo
+          </Button>
         </Group>
-      </Paper>
+      )}
 
-      <Stack gap="sm">
-        {pendingItems.map((item) => {
-          const itemState = getState(item.key);
-          const isRecordingThis = itemState.isRecording;
-
-          return (
+      <details className={classes.allDetails}>
+        <summary className={classes.allSummary}>▸ All recordings ({items.length})</summary>
+        <Stack gap="sm">
+          {items.map((item, itemIndex) => (
             <Paper key={item.key} withBorder className={classes.row} p="sm">
               <Group justify="space-between">
                 <div>
@@ -313,97 +290,42 @@ export default function RecordPage() {
                     {item.file}
                   </Text>
                 </div>
-
                 <Group gap="xs">
-                  {!isRecordingThis ? (
-                    <Button
-                      size="xs"
-                      onClick={() => startRecording(item.key)}
-                      disabled={Boolean(recordingKey) || saveState.saving}
-                    >
-                      Record
-                    </Button>
-                  ) : (
-                    <Button size="xs" color="red" onClick={stopRecording}>
-                      Stop
-                    </Button>
-                  )}
-
-                  {itemState.url && (
+                  <Button
+                    size="xs"
+                    variant="outline"
+                    className={classes.rowRecord}
+                    onClick={() => {
+                      setRecordingUrl(null);
+                      startRecording(item);
+                    }}
+                    disabled={Boolean(recordingKey) || saving}
+                  >
+                    Record
+                  </Button>
+                  {itemIndex === index - 1 && recordingUrl && (
                     <>
                       <audio
                         controls
                         preload="none"
-                        src={itemState.url}
+                        src={recordingUrl}
                         className={classes.preview}
                       />
                       <Button
                         size="xs"
                         variant="outline"
-                        onClick={() => download(itemState.url ?? '', item.file)}
+                        onClick={() => download(recordingUrl, item.file)}
                       >
                         Download
-                      </Button>
-                      <Button
-                        size="xs"
-                        color="red"
-                        variant="light"
-                        onClick={() => rerecord(item.key)}
-                        disabled={Boolean(recordingKey) || saveState.saving}
-                      >
-                        Re-record
                       </Button>
                     </>
                   )}
                 </Group>
               </Group>
             </Paper>
-          );
-        })}
-
-        {doneItems.length > 0 && (
-          <>
-            <Text fw={700} mt="lg" className={classes.doneHeading}>
-              Recorded ({doneItems.length})
-            </Text>
-            <Stack gap="sm">
-              {doneItems.map((item) => {
-                const itemState = getState(item.key);
-                return (
-                  <Paper key={item.key} withBorder className={classes.row} p="sm">
-                    <Group justify="space-between">
-                      <div>
-                        <Text fw={600}>{item.name}</Text>
-                        <Text size="sm" c="dimmed" className={classes.hint}>
-                          {item.hint}
-                        </Text>
-                      </div>
-                      <Group gap="xs">
-                        <audio
-                          controls
-                          preload="none"
-                          src={itemState.url ?? ''}
-                          className={classes.preview}
-                        />
-                        <ActionIcon
-                          size="sm"
-                          variant="subtle"
-                          color="red"
-                          onClick={() => rerecord(item.key)}
-                          aria-label={`Re-record ${item.name}`}
-                          disabled={Boolean(recordingKey) || saveState.saving}
-                        >
-                          ↩
-                        </ActionIcon>
-                      </Group>
-                    </Group>
-                  </Paper>
-                );
-              })}
-            </Stack>
-          </>
-        )}
-      </Stack>
+          ))}
+        </Stack>
+      </details>
     </main>
   );
 }
