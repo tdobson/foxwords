@@ -92,7 +92,7 @@ describe('TypingGame', () => {
     }
 
     expect(screen.getByText(/^Level 2$/)).toBeInTheDocument();
-    expect(screen.getByRole('region', { name: /prompt for grandpa/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /prompt for baby/i })).toBeInTheDocument();
   });
 
   it('shows a level-complete celebration when a level finishes', () => {
@@ -116,6 +116,6 @@ describe('TypingGame', () => {
     });
 
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
-    expect(screen.getByRole('region', { name: /prompt for grandpa/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /prompt for baby/i })).toBeInTheDocument();
   });
 });

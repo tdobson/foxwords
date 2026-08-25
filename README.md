@@ -70,5 +70,5 @@ npm run build
 
 - Physical keyboard input only (no on-screen touch keyboard).
 - No backend, user accounts, persistence, or external APIs.
-- Starter word set only (`JAMES`, `GRANDMA`, `GRANDDAD`, `MUMMY`, `DADDY`, `SARAH`, `GRANDPA`, `GRANNY`, `MEG`, `FOX`, `BED`, `MILK`, `ORANGE`, `BANANA`, `DOG`, `CAT`, `BIKE`, `BOOK`, `TRACTOR`, `CRANE`, `APPLE`, `JAM`, `BIG`, `SPLASH`, `RAIN`, `GAMES`, `JIGSAW`, `TRAM`, `TRAIN`, `RAIL`, `TRACK`).
+- Starter word set only (`JAMES`, `GRANDMA`, `GRANDDAD`, `MUMMY`, `DADDY`, `SARAH`, `BABY`, `GRANDPA`, `GRANNY`, `MEG`, `FOX`, `BED`, `MILK`, `ORANGE`, `BANANA`, `DOG`, `CAT`, `BIKE`, `BOOK`, `TRACTOR`, `CRANE`, `APPLE`, `JAM`, `BIG`, `SPLASH`, `RAIN`, `GAMES`, `JIGSAW`, `TRAM`, `TRAIN`, `RAIL`, `TRACK`).
 - Uppercase matching only (case-insensitive for typing).

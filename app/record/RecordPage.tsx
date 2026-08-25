@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { PHONEMES } from '../../constants/phonemes';
 import { LEARNING_WORDS } from '../../constants/learning-words';
@@ -93,19 +93,45 @@ export default function RecordPage() {
     };
   }, [stream]);
 
-  const phonemeItems = PHONEMES.map((phoneme) => ({
-    key: `phoneme-${phoneme.slug}`,
-    name: `${phoneme.label} (${phoneme.examples.join(', ')})`,
-    file: getPhonemeAudioPath(phoneme.slug),
-  }));
+  const phonemeItems = useMemo(
+    () =>
+      PHONEMES.map((phoneme) => ({
+        key: `phoneme-${phoneme.slug}`,
+        name: `${phoneme.label}`,
+        hint: phoneme.examples.join(', '),
+        file: getPhonemeAudioPath(phoneme.slug),
+      })),
+    []
+  );
 
-  const wordItems = LEARNING_WORDS.map((learningWord) => ({
-    key: `word-${learningWord.id}`,
-    name: `${learningWord.promptLabel} (${learningWord.ipa.join(' ')})`,
-    file: getWordAudioPath(learningWord.id),
-  }));
+  const wordItems = useMemo(
+    () =>
+      LEARNING_WORDS.map((learningWord) => ({
+        key: `word-${learningWord.id}`,
+        name: learningWord.promptLabel,
+        hint: learningWord.word,
+        file: getWordAudioPath(learningWord.id),
+      })),
+    []
+  );
 
+  const [guidedIndex, setGuidedIndex] = useState(0);
   const items = [...phonemeItems, ...wordItems];
+  const guidedItem = items[guidedIndex];
+
+  const skipToNext = () => {
+    setGuidedIndex((prev) => Math.min(prev + 1, items.length - 1));
+  };
+
+  const recordNext = () => {
+    const key = guidedItem?.key ?? '';
+    const itemState = getState(key);
+    if (itemState.url) {
+      skipToNext();
+    } else {
+      startRecording(key);
+    }
+  };
 
   return (
     <main className={classes.page}>
@@ -113,9 +139,9 @@ export default function RecordPage() {
         Record sounds
       </Title>
       <Text className={classes.intro}>
-        Record each phoneme and each word once. Download each file and drop it into the{' '}
-        <code>public/audio</code> folder with the shown filename. Each phoneme is stored once and
-        reused across every word that contains it.
+        Record each sound once. Download each file and drop it into the <code>public/audio</code>{' '}
+        folder with the shown filename. Each sound is stored once and reused across every word that
+        contains it.
       </Text>
 
       {micError && (
@@ -123,6 +149,41 @@ export default function RecordPage() {
           {micError}
         </Text>
       )}
+
+      <Paper className={classes.guide} p="lg">
+        <Group justify="space-between" align="flex-start">
+          <div>
+            <Text fw={700} size="lg" className={classes.guideTitle}>
+              Guided recording
+            </Text>
+            <Text className={classes.guideItem} data-testid="guide-item">
+              {guidedIndex + 1} of {items.length}: {guidedItem?.name} ({guidedItem?.hint})
+            </Text>
+            <Text size="sm" c="dimmed" className={classes.guideFile}>
+              {guidedItem?.file}
+            </Text>
+          </div>
+
+          <Group gap="xs">
+            {!recordingKey && !getState(guidedItem?.key ?? '').url && (
+              <Button onClick={recordNext}>Record this</Button>
+            )}
+            {recordingKey && (
+              <Button color="red" onClick={stopRecording}>
+                Stop
+              </Button>
+            )}
+            {getState(guidedItem?.key ?? '').url && (
+              <Button onClick={skipToNext} color="teal">
+                Next
+              </Button>
+            )}
+            <Button variant="outline" onClick={skipToNext}>
+              Skip
+            </Button>
+          </Group>
+        </Group>
+      </Paper>
 
       <Stack gap="sm">
         {items.map((item) => {
@@ -134,7 +195,10 @@ export default function RecordPage() {
               <Group justify="space-between">
                 <div>
                   <Text fw={600}>{item.name}</Text>
-                  <Text size="sm" c="dimmed" className={classes.fileName}>
+                  <Text size="sm" c="dimmed" className={classes.hint}>
+                    {item.hint}
+                  </Text>
+                  <Text size="xs" c="dimmed" className={classes.fileName}>
                     {item.file}
                   </Text>
                 </div>

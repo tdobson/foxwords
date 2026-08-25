@@ -50,6 +50,14 @@ export const LEARNING_WORDS: LearningWord[] = [
     ipa: ['s', 'eə', 'r', 'ə'],
   },
   {
+    id: 'baby',
+    word: 'BABY',
+    promptLabel: 'Baby',
+    accentColor: '#FFB6C1',
+    promptImage: '👶',
+    ipa: ['b', 'eɪ', 'b', 'iː'],
+  },
+  {
     id: 'grandpa',
     word: 'GRANDPA',
     promptLabel: 'Grandpa',

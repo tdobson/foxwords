@@ -20,8 +20,33 @@
   margin-bottom: 1rem;
 }
 
+.guide {
+  border: 2px solid #f97316;
+  box-shadow: 0 8px 24px rgb(249, 115, 22, 0.15);
+  margin-bottom: 1.5rem;
+}
+
+.guideTitle {
+  color: #c2410c;
+  margin-bottom: 0.25rem;
+}
+
+.guideItem {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.guideFile {
+  font-family: var(--mantine-font-family-monospace);
+}
+
 .row {
   border-radius: 0.75rem;
+}
+
+.hint {
+  margin-bottom: 0.25rem;
 }
 
 .fileName {
