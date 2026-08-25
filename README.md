@@ -34,12 +34,14 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Difficulty / Scaffold Modes
 
-The game includes four visual scaffolding modes selectable via the controls at the bottom:
+The game includes two visual scaffolding modes selectable via the controls at the bottom:
 
-1. **Full outline:** All unfinished letters are shown with distinct outlines.
-2. **Outline:** Completed letters are filled solid; unfinished letters remain outlined.
-3. **Faint:** Unfinished letters are visible with faint outlines to encourage recall.
-4. **Reveal:** Unfinished letters are hidden initially, fading into view as faint outlines one by one after a 5-second delay.
+1. **Reveal:** Only the current letter is visible. It appears faintly until completed, and the next letter is revealed only when the previous one is typed. This is the default mode.
+2. **Faint:** All unfinished letters are visible with faint outlines to encourage recall.
+
+## Levels
+
+Every 6 words form a level. The game shows a level label so each group of words has a natural pause point before continuing.
 
 ## Word Data
 

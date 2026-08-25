@@ -42,18 +42,6 @@
   animation: pulse 1.5s infinite ease-in-out;
 }
 
-.tile[data-state='full-outline'] {
-  background-color: #fff;
-  color: #475569;
-  border: 3px solid #94a3b8;
-}
-
-.tile[data-state='outline'] {
-  background-color: #fff;
-  color: #64748b;
-  border: 3px dashed #cbd5e1;
-}
-
 .tile[data-state='faint'] {
   background-color: #f8fafc;
   color: #cbd5e1;

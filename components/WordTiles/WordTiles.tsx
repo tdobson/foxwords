@@ -6,19 +6,17 @@ export interface WordTilesProps {
   word: string;
   nextIndex: number;
   difficulty: DifficultyLevel;
-  revealCount?: number;
 }
 
-export type TileState = 'completed' | 'active' | 'full-outline' | 'outline' | 'faint' | 'hidden';
+export type TileState = 'completed' | 'active' | 'faint' | 'hidden';
 
 export interface TileStateOptions {
   index: number;
   nextIndex: number;
   difficulty: DifficultyLevel;
-  revealCount: number;
 }
 
-function getTileState({ index, nextIndex, difficulty, revealCount }: TileStateOptions): TileState {
+function getTileState({ index, nextIndex, difficulty }: TileStateOptions): TileState {
   if (index < nextIndex) {
     return 'completed';
   }
@@ -27,16 +25,12 @@ function getTileState({ index, nextIndex, difficulty, revealCount }: TileStateOp
   }
 
   switch (difficulty) {
-    case 'full-outline':
-      return 'full-outline';
-    case 'outline':
-      return 'outline';
     case 'faint':
       return 'faint';
     case 'reveal':
-      return index < revealCount ? 'faint' : 'hidden';
+      return 'hidden';
     default:
-      return 'outline';
+      return 'faint';
   }
 }
 
@@ -47,18 +41,10 @@ function getAriaLabel(letter: string, state: TileState): string {
   if (state === 'active') {
     return `Letter ${letter}, current letter`;
   }
-  if (state === 'full-outline') {
-    return `Letter ${letter}, full outline`;
-  }
   return `Letter ${letter}, ${state}`;
 }
 
-export function WordTiles({
-  word,
-  nextIndex,
-  difficulty,
-  revealCount = word.length,
-}: WordTilesProps) {
+export function WordTiles({ word, nextIndex, difficulty }: WordTilesProps) {
   const letters = word.toUpperCase().split('');
 
   return (
@@ -68,7 +54,6 @@ export function WordTiles({
           index,
           nextIndex,
           difficulty,
-          revealCount,
         });
         const ariaLabel = getAriaLabel(letter, state);
         const isHidden = state === 'hidden';

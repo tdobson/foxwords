@@ -32,6 +32,15 @@
   justify-content: center;
 }
 
+.levelLabel {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.06em;
+}
+
 .interactiveArea {
   width: 100%;
   display: flex;

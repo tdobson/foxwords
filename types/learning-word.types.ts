@@ -1,4 +1,4 @@
-export type DifficultyLevel = 'full-outline' | 'outline' | 'faint' | 'reveal';
+export type DifficultyLevel = 'faint' | 'reveal';
 export type ProgressionKind = 'advanced' | 'incorrect' | 'ignored';
 
 export interface DifficultyDefinition {
