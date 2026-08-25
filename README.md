@@ -43,6 +43,12 @@ The game includes two visual scaffolding modes selectable via the controls at th
 
 Every 6 words form a level. The game shows a level label so each group of words has a natural pause point before continuing.
 
+## Audio
+
+When you press a correct key, the game plays that letter's sound from `public/audio/letters/{LETTER}.webm`. When a word starts and when it is completed, it plays the word sound from `public/audio/words/{id}.webm`.
+
+The game plays audio only when the file exists. You can record every letter and word sound using the recording interface at [http://localhost:3000/record](http://localhost:3000/record): record, preview, and download each clip, then drop the files into the matching folder. Files are named exactly as shown on the page.
+
 ## Word Data
 
 Word fixtures are defined in `constants/learning-words.ts` with local visual prompt glyphs and accent colors.
@@ -64,5 +70,5 @@ npm run build
 
 - Physical keyboard input only (no on-screen touch keyboard).
 - No backend, user accounts, persistence, or external APIs.
-- Starter word set only (`JAMES`, `GRANDMA`, `GRANDDAD`, `MUMMY`, `DADDY`, `SARAH`, `GRANDPA`, `GRANNY`, `MEG`, `DOG`, `CAT`, `BIKE`, `BOOK`, `TRACTOR`, `CRANE`, `APPLE`, `JAM`, `BIG`, `SPLASH`, `RAIN`, `GAMES`, `JIGSAW`, `TRAM`, `TRAIN`, `RAIL`, `TRACK`).
+- Starter word set only (`JAMES`, `GRANDMA`, `GRANDDAD`, `MUMMY`, `DADDY`, `SARAH`, `GRANDPA`, `GRANNY`, `MEG`, `FOX`, `BED`, `MILK`, `ORANGE`, `BANANA`, `DOG`, `CAT`, `BIKE`, `BOOK`, `TRACTOR`, `CRANE`, `APPLE`, `JAM`, `BIG`, `SPLASH`, `RAIN`, `GAMES`, `JIGSAW`, `TRAM`, `TRAIN`, `RAIL`, `TRACK`).
 - Uppercase matching only (case-insensitive for typing).

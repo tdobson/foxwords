@@ -25,3 +25,6 @@ class ResizeObserver {
 }
 
 window.ResizeObserver = ResizeObserver;
+
+HTMLMediaElement.prototype.play = jest.fn().mockReturnValue(Promise.resolve());
+HTMLMediaElement.prototype.pause = jest.fn();

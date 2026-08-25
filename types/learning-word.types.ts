@@ -16,6 +16,12 @@ export interface LearningWord {
   audioSrc?: string;
 }
 
+export interface LetterSound {
+  letter: string;
+  label: string;
+  word: string;
+}
+
 export interface ProgressionInput {
   word: string;
   nextIndex: number;

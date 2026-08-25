@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { LEARNING_WORDS } from '../../constants/learning-words';
 import { DifficultyLevel } from '../../types/learning-word.types';
 import { getProgressionResult } from '../../utils/progression';
+import { getLetterAudioPath, getWordAudioPath, playAudio } from '../../utils/audio';
 import { GameControls } from '../GameControls/GameControls';
 import { PromptCard } from '../PromptCard/PromptCard';
 import { WordTiles } from '../WordTiles/WordTiles';
@@ -48,9 +49,11 @@ export function TypingGame() {
       if (result.kind === 'advanced') {
         setNextIndex(result.nextIndex);
         setFeedback('none');
+        playAudio(getLetterAudioPath(currentWord.word[nextIndex] ?? ''));
         if (result.completed) {
           setIsCompleted(true);
           setFeedback('celebrate');
+          playAudio(getWordAudioPath(currentWord.id));
           if ((wordIndex + 1) % LEVEL_SIZE === 0) {
             setShowLevelComplete(true);
           }
@@ -78,6 +81,10 @@ export function TypingGame() {
     }
     return undefined;
   }, [feedback]);
+
+  useEffect(() => {
+    playAudio(getWordAudioPath(currentWord.id));
+  }, [currentWord.id]);
 
   useEffect(() => {
     if (!isCompleted) {
