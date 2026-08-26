@@ -1,6 +1,10 @@
 import React from 'react';
 import { act, fireEvent, render, screen, userEvent } from '@/test-utils';
 import { TypingGame } from './TypingGame';
+import { QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
+
+const firstLevelWords = ['JAMES', 'GRANDMA', 'GRANDDAD', 'MUMMY', 'DADDY', 'SARAH'];
+const unlockWords = [...firstLevelWords, 'BABY', 'GRANDPA', 'GRANNY', 'MEG'];
 
 describe('TypingGame', () => {
   beforeEach(() => {
@@ -10,6 +14,17 @@ describe('TypingGame', () => {
   afterEach(() => {
     jest.useRealTimers();
   });
+
+  const completeWords = (words: string[], advanceMs: number[] = []) => {
+    for (let i = 0; i < words.length; i += 1) {
+      for (const key of words[i]) {
+        fireEvent.keyDown(window, { key });
+      }
+      act(() => {
+        jest.advanceTimersByTime(advanceMs[i] ?? 1600);
+      });
+    }
+  };
 
   it('renders initial game state with JAMES prompt and reveal as default difficulty', () => {
     render(<TypingGame />);
@@ -81,15 +96,7 @@ describe('TypingGame', () => {
     jest.useFakeTimers();
     render(<TypingGame />);
 
-    const firstLevelWords = ['JAMES', 'GRANDMA', 'GRANDDAD', 'MUMMY', 'DADDY', 'SARAH'];
-    for (const word of firstLevelWords) {
-      for (const key of word) {
-        fireEvent.keyDown(window, { key });
-      }
-      act(() => {
-        jest.advanceTimersByTime(word === 'SARAH' ? 3200 : 1600);
-      });
-    }
+    completeWords(firstLevelWords, ['1600', '1600', '1600', '1600', '1600', '3200'].map(Number));
 
     expect(screen.getByText(/^Level 2$/)).toBeInTheDocument();
     expect(screen.getByRole('region', { name: /prompt for baby/i })).toBeInTheDocument();
@@ -99,15 +106,7 @@ describe('TypingGame', () => {
     jest.useFakeTimers();
     render(<TypingGame />);
 
-    const firstLevelWords = ['JAMES', 'GRANDMA', 'GRANDDAD', 'MUMMY', 'DADDY', 'SARAH'];
-    for (const word of firstLevelWords) {
-      for (const key of word) {
-        fireEvent.keyDown(window, { key });
-      }
-      act(() => {
-        jest.advanceTimersByTime(word === 'SARAH' ? 0 : 1600);
-      });
-    }
+    completeWords(firstLevelWords, [1600, 1600, 1600, 1600, 1600, 0]);
 
     expect(screen.getByRole('status')).toHaveTextContent(/level 1 complete/i);
 
@@ -117,5 +116,65 @@ describe('TypingGame', () => {
 
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
     expect(screen.getByRole('region', { name: /prompt for baby/i })).toBeInTheDocument();
+  });
+
+  it('locks quiz mode until enough words are completed', async () => {
+    const user = userEvent.setup();
+    render(<TypingGame />);
+    const quizButton = screen.getByRole('button', { name: /quiz/i });
+    expect(quizButton).toBeDisabled();
+    expect(quizButton).toHaveAttribute(
+      'title',
+      expect.stringContaining(`${QUIZ_UNLOCK_THRESHOLD} words`)
+    );
+    await user.click(quizButton);
+    expect(screen.getByRole('region', { name: /prompt for james/i })).toBeInTheDocument();
+  });
+
+  it('unlocks quiz mode after completing enough words', () => {
+    jest.useFakeTimers();
+    render(<TypingGame />);
+
+    for (let i = 0; i < QUIZ_UNLOCK_THRESHOLD; i += 1) {
+      for (const key of unlockWords[i]) {
+        fireEvent.keyDown(window, { key });
+      }
+      act(() => {
+        jest.advanceTimersByTime(i === 5 ? 3200 : 1600);
+      });
+    }
+
+    expect(screen.getByRole('button', { name: /quiz/i })).toBeEnabled();
+    fireEvent.click(screen.getByRole('button', { name: /quiz/i }));
+    expect(
+      screen.getByRole('region', { name: /what letter does fox start with/i })
+    ).toBeInTheDocument();
+  });
+
+  it('asks for the first letter in quiz mode and advances on a correct answer', () => {
+    jest.useFakeTimers();
+    render(<TypingGame />);
+
+    completeWords(unlockWords, [1600, 1600, 1600, 1600, 1600, 3200, 1600, 1600, 1600, 1600]);
+
+    fireEvent.click(screen.getByRole('button', { name: /quiz/i }));
+    expect(
+      screen.getByRole('region', { name: /what letter does fox start with/i })
+    ).toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: 'j' });
+    expect(screen.getByTestId('quiz-blank')).toHaveAttribute('data-correct', 'false');
+    expect(screen.getByTestId('quiz-blank').textContent).toBe('');
+
+    fireEvent.keyDown(window, { key: 'F' });
+    expect(screen.getByTestId('quiz-blank')).toHaveAttribute('data-correct', 'true');
+    expect(screen.getByTestId('quiz-blank').textContent).toBe('F');
+
+    act(() => {
+      jest.advanceTimersByTime(1600);
+    });
+    expect(
+      screen.getByRole('region', { name: /what letter does bed start with/i })
+    ).toBeInTheDocument();
   });
 });

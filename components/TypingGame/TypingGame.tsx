@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { LEARNING_WORDS } from '../../constants/learning-words';
+import { LEARNING_WORDS, QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
 import { getPhonemeSlug } from '../../constants/phonemes';
-import { DifficultyLevel } from '../../types/learning-word.types';
+import { DifficultyLevel, GameMode } from '../../types/learning-word.types';
 import { getProgressionResult } from '../../utils/progression';
 import { getPhonemeAudioPath, getWordAudioPath, playAudio } from '../../utils/audio';
 import { GameControls } from '../GameControls/GameControls';
 import { PromptCard } from '../PromptCard/PromptCard';
+import { QuizPrompt } from '../QuizPrompt/QuizPrompt';
 import { WordTiles } from '../WordTiles/WordTiles';
 import classes from './TypingGame.module.css';
 
@@ -20,12 +21,16 @@ export function TypingGame() {
   const [wordIndex, setWordIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(0);
   const [difficulty, setDifficulty] = useState<DifficultyLevel>('reveal');
+  const [mode, setMode] = useState<GameMode>('words');
+  const [completedCount, setCompletedCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showLevelComplete, setShowLevelComplete] = useState(false);
   const [feedback, setFeedback] = useState<'none' | 'shake' | 'celebrate'>('none');
 
   const currentWord = LEARNING_WORDS[wordIndex % LEARNING_WORDS.length];
   const levelNumber = Math.floor(wordIndex / LEVEL_SIZE) + 1;
+  const isQuiz = mode === 'quiz';
+  const quizLocked = completedCount < QUIZ_UNLOCK_THRESHOLD;
 
   const handleNextWord = useCallback(() => {
     setWordIndex((prev) => (prev + 1) % LEARNING_WORDS.length);
@@ -33,11 +38,27 @@ export function TypingGame() {
     setIsCompleted(false);
     setShowLevelComplete(false);
     setFeedback('none');
+    setCompletedCount((prev) => prev + 1);
   }, []);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (isCompleted || event.repeat || event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+
+      if (isQuiz) {
+        const key = event.key.toUpperCase();
+        if (!/^[A-Z]$/.test(key)) {
+          return;
+        }
+        if (key === currentWord.word[0]) {
+          setIsCompleted(true);
+          setFeedback('celebrate');
+          playAudio(getWordAudioPath(currentWord.id));
+        } else {
+          setFeedback('shake');
+        }
         return;
       }
 
@@ -66,7 +87,7 @@ export function TypingGame() {
         setFeedback('shake');
       }
     },
-    [currentWord.word, isCompleted, nextIndex, wordIndex]
+    [currentWord.word, currentWord.id, currentWord.ipa, isCompleted, isQuiz, nextIndex, wordIndex]
   );
 
   useEffect(() => {
@@ -102,16 +123,25 @@ export function TypingGame() {
   return (
     <main className={classes.gameWrapper}>
       <section className={classes.interactiveArea} data-feedback={feedback}>
-        <PromptCard word={currentWord} />
-        <WordTiles word={currentWord.word} nextIndex={nextIndex} difficulty={difficulty} />
+        {isQuiz ? (
+          <QuizPrompt word={currentWord} isCorrect={isCompleted} />
+        ) : (
+          <>
+            <PromptCard word={currentWord} />
+            <WordTiles word={currentWord.word} nextIndex={nextIndex} difficulty={difficulty} />
+          </>
+        )}
       </section>
 
-      <p className={classes.levelLabel}>Level {levelNumber}</p>
+      {!isQuiz && <p className={classes.levelLabel}>Level {levelNumber}</p>}
 
       <GameControls
         difficulty={difficulty}
         onDifficultyChange={setDifficulty}
         onNewWord={handleNextWord}
+        mode={mode}
+        onModeChange={setMode}
+        quizLocked={quizLocked}
       />
 
       {showLevelComplete && (

@@ -1,5 +1,16 @@
 import { LearningWord } from '../types/learning-word.types';
 
+export interface LearningWordFixture {
+  id: string;
+  word: string;
+  promptLabel: string;
+  accentColor: string;
+  promptImage?: string;
+  ipa: string[];
+}
+
+export const QUIZ_UNLOCK_THRESHOLD = 10;
+
 export const LEARNING_WORDS: LearningWord[] = [
   {
     id: 'james',

@@ -1,4 +1,5 @@
 export type DifficultyLevel = 'faint' | 'reveal';
+export type GameMode = 'words' | 'quiz';
 export type ProgressionKind = 'advanced' | 'incorrect' | 'ignored';
 
 export interface DifficultyDefinition {
