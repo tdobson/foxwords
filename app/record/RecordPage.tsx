@@ -51,6 +51,31 @@ export default function RecordPage() {
   const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
 
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/audio')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to list existing recordings');
+        }
+        return response.json() as Promise<{ phonemes: string[]; words: string[] }>;
+      })
+      .then((existing) => {
+        if (cancelled) {
+          return;
+        }
+        const onDisk = new Set([...existing.phonemes, ...existing.words]);
+        const firstMissingIndex = items.findIndex((item) => !onDisk.has(item.id));
+        setIndex(firstMissingIndex === -1 ? items.length : firstMissingIndex);
+      })
+      .catch(() => {
+        // Server unreachable — fall back to starting at the beginning
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [items]);
+
   const item = items[index];
   const isDone = index >= items.length;
   const prevItem = index > 0 ? items[index - 1] : null;
