@@ -17,9 +17,17 @@ export function PromptCard({ word }: PromptCardProps) {
       role="region"
       aria-label={`Prompt for ${word.promptLabel}`}
     >
-      <div className={classes.promptArt} aria-hidden="true">
-        {promptGlyph}
-      </div>
+      {word.promptPhoto ? (
+        <img
+          src={word.promptPhoto}
+          alt={`Photo of ${word.promptLabel}`}
+          className={classes.promptPhoto}
+        />
+      ) : (
+        <div className={classes.promptArt} aria-hidden="true">
+          {promptGlyph}
+        </div>
+      )}
       <Title order={2} className={classes.promptLabel}>
         {word.promptLabel}
       </Title>

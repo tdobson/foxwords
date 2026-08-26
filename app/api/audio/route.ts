@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { PHONEMES } from '../../../constants/phonemes';
+import { LETTER_NAMES } from '../../../constants/letter-names';
 import { LEARNING_WORDS } from '../../../constants/learning-words';
 
 const AUDIO_ROOT = path.join(process.cwd(), 'public', 'audio');
 const ALLOWED_PHONEMES = new Set(PHONEMES.map((phoneme) => phoneme.slug));
+const ALLOWED_LETTER_NAMES = new Set(LETTER_NAMES.map((letterName) => letterName.slug));
 const ALLOWED_WORDS = new Set(LEARNING_WORDS.map((word) => word.id));
 const MAX_BYTES = 5_000_000;
 
@@ -21,8 +23,12 @@ async function listExisting(dirName: string): Promise<string[]> {
 }
 
 export async function GET() {
-  const [phonemes, words] = await Promise.all([listExisting('phonemes'), listExisting('words')]);
-  return NextResponse.json({ phonemes, words });
+  const [phonemes, letterNames, words] = await Promise.all([
+    listExisting('phonemes'),
+    listExisting('letter-names'),
+    listExisting('words'),
+  ]);
+  return NextResponse.json({ phonemes, letterNames, words });
 }
 
 export async function POST(request: NextRequest) {
@@ -42,6 +48,8 @@ export async function POST(request: NextRequest) {
   let dirName: string | null = null;
   if (kind === 'phoneme' && ALLOWED_PHONEMES.has(id)) {
     dirName = 'phonemes';
+  } else if (kind === 'letter-name' && ALLOWED_LETTER_NAMES.has(id)) {
+    dirName = 'letter-names';
   } else if (kind === 'word' && ALLOWED_WORDS.has(id)) {
     dirName = 'words';
   }

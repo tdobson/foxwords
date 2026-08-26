@@ -4,10 +4,15 @@
  */
 
 const PHONEME_AUDIO_DIR = '/audio/phonemes';
+const LETTER_NAME_AUDIO_DIR = '/audio/letter-names';
 const WORD_AUDIO_DIR = '/audio/words';
 
 export function getPhonemeAudioPath(slug: string): string {
   return `${PHONEME_AUDIO_DIR}/${slug}.webm`;
+}
+
+export function getLetterNameAudioPath(slug: string): string {
+  return `${LETTER_NAME_AUDIO_DIR}/${slug}.webm`;
 }
 
 export function getWordAudioPath(wordId: string): string {
@@ -21,7 +26,11 @@ export function playAudio(path: string): void {
   });
 }
 
-export async function saveAudio(kind: 'phoneme' | 'word', id: string, blob: Blob): Promise<void> {
+export async function saveAudio(
+  kind: 'phoneme' | 'letter-name' | 'word',
+  id: string,
+  blob: Blob
+): Promise<void> {
   const audioBase64 = await blobToBase64(blob);
   const response = await fetch('/api/audio', {
     method: 'POST',

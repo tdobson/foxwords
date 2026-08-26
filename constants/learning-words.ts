@@ -31,7 +31,7 @@ export const LEARNING_WORDS: LearningWord[] = [
   {
     id: 'granddad',
     word: 'GRANDDAD',
-    promptLabel: 'Granddad',
+    promptLabel: 'Grandad',
     accentColor: '#6C3483',
     promptImage: '👴',
     ipa: ['g', 'r', 'æ', 'n', 'd', 'd', 'æ', 'd'],
@@ -50,6 +50,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     promptLabel: 'Daddy',
     accentColor: '#27AE60',
     promptImage: '👨',
+    promptPhoto: '/images/words/daddy.jpg',
     ipa: ['d', 'æ', 'd', 'd', 'iː'],
   },
   {

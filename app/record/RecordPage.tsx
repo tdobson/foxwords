@@ -3,13 +3,20 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { PHONEMES } from '../../constants/phonemes';
+import { LETTER_NAMES } from '../../constants/letter-names';
 import { LEARNING_WORDS } from '../../constants/learning-words';
-import { getPhonemeAudioPath, getWordAudioPath, playAudio, saveAudio } from '../../utils/audio';
+import {
+  getLetterNameAudioPath,
+  getPhonemeAudioPath,
+  getWordAudioPath,
+  playAudio,
+  saveAudio,
+} from '../../utils/audio';
 import classes from './RecordPage.module.css';
 
 interface RecordingItem {
   key: string;
-  kind: 'phoneme' | 'word';
+  kind: 'phoneme' | 'letter-name' | 'word';
   id: string;
   name: string;
   hint: string;
@@ -27,6 +34,15 @@ function createItems(): RecordingItem[] {
     file: getPhonemeAudioPath(phoneme.slug),
     path: `public/audio/phonemes/${phoneme.slug}.webm`,
   }));
+  const letterNames = LETTER_NAMES.map((letterName) => ({
+    key: `letter-name-${letterName.slug}`,
+    kind: 'letter-name' as const,
+    id: letterName.slug,
+    name: letterName.label,
+    hint: 'letter name',
+    file: getLetterNameAudioPath(letterName.slug),
+    path: `public/audio/letter-names/${letterName.slug}.webm`,
+  }));
   const words = LEARNING_WORDS.map((learningWord) => ({
     key: `word-${learningWord.id}`,
     kind: 'word' as const,
@@ -36,7 +52,7 @@ function createItems(): RecordingItem[] {
     file: getWordAudioPath(learningWord.id),
     path: `public/audio/words/${learningWord.id}.webm`,
   }));
-  return [...phonemes, ...words];
+  return [...phonemes, ...letterNames, ...words];
 }
 
 export default function RecordPage() {
@@ -58,13 +74,17 @@ export default function RecordPage() {
         if (!response.ok) {
           throw new Error('Failed to list existing recordings');
         }
-        return response.json() as Promise<{ phonemes: string[]; words: string[] }>;
+        return response.json() as Promise<{
+          phonemes: string[];
+          letterNames: string[];
+          words: string[];
+        }>;
       })
       .then((existing) => {
         if (cancelled) {
           return;
         }
-        const onDisk = new Set([...existing.phonemes, ...existing.words]);
+        const onDisk = new Set([...existing.phonemes, ...existing.letterNames, ...existing.words]);
         const firstMissingIndex = items.findIndex((item) => !onDisk.has(item.id));
         setIndex(firstMissingIndex === -1 ? items.length : firstMissingIndex);
       })

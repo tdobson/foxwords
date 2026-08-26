@@ -5,7 +5,12 @@ import { LEARNING_WORDS, QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-
 import { getPhonemeSlug } from '../../constants/phonemes';
 import { DifficultyLevel, GameMode } from '../../types/learning-word.types';
 import { getProgressionResult } from '../../utils/progression';
-import { getPhonemeAudioPath, getWordAudioPath, playAudio } from '../../utils/audio';
+import {
+  getLetterNameAudioPath,
+  getPhonemeAudioPath,
+  getWordAudioPath,
+  playAudio,
+} from '../../utils/audio';
 import { GameControls } from '../GameControls/GameControls';
 import { PromptCard } from '../PromptCard/PromptCard';
 import { QuizPrompt } from '../QuizPrompt/QuizPrompt';
@@ -16,6 +21,7 @@ const LEVEL_SIZE = 6;
 const FEEDBACK_DURATION_MS = 350;
 const WORD_COMPLETE_MS = 1500;
 const LEVEL_COMPLETE_MS = 3200;
+const WORD_SOUND_DELAY_MS = 700;
 
 export function TypingGame() {
   const [wordIndex, setWordIndex] = useState(0);
@@ -71,14 +77,21 @@ export function TypingGame() {
       if (result.kind === 'advanced') {
         setNextIndex(result.nextIndex);
         setFeedback('none');
+
+        // Play the phonic sound, then the letter name (e.g. "kuh" then "kay").
         const phonemeSlug = getPhonemeSlug(currentWord.ipa[nextIndex] ?? '');
         if (phonemeSlug) {
           playAudio(getPhonemeAudioPath(phonemeSlug));
+          playAudio(getLetterNameAudioPath(phonemeSlug));
         }
+
         if (result.completed) {
           setIsCompleted(true);
           setFeedback('celebrate');
-          playAudio(getWordAudioPath(currentWord.id));
+          // A short pause after the last letter, then the whole word.
+          setTimeout(() => {
+            playAudio(getWordAudioPath(currentWord.id));
+          }, WORD_SOUND_DELAY_MS);
           if ((wordIndex + 1) % LEVEL_SIZE === 0) {
             setShowLevelComplete(true);
           }

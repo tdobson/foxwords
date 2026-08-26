@@ -13,7 +13,10 @@ export interface LearningWord {
   word: string;
   promptLabel: string;
   accentColor: string;
+  /** Emoji fallback (also used when no photo exists) */
   promptImage?: string;
+  /** Photo path in public/images/words (e.g. /images/words/daddy.jpg) */
+  promptPhoto?: string;
   ipa: string[];
 }
 
@@ -22,6 +25,7 @@ export interface Phoneme {
   slug: string;
   label: string;
   examples: string[];
+  letterName?: string;
 }
 
 export interface ProgressionInput {

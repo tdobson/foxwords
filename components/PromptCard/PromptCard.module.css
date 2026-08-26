@@ -19,6 +19,15 @@
   filter: drop-shadow(0 4px 8px rgb(0, 0, 0, 0.08));
 }
 
+.promptPhoto {
+  width: 12rem;
+  height: 12rem;
+  object-fit: cover;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 24px rgb(0, 0, 0, 0.12);
+}
+
 .promptLabel {
   font-size: 2rem;
   font-weight: 700;
