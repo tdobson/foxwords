@@ -29,12 +29,12 @@ export const LEARNING_WORDS: LearningWord[] = [
     ipa: ['g', 'r', 'æ', 'n', 'd', 'm', 'ɑː'],
   },
   {
-    id: 'granddad',
-    word: 'GRANDDAD',
+    id: 'grandad',
+    word: 'GRANDAD',
     promptLabel: 'Grandad',
     accentColor: '#6C3483',
     promptImage: '👴',
-    ipa: ['g', 'r', 'æ', 'n', 'd', 'd', 'æ', 'd'],
+    ipa: ['g', 'r', 'æ', 'n', 'd', 'æ', 'd'],
   },
   {
     id: 'mummy',

@@ -113,7 +113,7 @@ describe('RecordPage', () => {
         words: [
           'james',
           'grandma',
-          'granddad',
+          'grandad',
           'mummy',
           'daddy',
           'sarah',
