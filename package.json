@@ -8,6 +8,7 @@
     "export": "next build",
     "bundle": "next build && node scripts/create-bundle.mjs",
     "deploy": "next build && wrangler pages deploy out --project-name=james-game",
+    "deploy:cacofonix": "next build && rsync -avz --delete out/ tdobson@192.168.1.69:/var/www/james-game/",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
