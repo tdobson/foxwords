@@ -22,6 +22,8 @@ async function listExisting(dirName: string): Promise<string[]> {
   }
 }
 
+export const dynamic = 'force-static';
+
 export async function GET() {
   const [phonemes, letterNames, words] = await Promise.all([
     listExisting('phonemes'),

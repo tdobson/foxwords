@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next build",
+    "bundle": "next build && node scripts/create-bundle.mjs",
+    "deploy": "next build && wrangler pages deploy out --project-name=james-game",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
