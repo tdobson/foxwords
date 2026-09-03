@@ -1,0 +1,144 @@
+.countCard {
+  border: 3px solid;
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  text-align: center;
+  max-width: 640px;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 4px 20px rgb(0, 0, 0, 0.05);
+}
+
+.clusterContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 180px;
+  margin-bottom: 1.5rem;
+}
+
+/* Layout: simple row (counts 1-9) */
+.rowLayout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* Layout: tens-and-ones (counts 10-20) */
+.tensLayout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.tensGroup {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 1rem;
+}
+
+.onesGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Layout: full even grid (hard mode) */
+.gridLayout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(3.5rem, 1fr));
+  gap: 0.5rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.itemWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.itemPhoto {
+  width: clamp(3rem, 7vw, 4.5rem);
+  height: clamp(3rem, 7vw, 4.5rem);
+  object-fit: cover;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgb(0, 0, 0, 0.1);
+}
+
+/* Number Tiles container & items */
+.numberTilesContainer {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.numberTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(3rem, 12vw, 4.5rem);
+  height: clamp(3.75rem, 15vw, 5.5rem);
+  border-radius: clamp(0.5rem, 2vw, 1rem);
+  font-size: clamp(1.75rem, 7vw, 2.75rem);
+  font-weight: 800;
+  user-select: none;
+  transition:
+    background-color 0.8s ease,
+    color 0.8s ease,
+    border-color 0.8s ease;
+}
+
+.numberTile[data-state="completed"] {
+  background-color: #c2410c;
+  color: #fff;
+  border: 3px solid #9a3412;
+  box-shadow: 0 6px 12px rgb(194, 65, 12, 0.25);
+  transform: scale(1.02);
+}
+
+.numberTile[data-state="hidden"] {
+  background-color: #f1f5f9;
+  color: transparent;
+  border: 2px dashed #cbd5e1;
+}
+
+.numberTile[data-state="faint"] {
+  background-color: #f8fafc;
+  color: #94a3b8;
+  border: 2px dashed #e2e8f0;
+  opacity: 1;
+  animation: fadeInHint 1s ease-in;
+}
+
+@keyframes fadeInHint {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .numberTile {
+    transition: none;
+    animation: none;
+  }
+  .numberTile[data-state="faint"] {
+    animation: none;
+  }
+}
