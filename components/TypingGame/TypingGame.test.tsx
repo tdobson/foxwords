@@ -177,4 +177,116 @@ describe('TypingGame', () => {
       screen.getByRole('region', { name: /what letter does bed start with/i })
     ).toBeInTheDocument();
   });
+
+  it('allows switching to Count mode immediately with zero completed words', () => {
+    render(<TypingGame />);
+    const countBtn = screen.getByRole('button', { name: /^count$/i });
+    expect(countBtn).toBeEnabled();
+    fireEvent.click(countBtn);
+    expect(screen.getByRole('region', { name: /count prompt with/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /back to words/i })).toBeInTheDocument();
+  });
+
+  it('advances count on correct digit in easy mode and reveals 14s hint if delayed', () => {
+    jest.useFakeTimers();
+    render(<TypingGame />);
+    fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
+
+    const tile = screen.getByTestId('number-tile-0');
+    expect(tile).toHaveAttribute('data-state', 'hidden');
+
+    // Fast-forward 14 seconds
+    act(() => {
+      jest.advanceTimersByTime(14000);
+    });
+
+    expect(tile).toHaveAttribute('data-state', 'faint');
+    const expectedDigit = tile.textContent!;
+    expect(expectedDigit).toMatch(/^[1-9]$/);
+
+    // Type incorrect digit
+    const wrongDigit = expectedDigit === '1' ? '2' : '1';
+    fireEvent.keyDown(window, { key: wrongDigit });
+    expect(tile).toHaveAttribute('data-state', 'faint');
+
+    // Type correct digit
+    fireEvent.keyDown(window, { key: expectedDigit });
+    expect(tile).toHaveAttribute('data-state', 'completed');
+  });
+
+  it('hard mode requires typing the number then spelling the word', () => {
+    jest.useFakeTimers();
+    render(<TypingGame />);
+    fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
+
+    // Switch to Hard
+    fireEvent.click(screen.getByRole('radio', { name: /hard/i }));
+
+    // Letters before number completion are ignored
+    fireEvent.keyDown(window, { key: 'j' });
+
+    const numTiles = screen.getAllByTestId(/^number-tile-/);
+    // Word tiles must not be in the document until number is completed
+    expect(screen.queryByTestId('letter-tile-0')).not.toBeInTheDocument();
+
+    // Reveal hint to easily see target digits
+    act(() => {
+      jest.advanceTimersByTime(14000);
+    });
+
+    for (let i = 0; i < numTiles.length; i += 1) {
+      const digit = screen.getByTestId(`number-tile-${i}`).textContent!;
+      fireEvent.keyDown(window, { key: digit });
+    }
+
+    // Number completed! Word tiles now appear
+    expect(screen.getByTestId('letter-tile-0')).toBeInTheDocument();
+
+    // Complete the word (JAMES)
+    for (const letter of 'JAMES') {
+      fireEvent.keyDown(window, { key: letter });
+    }
+
+    // Celebration state
+    expect(screen.getByTestId('letter-tile-4')).toHaveAttribute('data-state', 'completed');
+  });
+
+  it('completing number before 14s clears hint timer and does not reveal faint hint', () => {
+    jest.useFakeTimers();
+    render(<TypingGame />);
+    fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
+
+    const tile = screen.getByTestId('number-tile-0');
+    expect(tile).toHaveAttribute('data-state', 'hidden');
+
+    // Type 1..9 to find the target digit and complete it immediately
+    for (let d = 1; d <= 9; d += 1) {
+      fireEvent.keyDown(window, { key: String(d) });
+      if (tile.getAttribute('data-state') === 'completed') {
+        break;
+      }
+    }
+    expect(tile).toHaveAttribute('data-state', 'completed');
+
+    // Advance 500ms (still within celebrate, before handleNextWord at 1500ms)
+    act(() => {
+      jest.advanceTimersByTime(500);
+    });
+
+    // Tile remains completed and not faint
+    expect(tile).toHaveAttribute('data-state', 'completed');
+  });
+
+  it('medium mode switches to tens layout and requires two-digit progression', () => {
+    render(<TypingGame />);
+    fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
+    fireEvent.click(screen.getByRole('radio', { name: /medium/i }));
+
+    // In medium mode, targetCount is 10-20, so there are two number tiles
+    expect(screen.getByTestId('number-tile-0')).toBeInTheDocument();
+    expect(screen.getByTestId('number-tile-1')).toBeInTheDocument();
+
+    // At least one tens-group exists
+    expect(screen.getByTestId('tens-group-0')).toBeInTheDocument();
+  });
 });

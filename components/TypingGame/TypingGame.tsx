@@ -3,14 +3,25 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { LEARNING_WORDS, QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
 import { getPhonemeSlug } from '../../constants/phonemes';
-import { DifficultyLevel, GameMode } from '../../types/learning-word.types';
+import { COUNT_DIFFICULTIES } from '../../constants/count-difficulties';
+import { getCountNumberSlug } from '../../constants/count-numbers';
+import {
+  CountDifficulty,
+  DifficultyLevel,
+  GameMode,
+  LearningWord,
+} from '../../types/learning-word.types';
 import { getProgressionResult } from '../../utils/progression';
+import { getCountProgressionResult } from '../../utils/count-progression';
 import {
   getLetterNameAudioPath,
+  getNumberAudioPath,
   getPhonemeAudioPath,
+  getPluralAudioPath,
   getWordAudioPath,
   playAudio,
 } from '../../utils/audio';
+import { CountPrompt } from '../CountPrompt/CountPrompt';
 import { GameControls } from '../GameControls/GameControls';
 import { PromptCard } from '../PromptCard/PromptCard';
 import { QuizPrompt } from '../QuizPrompt/QuizPrompt';
@@ -22,12 +33,32 @@ const FEEDBACK_DURATION_MS = 350;
 const WORD_COMPLETE_MS = 1500;
 const LEVEL_COMPLETE_MS = 3200;
 const WORD_SOUND_DELAY_MS = 700;
+const COUNT_HINT_DELAY_MS = 14000;
+const COUNT_OBJECT_AUDIO_DELAY_MS = 600;
+
+function pickNewCount(diff: CountDifficulty, prevCount?: number): number {
+  const { minCount, maxCount } = COUNT_DIFFICULTIES[diff];
+  const range = maxCount - minCount + 1;
+  if (range <= 1) {
+    return minCount;
+  }
+  let picked = minCount + Math.floor(Math.random() * range);
+  while (picked === prevCount) {
+    picked = minCount + Math.floor(Math.random() * range);
+  }
+  return picked;
+}
 
 export function TypingGame() {
   const [wordIndex, setWordIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(0);
   const [difficulty, setDifficulty] = useState<DifficultyLevel>('reveal');
   const [mode, setMode] = useState<GameMode>('words');
+  const [countDifficulty, setCountDifficulty] = useState<CountDifficulty>('easy');
+  const [targetCount, setTargetCount] = useState(() => pickNewCount('easy'));
+  const [numberNextIndex, setNumberNextIndex] = useState(0);
+  const [hintRevealed, setHintRevealed] = useState(false);
+  const [numberCompleted, setNumberCompleted] = useState(false);
   const [completedCount, setCompletedCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showLevelComplete, setShowLevelComplete] = useState(false);
@@ -36,16 +67,74 @@ export function TypingGame() {
   const currentWord = LEARNING_WORDS[wordIndex % LEARNING_WORDS.length];
   const levelNumber = Math.floor(wordIndex / LEVEL_SIZE) + 1;
   const isQuiz = mode === 'quiz';
+  const isCount = mode === 'count';
   const quizLocked = completedCount < QUIZ_UNLOCK_THRESHOLD;
+
+  const playCountAudio = useCallback((count: number, word: LearningWord) => {
+    const slug = getCountNumberSlug(count);
+    if (slug) {
+      playAudio(getNumberAudioPath(slug));
+    }
+    setTimeout(() => {
+      if (count === 1) {
+        playAudio(getWordAudioPath(word.id));
+      } else {
+        playAudio(getPluralAudioPath(word.id));
+      }
+    }, COUNT_OBJECT_AUDIO_DELAY_MS);
+  }, []);
 
   const handleNextWord = useCallback(() => {
     setWordIndex((prev) => (prev + 1) % LEARNING_WORDS.length);
     setNextIndex(0);
+    setNumberNextIndex(0);
+    setHintRevealed(false);
+    setNumberCompleted(false);
     setIsCompleted(false);
     setShowLevelComplete(false);
     setFeedback('none');
     setCompletedCount((prev) => prev + 1);
+    setTargetCount((prev) => pickNewCount(countDifficulty, prev));
+  }, [countDifficulty]);
+
+  const handleCountDifficultyChange = useCallback((newDiff: CountDifficulty) => {
+    setCountDifficulty(newDiff);
+    setNumberNextIndex(0);
+    setNextIndex(0);
+    setHintRevealed(false);
+    setNumberCompleted(false);
+    setIsCompleted(false);
+    setFeedback('none');
+    setTargetCount((prev) => pickNewCount(newDiff, prev));
   }, []);
+
+  const handleModeChange = useCallback(
+    (newMode: GameMode) => {
+      setMode(newMode);
+      setNextIndex(0);
+      setNumberNextIndex(0);
+      setHintRevealed(false);
+      setNumberCompleted(false);
+      setIsCompleted(false);
+      setShowLevelComplete(false);
+      setFeedback('none');
+      if (newMode === 'count') {
+        setTargetCount((prev) => pickNewCount(countDifficulty, prev));
+      }
+    },
+    [countDifficulty]
+  );
+
+  // Hint timer for count mode (14s)
+  useEffect(() => {
+    if (mode !== 'count' || numberCompleted || isCompleted) {
+      return undefined;
+    }
+    const timer = setTimeout(() => {
+      setHintRevealed(true);
+    }, COUNT_HINT_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [mode, numberCompleted, isCompleted, targetCount]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -64,6 +153,68 @@ export function TypingGame() {
           playAudio(getWordAudioPath(currentWord.id));
         } else {
           setFeedback('shake');
+        }
+        return;
+      }
+
+      if (isCount) {
+        if (!numberCompleted) {
+          const result = getCountProgressionResult({
+            targetNumber: targetCount,
+            nextIndex: numberNextIndex,
+            key: event.key,
+          });
+
+          if (result.kind === 'advanced') {
+            setNumberNextIndex(result.nextIndex);
+            setFeedback('none');
+
+            if (result.completed) {
+              setNumberCompleted(true);
+              if (countDifficulty !== 'hard') {
+                setIsCompleted(true);
+                setFeedback('celebrate');
+                playCountAudio(targetCount, currentWord);
+                if ((wordIndex + 1) % LEVEL_SIZE === 0) {
+                  setShowLevelComplete(true);
+                }
+              }
+            }
+          } else if (result.kind === 'incorrect') {
+            setFeedback('shake');
+          }
+          return;
+        }
+
+        // Hard mode word spelling phase after number is completed
+        if (countDifficulty === 'hard') {
+          const result = getProgressionResult({
+            word: currentWord.word,
+            nextIndex,
+            key: event.key,
+          });
+
+          if (result.kind === 'advanced') {
+            setNextIndex(result.nextIndex);
+            setFeedback('none');
+
+            const phonemeSlug = getPhonemeSlug(currentWord.ipa[nextIndex] ?? '');
+            if (phonemeSlug) {
+              playAudio(getPhonemeAudioPath(phonemeSlug));
+              playAudio(getLetterNameAudioPath(phonemeSlug));
+            }
+
+            if (result.completed) {
+              setIsCompleted(true);
+              setFeedback('celebrate');
+              playCountAudio(targetCount, currentWord);
+              if ((wordIndex + 1) % LEVEL_SIZE === 0) {
+                setShowLevelComplete(true);
+              }
+            }
+          } else if (result.kind === 'incorrect') {
+            setFeedback('shake');
+          }
         }
         return;
       }
@@ -100,7 +251,19 @@ export function TypingGame() {
         setFeedback('shake');
       }
     },
-    [currentWord.word, currentWord.id, currentWord.ipa, isCompleted, isQuiz, nextIndex, wordIndex]
+    [
+      countDifficulty,
+      currentWord,
+      isCompleted,
+      isCount,
+      isQuiz,
+      nextIndex,
+      numberCompleted,
+      numberNextIndex,
+      playCountAudio,
+      targetCount,
+      wordIndex,
+    ]
   );
 
   useEffect(() => {
@@ -121,8 +284,12 @@ export function TypingGame() {
   }, [feedback]);
 
   useEffect(() => {
-    playAudio(getWordAudioPath(currentWord.id));
-  }, [currentWord.id]);
+    if (mode === 'count') {
+      playCountAudio(targetCount, currentWord);
+    } else {
+      playAudio(getWordAudioPath(currentWord.id));
+    }
+  }, [currentWord, mode, playCountAudio, targetCount]);
 
   useEffect(() => {
     if (!isCompleted) {
@@ -133,11 +300,28 @@ export function TypingGame() {
     return () => clearTimeout(timer);
   }, [isCompleted, handleNextWord, showLevelComplete]);
 
+  const countLayout: 'row' | 'tens' | 'grid' =
+    countDifficulty === 'hard' ? 'grid' : countDifficulty === 'medium' ? 'tens' : 'row';
+
   return (
     <main className={classes.gameWrapper}>
       <section className={classes.interactiveArea} data-feedback={feedback}>
         {isQuiz ? (
           <QuizPrompt word={currentWord} isCorrect={isCompleted} />
+        ) : isCount ? (
+          <>
+            <CountPrompt
+              word={currentWord}
+              count={targetCount}
+              layout={countLayout}
+              numberNextIndex={numberNextIndex}
+              hintRevealed={hintRevealed}
+              isCorrect={numberCompleted}
+            />
+            {countDifficulty === 'hard' && numberCompleted && (
+              <WordTiles word={currentWord.word} nextIndex={nextIndex} difficulty="reveal" />
+            )}
+          </>
         ) : (
           <>
             <PromptCard word={currentWord} />
@@ -151,9 +335,11 @@ export function TypingGame() {
       <GameControls
         difficulty={difficulty}
         onDifficultyChange={setDifficulty}
+        countDifficulty={countDifficulty}
+        onCountDifficultyChange={handleCountDifficultyChange}
         onNewWord={handleNextWord}
         mode={mode}
-        onModeChange={setMode}
+        onModeChange={handleModeChange}
         quizLocked={quizLocked}
       />
 

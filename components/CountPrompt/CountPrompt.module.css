@@ -102,7 +102,7 @@
     border-color 0.8s ease;
 }
 
-.numberTile[data-state="completed"] {
+.numberTile[data-state='completed'] {
   background-color: #c2410c;
   color: #fff;
   border: 3px solid #9a3412;
@@ -110,24 +110,25 @@
   transform: scale(1.02);
 }
 
-.numberTile[data-state="hidden"] {
+.numberTile[data-state='hidden'] {
   background-color: #f1f5f9;
   color: transparent;
   border: 2px dashed #cbd5e1;
 }
 
-.numberTile[data-state="faint"] {
+.numberTile[data-state='faint'] {
   background-color: #f8fafc;
   color: #94a3b8;
   border: 2px dashed #e2e8f0;
   opacity: 1;
-  animation: fadeInHint 1s ease-in;
+  animation: fade-in-hint 1s ease-in;
 }
 
-@keyframes fadeInHint {
+@keyframes fade-in-hint {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -138,7 +139,8 @@
     transition: none;
     animation: none;
   }
-  .numberTile[data-state="faint"] {
+
+  .numberTile[data-state='faint'] {
     animation: none;
   }
 }

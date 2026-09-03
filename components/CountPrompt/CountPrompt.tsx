@@ -1,12 +1,12 @@
-import React from "react";
-import { Paper } from "@mantine/core";
-import { LearningWord } from "../../types/learning-word.types";
-import classes from "./CountPrompt.module.css";
+import React from 'react';
+import { Paper } from '@mantine/core';
+import { LearningWord } from '../../types/learning-word.types';
+import classes from './CountPrompt.module.css';
 
 export interface CountPromptProps {
   word: LearningWord;
   count: number;
-  layout: "row" | "tens" | "grid";
+  layout: 'row' | 'tens' | 'grid';
   numberNextIndex: number;
   hintRevealed: boolean;
   isCorrect: boolean;
@@ -21,7 +21,7 @@ export function CountPrompt({
   isCorrect,
 }: CountPromptProps) {
   const targetStr = count.toString();
-  const digits = targetStr.split("");
+  const digits = targetStr.split('');
 
   const renderItem = (key: string) => (
     <div key={key} className={classes.itemWrapper} data-testid="count-item" aria-hidden="true">
@@ -32,13 +32,13 @@ export function CountPrompt({
           className={classes.itemPhoto}
         />
       ) : (
-        <span>{word.promptImage || "✨"}</span>
+        <span>{word.promptImage || '✨'}</span>
       )}
     </div>
   );
 
   const renderCluster = () => {
-    if (layout === "tens") {
+    if (layout === 'tens') {
       const tenGroupsCount = Math.floor(count / 10);
       const remainder = count % 10;
       const groups = [];
@@ -56,7 +56,7 @@ export function CountPrompt({
             aria-label="Group of 10 items"
           >
             {tenItems}
-          </div>,
+          </div>
         );
       }
 
@@ -73,14 +73,14 @@ export function CountPrompt({
             aria-label={`${remainder} leftover items`}
           >
             {onesItems}
-          </div>,
+          </div>
         );
       }
 
       return <div className={classes.tensLayout}>{groups}</div>;
     }
 
-    if (layout === "grid") {
+    if (layout === 'grid') {
       const items = Array.from({ length: count }, (_, i) => renderItem(`grid-${i}`));
       return <div className={classes.gridLayout}>{items}</div>;
     }
@@ -100,12 +100,12 @@ export function CountPrompt({
 
       <ol className={classes.numberTilesContainer} aria-label="Number answer tiles">
         {digits.map((digit, index) => {
-          let state: "completed" | "faint" | "hidden" = "hidden";
+          let state: 'completed' | 'faint' | 'hidden' = 'hidden';
 
           if (isCorrect || index < numberNextIndex) {
-            state = "completed";
+            state = 'completed';
           } else if (hintRevealed) {
-            state = "faint";
+            state = 'faint';
           }
 
           return (
@@ -115,14 +115,14 @@ export function CountPrompt({
               data-testid={`number-tile-${index}`}
               data-state={state}
               aria-label={
-                state === "completed"
+                state === 'completed'
                   ? `Digit ${digit}, completed`
-                  : state === "faint"
+                  : state === 'faint'
                     ? `Digit ${digit}, hint`
                     : `Digit ${index + 1} of ${digits.length}, blank`
               }
             >
-              {state === "hidden" ? "" : digit}
+              {state === 'hidden' ? '' : digit}
             </li>
           );
         })}
