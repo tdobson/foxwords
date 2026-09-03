@@ -1,11 +1,20 @@
 export type DifficultyLevel = 'faint' | 'reveal';
-export type GameMode = 'words' | 'quiz';
+export type GameMode = 'words' | 'quiz' | 'count';
+export type CountDifficulty = 'easy' | 'medium' | 'hard';
 export type ProgressionKind = 'advanced' | 'incorrect' | 'ignored';
 
 export interface DifficultyDefinition {
   value: DifficultyLevel;
   label: string;
   description: string;
+}
+
+export interface CountDifficultyDefinition {
+  value: CountDifficulty;
+  label: string;
+  description: string;
+  minCount: number;
+  maxCount: number;
 }
 
 export interface LearningWord {
@@ -35,6 +44,18 @@ export interface ProgressionInput {
 }
 
 export interface ProgressionResult {
+  kind: ProgressionKind;
+  nextIndex: number;
+  completed: boolean;
+}
+
+export interface CountProgressionInput {
+  targetNumber: number;
+  nextIndex: number;
+  key: string;
+}
+
+export interface CountProgressionResult {
   kind: ProgressionKind;
   nextIndex: number;
   completed: boolean;

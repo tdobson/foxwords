@@ -6,6 +6,8 @@
 const PHONEME_AUDIO_DIR = '/audio/phonemes';
 const LETTER_NAME_AUDIO_DIR = '/audio/letter-names';
 const WORD_AUDIO_DIR = '/audio/words';
+const NUMBER_AUDIO_DIR = '/audio/numbers';
+const PLURAL_AUDIO_DIR = '/audio/plurals';
 
 export function getPhonemeAudioPath(slug: string): string {
   return `${PHONEME_AUDIO_DIR}/${slug}.webm`;
@@ -17,6 +19,14 @@ export function getLetterNameAudioPath(slug: string): string {
 
 export function getWordAudioPath(wordId: string): string {
   return `${WORD_AUDIO_DIR}/${wordId}.webm`;
+}
+
+export function getNumberAudioPath(slug: string): string {
+  return `${NUMBER_AUDIO_DIR}/${slug}.webm`;
+}
+
+export function getPluralAudioPath(wordId: string): string {
+  return `${PLURAL_AUDIO_DIR}/${wordId}.webm`;
 }
 
 export function playAudio(path: string): void {
