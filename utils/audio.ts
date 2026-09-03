@@ -37,7 +37,7 @@ export function playAudio(path: string): void {
 }
 
 export async function saveAudio(
-  kind: 'phoneme' | 'letter-name' | 'word',
+  kind: 'phoneme' | 'letter-name' | 'word' | 'number' | 'plural',
   id: string,
   blob: Blob
 ): Promise<void> {

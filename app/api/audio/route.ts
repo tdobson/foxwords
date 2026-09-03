@@ -4,11 +4,16 @@ import path from 'node:path';
 import { PHONEMES } from '../../../constants/phonemes';
 import { LETTER_NAMES } from '../../../constants/letter-names';
 import { LEARNING_WORDS } from '../../../constants/learning-words';
+import { COUNT_NUMBERS } from '../../../constants/count-numbers';
 
 const AUDIO_ROOT = path.join(process.cwd(), 'public', 'audio');
 const ALLOWED_PHONEMES = new Set(PHONEMES.map((phoneme) => phoneme.slug));
 const ALLOWED_LETTER_NAMES = new Set(LETTER_NAMES.map((letterName) => letterName.slug));
 const ALLOWED_WORDS = new Set(LEARNING_WORDS.map((word) => word.id));
+const ALLOWED_NUMBERS = new Set(COUNT_NUMBERS.map((num) => num.slug));
+const ALLOWED_PLURALS = new Set(
+  LEARNING_WORDS.filter((word) => word.id !== 'games').map((word) => word.id)
+);
 const MAX_BYTES = 5_000_000;
 
 async function listExisting(dirName: string): Promise<string[]> {
@@ -25,12 +30,14 @@ async function listExisting(dirName: string): Promise<string[]> {
 export const dynamic = 'force-static';
 
 export async function GET() {
-  const [phonemes, letterNames, words] = await Promise.all([
+  const [phonemes, letterNames, words, numbers, plurals] = await Promise.all([
     listExisting('phonemes'),
     listExisting('letter-names'),
     listExisting('words'),
+    listExisting('numbers'),
+    listExisting('plurals'),
   ]);
-  return NextResponse.json({ phonemes, letterNames, words });
+  return NextResponse.json({ phonemes, letterNames, words, numbers, plurals });
 }
 
 export async function POST(request: NextRequest) {
@@ -54,6 +61,10 @@ export async function POST(request: NextRequest) {
     dirName = 'letter-names';
   } else if (kind === 'word' && ALLOWED_WORDS.has(id)) {
     dirName = 'words';
+  } else if (kind === 'number' && ALLOWED_NUMBERS.has(id)) {
+    dirName = 'numbers';
+  } else if (kind === 'plural' && ALLOWED_PLURALS.has(id)) {
+    dirName = 'plurals';
   }
   if (!dirName) {
     return NextResponse.json({ error: 'Invalid kind or id' }, { status: 400 });

@@ -5,9 +5,13 @@ import { Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { PHONEMES } from '../../constants/phonemes';
 import { LETTER_NAMES } from '../../constants/letter-names';
 import { LEARNING_WORDS } from '../../constants/learning-words';
+import { COUNT_NUMBERS } from '../../constants/count-numbers';
+import { getObjectSpokenLabel } from '../../constants/count-plurals';
 import {
   getLetterNameAudioPath,
+  getNumberAudioPath,
   getPhonemeAudioPath,
+  getPluralAudioPath,
   getWordAudioPath,
   playAudio,
   saveAudio,
@@ -16,7 +20,7 @@ import classes from './RecordPage.module.css';
 
 interface RecordingItem {
   key: string;
-  kind: 'phoneme' | 'letter-name' | 'word';
+  kind: 'phoneme' | 'letter-name' | 'word' | 'number' | 'plural';
   id: string;
   name: string;
   hint: string;
@@ -52,7 +56,25 @@ function createItems(): RecordingItem[] {
     file: getWordAudioPath(learningWord.id),
     path: `public/audio/words/${learningWord.id}.webm`,
   }));
-  return [...phonemes, ...letterNames, ...words];
+  const numbers = COUNT_NUMBERS.map((numberItem) => ({
+    key: `number-${numberItem.slug}`,
+    kind: 'number' as const,
+    id: numberItem.slug,
+    name: numberItem.name,
+    hint: String(numberItem.value),
+    file: getNumberAudioPath(numberItem.slug),
+    path: `public/audio/numbers/${numberItem.slug}.webm`,
+  }));
+  const plurals = LEARNING_WORDS.filter((word) => word.id !== 'games').map((learningWord) => ({
+    key: `plural-${learningWord.id}`,
+    kind: 'plural' as const,
+    id: learningWord.id,
+    name: getObjectSpokenLabel({ word: learningWord, count: 2 }),
+    hint: `${learningWord.word} (plural)`,
+    file: getPluralAudioPath(learningWord.id),
+    path: `public/audio/plurals/${learningWord.id}.webm`,
+  }));
+  return [...phonemes, ...letterNames, ...words, ...numbers, ...plurals];
 }
 
 export default function RecordPage() {
@@ -78,13 +100,21 @@ export default function RecordPage() {
           phonemes: string[];
           letterNames: string[];
           words: string[];
+          numbers?: string[];
+          plurals?: string[];
         }>;
       })
       .then((existing) => {
         if (cancelled) {
           return;
         }
-        const onDisk = new Set([...existing.phonemes, ...existing.letterNames, ...existing.words]);
+        const onDisk = new Set([
+          ...existing.phonemes,
+          ...existing.letterNames,
+          ...existing.words,
+          ...(existing.numbers ?? []),
+          ...(existing.plurals ?? []),
+        ]);
         const firstMissingIndex = items.findIndex((item) => !onDisk.has(item.id));
         setIndex(firstMissingIndex === -1 ? items.length : firstMissingIndex);
       })

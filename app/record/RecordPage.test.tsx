@@ -25,7 +25,7 @@ describe('RecordPage', () => {
     await waitFor(() => {
       expect(screen.getByTestId('guide')).toHaveTextContent(/e as in bed/);
     });
-    expect(screen.getByTestId('progress-label')).toHaveTextContent(/^1 of 106$/);
+    expect(screen.getByTestId('progress-label')).toHaveTextContent(/^1 of 157$/);
   });
 
   it('shows the completion state when everything is already recorded', async () => {
@@ -144,6 +144,61 @@ describe('RecordPage', () => {
           'rail',
           'track',
         ],
+        numbers: [
+          'one',
+          'two',
+          'three',
+          'four',
+          'five',
+          'six',
+          'seven',
+          'eight',
+          'nine',
+          'ten',
+          'eleven',
+          'twelve',
+          'thirteen',
+          'fourteen',
+          'fifteen',
+          'sixteen',
+          'seventeen',
+          'eighteen',
+          'nineteen',
+          'twenty',
+        ],
+        plurals: [
+          'james',
+          'grandma',
+          'grandad',
+          'mummy',
+          'daddy',
+          'sarah',
+          'baby',
+          'grandpa',
+          'granny',
+          'meg',
+          'fox',
+          'bed',
+          'milk',
+          'orange',
+          'banana',
+          'dog',
+          'cat',
+          'bike',
+          'book',
+          'tractor',
+          'crane',
+          'apple',
+          'jam',
+          'big',
+          'splash',
+          'rain',
+          'jigsaw',
+          'tram',
+          'train',
+          'rail',
+          'track',
+        ],
       }),
     } as Response);
 
@@ -152,7 +207,7 @@ describe('RecordPage', () => {
     await waitFor(() => {
       expect(screen.getByTestId('guide')).toHaveTextContent(/all sounds recorded/i);
     });
-    expect(screen.getByTestId('progress-label')).toHaveTextContent(/^106 of 106$/);
+    expect(screen.getByTestId('progress-label')).toHaveTextContent(/^157 of 157$/);
   });
 
   it('falls back to the start when the server cannot be reached', async () => {
@@ -162,6 +217,29 @@ describe('RecordPage', () => {
 
     await act(async () => {});
     expect(screen.getByTestId('guide')).toHaveTextContent(/a as in cat/);
-    expect(screen.getByTestId('progress-label')).toHaveTextContent(/^0 of 106$/);
+    expect(screen.getByTestId('progress-label')).toHaveTextContent(/^0 of 157$/);
+  });
+
+  it('includes numbers and plurals in the recording queue', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        phonemes: [],
+        letterNames: [],
+        words: [],
+        numbers: [],
+        plurals: [],
+      }),
+    } as Response);
+
+    render(<RecordPage />);
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/audio');
+    });
+
+    // 44 phonemes + 30 letter-names + 32 words + 20 numbers + 31 plurals (games skipped) = 157 items
+    const progressLabel = screen.getByTestId('progress-label');
+    expect(progressLabel.textContent).toMatch(/of (15[0-9]|16[0-9])/);
   });
 });
