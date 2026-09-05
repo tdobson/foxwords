@@ -177,7 +177,7 @@ export function RhymeGame() {
   const rightCorrect = selectedSide === 'right' && isCorrectPick;
 
   return (
-    <main className={classes.gameWrapper}>
+    <div className={classes.gameContainer}>
       <div
         className={classes.heroCard}
         role="region"
@@ -187,15 +187,17 @@ export function RhymeGame() {
         <div className={classes.heroEmoji} aria-hidden="true">
           {target.promptImage || '✨'}
         </div>
-        <h2 className={classes.heroLabel}>What rhymes with {target.word}?</h2>
-        <button
-          type="button"
-          className={classes.audioReplayBtn}
-          aria-label="Replay sound"
-          onClick={() => playWordSound(target.id)}
-        >
-          🔊
-        </button>
+        <div className={classes.heroTextGroup}>
+          <h2 className={classes.heroLabel}>What rhymes with {target.word}?</h2>
+          <button
+            type="button"
+            className={classes.audioReplayBtn}
+            aria-label="Replay sound"
+            onClick={() => playWordSound(target.id)}
+          >
+            🔊
+          </button>
+        </div>
       </div>
 
       <div className={classes.choicesContainer}>
@@ -253,6 +255,6 @@ export function RhymeGame() {
           </span>
         </div>
       )}
-    </main>
+    </div>
   );
 }

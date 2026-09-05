@@ -1,86 +1,107 @@
-.gameWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 85vh;
-  padding: 1.5rem 1rem;
-  max-width: 720px;
-  margin: 0 auto;
-  gap: 1.5rem;
-}
-
-.heroCard {
+.gameContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 2rem 1.5rem;
+  max-width: 860px;
+  margin: 0 auto;
+  gap: 1.25rem;
+}
+
+.heroCard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 720px;
+  padding: 1rem 1.75rem;
   background-color: #fff;
   border-radius: 1.5rem;
-  box-shadow: 0 8px 24px rgb(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 6%);
   border: 3px solid #e2e8f0;
-  text-align: center;
+  text-align: left;
   user-select: none;
 }
 
 .heroEmoji {
-  font-size: 4rem;
+  font-size: 3.5rem;
   line-height: 1;
-  margin-bottom: 0.75rem;
-  filter: drop-shadow(0 4px 8px rgb(0, 0, 0, 0.08));
+  filter: drop-shadow(0 4px 8px rgb(0 0 0 / 8%));
+  flex-shrink: 0;
+}
+
+.heroTextGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .heroLabel {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: #1e293b;
   letter-spacing: 0.02em;
-  margin: 0 0 0.75rem;
+  margin: 0;
 }
 
 .audioReplayBtn {
   border: none;
   background: #eef2ff;
   border-radius: 9999px;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   line-height: 1;
-  padding: 0.4rem 0.7rem;
+  padding: 0.4rem 0.65rem;
   cursor: pointer;
+  transition: transform 0.1s ease;
 }
 
 .audioReplayBtn:hover {
   background: #e0e7ff;
+  transform: scale(1.05);
 }
 
 .choicesContainer {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.5rem;
   width: 100%;
+  max-width: 760px;
 }
 
 .choiceCard {
-  flex: 1 1 240px;
+  flex: 1 1 0;
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 1.5rem 1rem;
+  padding: 1.25rem 1rem;
   background-color: #fff;
   border: 3px solid #cbd5e1;
   border-radius: 1.5rem;
-  box-shadow: 0 8px 24px rgb(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 6%);
   cursor: pointer;
   user-select: none;
-  min-height: 220px;
+  min-height: 190px;
+  transition:
+    transform 0.12s ease,
+    border-color 0.15s ease;
 }
 
 .choiceCard:hover {
   border-color: #64748b;
+  transform: translateY(-2px);
+}
+
+.choiceCard:active {
+  transform: translateY(1px);
 }
 
 .choiceCard[data-correct='true'] {
@@ -94,12 +115,12 @@
 }
 
 .choiceEmoji {
-  font-size: 4.5rem;
+  font-size: 4rem;
   line-height: 1;
 }
 
 .choiceLabel {
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   font-weight: 800;
   color: #1e293b;
   letter-spacing: 0.04em;
@@ -111,12 +132,13 @@
 
 .keyBadge {
   margin-top: 0.25rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #475569;
   background: #f1f5f9;
   border-radius: 9999px;
-  padding: 0.2rem 0.7rem;
+  padding: 0.25rem 0.85rem;
+  letter-spacing: 0.03em;
 }
 
 .levelLabel {
@@ -124,6 +146,7 @@
   font-weight: 700;
   color: #475569;
   letter-spacing: 0.06em;
+  margin: 0.25rem 0 0;
 }
 
 .restartBtn {
@@ -135,6 +158,11 @@
   padding: 0.75rem 1.5rem;
   border-radius: 0.75rem;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgb(124 58 237 / 30%);
+}
+
+.restartBtn:hover {
+  background: #6d28d9;
 }
 
 .fireworksToast {
@@ -144,11 +172,11 @@
   transform: translateX(-50%);
   z-index: 999;
   pointer-events: none;
-  background: linear-gradient(135deg, #6366f1, #ec4899);
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
   color: #fff;
   padding: 0.75rem 1.75rem;
   border-radius: 9999px;
-  box-shadow: 0 10px 25px -5px rgb(99 102 241 / 40%);
+  box-shadow: 0 10px 25px -5px rgb(236 72 153 / 40%);
   font-weight: 800;
   font-size: 1.25rem;
   display: flex;
@@ -158,13 +186,26 @@
 }
 
 .toastTitle {
-  white-space: nowrap;
+  letter-spacing: 0.03em;
 }
 
 .fireworkSpark {
-  display: inline-block;
   font-size: 1.5rem;
   animation: spark-bounce 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes pop-success {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes shake {
@@ -184,20 +225,6 @@
   }
 }
 
-@keyframes pop-success {
-  0% {
-    transform: scale(1);
-  }
-
-  40% {
-    transform: scale(1.08);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
 @keyframes toast-burst {
   0% {
     opacity: 0;
@@ -210,6 +237,7 @@
   }
 
   30% {
+    opacity: 1;
     transform: translate(-50%, 0) scale(1);
   }
 
@@ -231,14 +259,5 @@
 
   100% {
     transform: scale(1.15) rotate(10deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .choiceCard[data-correct='true'],
-  .choiceCard[data-wrong='true'],
-  .fireworksToast,
-  .fireworkSpark {
-    animation: none;
   }
 }
