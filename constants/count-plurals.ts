@@ -11,6 +11,13 @@ export const IRREGULAR_PLURALS: Record<string, string> = {
   games: 'Games',
   box: 'Boxes',
   bus: 'Buses',
+  teddy: 'Teddies',
+  puppy: 'Puppies',
+  fish: 'Fish',
+  sheep: 'Sheep',
+  mouse: 'Mice',
+  foot: 'Feet',
+  tooth: 'Teeth',
 };
 
 export interface ObjectSpokenLabelOptions {

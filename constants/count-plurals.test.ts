@@ -35,4 +35,27 @@ describe('getObjectSpokenLabel', () => {
     const busWord = { id: 'bus', word: 'BUS', promptLabel: 'Bus', accentColor: '#E67E22', ipa: [] };
     expect(getObjectSpokenLabel({ word: busWord, count: 3 })).toBe('Buses');
   });
+
+  it('resolves irregular plurals for levels 11-16 words', () => {
+    const cases = [
+      { id: 'teddy', promptLabel: 'Teddy', expected: 'Teddies' },
+      { id: 'puppy', promptLabel: 'Puppy', expected: 'Puppies' },
+      { id: 'fish', promptLabel: 'Fish', expected: 'Fish' },
+      { id: 'sheep', promptLabel: 'Sheep', expected: 'Sheep' },
+      { id: 'mouse', promptLabel: 'Mouse', expected: 'Mice' },
+      { id: 'foot', promptLabel: 'Foot', expected: 'Feet' },
+      { id: 'tooth', promptLabel: 'Tooth', expected: 'Teeth' },
+    ];
+
+    for (const { id, promptLabel, expected } of cases) {
+      const word = {
+        id,
+        word: promptLabel.toUpperCase(),
+        promptLabel,
+        accentColor: '#000',
+        ipa: [],
+      };
+      expect(getObjectSpokenLabel({ word, count: 2 })).toBe(expected);
+    }
+  });
 });
