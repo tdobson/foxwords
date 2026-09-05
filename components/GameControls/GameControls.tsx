@@ -99,6 +99,16 @@ export function GameControls({
         >
           {mode === 'quiz' ? 'Back to words' : 'Quiz'}
         </Button>
+        <Button
+          onClick={() => onModeChange(mode === 'rhyme' ? 'words' : 'rhyme')}
+          size="md"
+          radius="md"
+          variant={mode === 'rhyme' ? 'filled' : 'outline'}
+          color="violet"
+          title="Switch to Rhyme Time minigame"
+        >
+          {mode === 'rhyme' ? 'Back to words' : 'Rhyme'}
+        </Button>
       </div>
     </div>
   );

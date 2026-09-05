@@ -192,6 +192,15 @@ describe('TypingGame', () => {
     expect(screen.getByRole('button', { name: /back to words/i })).toBeInTheDocument();
   });
 
+  it('allows switching to Rhyme mode immediately and displays RhymeGame', () => {
+    render(<TypingGame />);
+    const rhymeBtn = screen.getByRole('button', { name: /^rhyme$/i });
+    expect(rhymeBtn).toBeEnabled();
+    fireEvent.click(rhymeBtn);
+    expect(screen.getByText(/what rhymes with/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /back to words/i })).toBeInTheDocument();
+  });
+
   it('advances count on correct digit in easy mode and reveals 14s hint if delayed', () => {
     jest.useFakeTimers();
     render(<TypingGame />);

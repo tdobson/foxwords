@@ -25,6 +25,7 @@ import { CountPrompt } from '../CountPrompt/CountPrompt';
 import { GameControls } from '../GameControls/GameControls';
 import { PromptCard } from '../PromptCard/PromptCard';
 import { QuizPrompt } from '../QuizPrompt/QuizPrompt';
+import { RhymeGame } from '../RhymeGame/RhymeGame';
 import { WordTiles } from '../WordTiles/WordTiles';
 import classes from './TypingGame.module.css';
 
@@ -69,6 +70,7 @@ export function TypingGame() {
   const levelNumber = Math.floor(wordIndex / LEVEL_SIZE) + 1;
   const isQuiz = mode === 'quiz';
   const isCount = mode === 'count';
+  const isRhyme = mode === 'rhyme';
   const quizLocked = completedCount < QUIZ_UNLOCK_THRESHOLD;
 
   const playCountAudio = useCallback((count: number, word: LearningWord) => {
@@ -138,6 +140,10 @@ export function TypingGame() {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (isCompleted || event.repeat || event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+
+      if (isRhyme) {
         return;
       }
 
@@ -286,6 +292,9 @@ export function TypingGame() {
   }, [feedback]);
 
   useEffect(() => {
+    if (mode === 'rhyme') {
+      return;
+    }
     if (mode === 'count') {
       playCountAudio(targetCount, currentWord);
     } else {
@@ -316,32 +325,38 @@ export function TypingGame() {
 
   return (
     <main className={classes.gameWrapper}>
-      <section className={classes.interactiveArea} data-feedback={feedback}>
-        {isQuiz ? (
-          <QuizPrompt word={currentWord} isCorrect={isCompleted} />
-        ) : isCount ? (
-          <>
-            <CountPrompt
-              word={currentWord}
-              count={targetCount}
-              layout={countLayout}
-              numberNextIndex={numberNextIndex}
-              hintRevealed={hintRevealed}
-              isCorrect={numberCompleted}
-            />
-            {countDifficulty === 'hard' && numberCompleted && (
-              <WordTiles word={currentWord.word} nextIndex={nextIndex} difficulty="reveal" />
+      {isRhyme ? (
+        <RhymeGame />
+      ) : (
+        <>
+          <section className={classes.interactiveArea} data-feedback={feedback}>
+            {isQuiz ? (
+              <QuizPrompt word={currentWord} isCorrect={isCompleted} />
+            ) : isCount ? (
+              <>
+                <CountPrompt
+                  word={currentWord}
+                  count={targetCount}
+                  layout={countLayout}
+                  numberNextIndex={numberNextIndex}
+                  hintRevealed={hintRevealed}
+                  isCorrect={numberCompleted}
+                />
+                {countDifficulty === 'hard' && numberCompleted && (
+                  <WordTiles word={currentWord.word} nextIndex={nextIndex} difficulty="reveal" />
+                )}
+              </>
+            ) : (
+              <>
+                <PromptCard word={currentWord} />
+                <WordTiles word={currentWord.word} nextIndex={nextIndex} difficulty={difficulty} />
+              </>
             )}
-          </>
-        ) : (
-          <>
-            <PromptCard word={currentWord} />
-            <WordTiles word={currentWord.word} nextIndex={nextIndex} difficulty={difficulty} />
-          </>
-        )}
-      </section>
+          </section>
 
-      {!isQuiz && <p className={classes.levelLabel}>Level {levelNumber}</p>}
+          {!isQuiz && <p className={classes.levelLabel}>Level {levelNumber}</p>}
+        </>
+      )}
 
       <GameControls
         difficulty={difficulty}

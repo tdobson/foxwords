@@ -604,7 +604,107 @@ export const LEARNING_WORDS: LearningWord[] = [
     ipa: ['z', 'e', 'b', 'r', 'ə'],
   },
 
-  // Level 13: Consonant Digraphs (SH, CH, TH, NG)
+  // Level 13: Colours
+  {
+    id: 'red',
+    word: 'RED',
+    promptLabel: 'Red',
+    accentColor: '#E74C3C',
+    promptImage: '🔴',
+    ipa: ['r', 'e', 'd'],
+  },
+  {
+    id: 'blue',
+    word: 'BLUE',
+    promptLabel: 'Blue',
+    accentColor: '#3498DB',
+    promptImage: '🔵',
+    ipa: ['b', 'l', 'uː', ''],
+  },
+  {
+    id: 'green',
+    word: 'GREEN',
+    promptLabel: 'Green',
+    accentColor: '#2ECC71',
+    promptImage: '🟢',
+    ipa: ['g', 'r', 'iː', '', 'n'],
+  },
+  {
+    id: 'pink',
+    word: 'PINK',
+    promptLabel: 'Pink',
+    accentColor: '#FF69B4',
+    promptImage: '🌸',
+    ipa: ['p', 'ɪ', 'ŋ', 'k'],
+  },
+  {
+    id: 'black',
+    word: 'BLACK',
+    promptLabel: 'Black',
+    accentColor: '#2C3E50',
+    promptImage: '⬛',
+    ipa: ['b', 'l', 'æ', 'k', ''],
+  },
+  {
+    id: 'white',
+    word: 'WHITE',
+    promptLabel: 'White',
+    accentColor: '#BDC3C7',
+    promptImage: '⚪',
+    ipa: ['w', '', 'aɪ', 't', ''],
+  },
+
+  // Level 14: Directions & Opposites
+  {
+    id: 'up',
+    word: 'UP',
+    promptLabel: 'Up',
+    accentColor: '#27AE60',
+    promptImage: '⬆️',
+    ipa: ['ʌ', 'p'],
+  },
+  {
+    id: 'down',
+    word: 'DOWN',
+    promptLabel: 'Down',
+    accentColor: '#E67E22',
+    promptImage: '⬇️',
+    ipa: ['d', 'aʊ', '', 'n'],
+  },
+  {
+    id: 'left',
+    word: 'LEFT',
+    promptLabel: 'Left',
+    accentColor: '#9B59B6',
+    promptImage: '⬅️',
+    ipa: ['l', 'e', 'f', 't'],
+  },
+  {
+    id: 'right',
+    word: 'RIGHT',
+    promptLabel: 'Right',
+    accentColor: '#3498DB',
+    promptImage: '➡️',
+    ipa: ['r', 'aɪ', '', '', 't'],
+  },
+  {
+    id: 'tall',
+    word: 'TALL',
+    promptLabel: 'Tall',
+    accentColor: '#F39C12',
+    promptImage: '🦒',
+    ipa: ['t', 'ɔː', 'l', ''],
+  },
+  {
+    id: 'small',
+    word: 'SMALL',
+    promptLabel: 'Small',
+    accentColor: '#1ABC9C',
+    promptImage: '🐜',
+    ipa: ['s', 'm', 'ɔː', 'l', ''],
+  },
+
+  // Level 15: Consonant Digraphs (SH, CH, TH, NG)
   {
     id: 'ship',
     word: 'SHIP',
@@ -654,7 +754,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     ipa: ['b', 'ɑː', 'θ', ''],
   },
 
-  // Level 14: Vowel Diphthongs & Special Vowels (OW, OI, OO, OR)
+  // Level 16: Vowel Diphthongs & Special Vowels (OW, OI, OO, OR)
   {
     id: 'cow',
     word: 'COW',
@@ -704,7 +804,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     ipa: ['b', 'uː', '', 't'],
   },
 
-  // Level 15: Regular Plurals (Multi-Item Display)
+  // Level 17: Regular Plurals (Multi-Item Display)
   {
     id: 'cars',
     word: 'CARS',
@@ -760,7 +860,7 @@ export const LEARNING_WORDS: LearningWord[] = [
     ipa: ['d', 'ʌ', 'k', '', 's'],
   },
 
-  // Level 16: Irregular Plurals (Multi-Item Display)
+  // Level 18: Irregular Plurals (Multi-Item Display)
   {
     id: 'boxes',
     word: 'BOXES',
