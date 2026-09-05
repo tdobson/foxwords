@@ -58,7 +58,7 @@ Each round randomly places the rhyming word on the left or right to avoid positi
 | 2 | `CAR` 🚗 (`-ar`) | `STAR` ⭐ | `CUP` ☕ | `←` / `→` | `S` / `C` |
 | 3 | `MOON` 🌙 (`-oon`) | `SPOON` 🥄 | `BOOT` 🥾 | `←` / `→` | `S` / `B` |
 | 4 | `LOG` 🪵 (`-og`) | `FROG` 🐸 | `PIG` 🐷 | `←` / `→` | `F` / `P` |
-| 5 | `BAT` 🦇 (`-at`) | `RAT` 🐀 | `BED` 🛏️ | `←` / `→` | `R` / `B` |
+| 5 | `BAT` 🦇 (`-at`) | `RAT` 🐀 | `FOX` 🦊 | `←` / `→` | `R` / `F` |
 | 6 | `MUG` 🥛 (`-ug`) | `BUG` 🐛 | `NUT` 🥜 | `←` / `→` | `B` / `N` |
 
 ---

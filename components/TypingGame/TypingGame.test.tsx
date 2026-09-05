@@ -152,7 +152,7 @@ describe('TypingGame', () => {
     expect(screen.getByRole('button', { name: /quiz/i })).toBeEnabled();
     fireEvent.click(screen.getByRole('button', { name: /quiz/i }));
     expect(
-      screen.getByRole('region', { name: /what letter does fox start with/i })
+      screen.getByRole('region', { name: /what letter does dobson start with/i })
     ).toBeInTheDocument();
   });
 
@@ -164,22 +164,22 @@ describe('TypingGame', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /quiz/i }));
     expect(
-      screen.getByRole('region', { name: /what letter does fox start with/i })
+      screen.getByRole('region', { name: /what letter does dobson start with/i })
     ).toBeInTheDocument();
 
     fireEvent.keyDown(window, { key: 'j' });
     expect(screen.getByTestId('quiz-blank')).toHaveAttribute('data-correct', 'false');
     expect(screen.getByTestId('quiz-blank').textContent).toBe('');
 
-    fireEvent.keyDown(window, { key: 'F' });
+    fireEvent.keyDown(window, { key: 'D' });
     expect(screen.getByTestId('quiz-blank')).toHaveAttribute('data-correct', 'true');
-    expect(screen.getByTestId('quiz-blank').textContent).toBe('F');
+    expect(screen.getByTestId('quiz-blank').textContent).toBe('D');
 
     act(() => {
       jest.advanceTimersByTime(1600);
     });
     expect(
-      screen.getByRole('region', { name: /what letter does bed start with/i })
+      screen.getByRole('region', { name: /what letter does fox start with/i })
     ).toBeInTheDocument();
   });
 
