@@ -9,6 +9,8 @@ export interface PromptCardProps {
 
 export function PromptCard({ word }: PromptCardProps) {
   const promptGlyph = word.promptImage || '✨';
+  const repeatCount = word.promptRepeat && word.promptRepeat > 1 ? word.promptRepeat : 1;
+  const displayGlyphs = Array.from({ length: repeatCount }, () => promptGlyph).join(' ');
 
   return (
     <Paper
@@ -24,8 +26,12 @@ export function PromptCard({ word }: PromptCardProps) {
           className={classes.promptPhoto}
         />
       ) : (
-        <div className={classes.promptArt} aria-hidden="true">
-          {promptGlyph}
+        <div
+          className={classes.promptArt}
+          data-multi={repeatCount > 1 ? 'true' : undefined}
+          aria-hidden="true"
+        >
+          {displayGlyphs}
         </div>
       )}
       <Title order={2} className={classes.promptLabel}>

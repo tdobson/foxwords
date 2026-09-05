@@ -24,6 +24,8 @@ export interface LearningWord {
   accentColor: string;
   /** Emoji fallback (also used when no photo exists) */
   promptImage?: string;
+  /** Number of times to repeat promptImage for plurals (e.g. 3 cars) */
+  promptRepeat?: number;
   /** Photo path in public/images/words (e.g. /images/words/daddy.jpg) */
   promptPhoto?: string;
   ipa: string[];
