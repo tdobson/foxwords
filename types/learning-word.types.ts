@@ -1,6 +1,23 @@
 export type DifficultyLevel = 'faint' | 'reveal';
-export type GameMode = 'words' | 'quiz' | 'count';
+export type GameMode = 'words' | 'quiz' | 'count' | 'rhyme';
 export type CountDifficulty = 'easy' | 'medium' | 'hard';
+
+export interface RhymeChoice {
+  wordId: string;
+  isRhyme: boolean;
+}
+
+export interface RhymeQuestion {
+  targetWordId: string;
+  leftChoice: RhymeChoice;
+  rightChoice: RhymeChoice;
+}
+
+export interface RhymeLevel {
+  levelNumber: number;
+  name: string;
+  questions: RhymeQuestion[];
+}
 export type ProgressionKind = 'advanced' | 'incorrect' | 'ignored';
 
 export interface DifficultyDefinition {
