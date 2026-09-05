@@ -31,7 +31,7 @@ import classes from './TypingGame.module.css';
 const LEVEL_SIZE = 6;
 const FEEDBACK_DURATION_MS = 350;
 const WORD_COMPLETE_MS = 1500;
-const LEVEL_COMPLETE_MS = 3200;
+const LEVEL_TOAST_DURATION_MS = 1200;
 const WORD_SOUND_DELAY_MS = 700;
 const COUNT_HINT_DELAY_MS = 14000;
 const COUNT_OBJECT_AUDIO_DELAY_MS = 600;
@@ -61,7 +61,8 @@ export function TypingGame() {
   const [numberCompleted, setNumberCompleted] = useState(false);
   const [completedCount, setCompletedCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [showLevelComplete, setShowLevelComplete] = useState(false);
+  const [showLevelToast, setShowLevelToast] = useState(false);
+  const [completedLevelNumber, setCompletedLevelNumber] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<'none' | 'shake' | 'celebrate'>('none');
 
   const currentWord = LEARNING_WORDS[wordIndex % LEARNING_WORDS.length];
@@ -91,7 +92,6 @@ export function TypingGame() {
     setHintRevealed(false);
     setNumberCompleted(false);
     setIsCompleted(false);
-    setShowLevelComplete(false);
     setFeedback('none');
     setCompletedCount((prev) => prev + 1);
     setTargetCount((prev) => pickNewCount(countDifficulty, prev));
@@ -116,7 +116,6 @@ export function TypingGame() {
       setHintRevealed(false);
       setNumberCompleted(false);
       setIsCompleted(false);
-      setShowLevelComplete(false);
       setFeedback('none');
       if (newMode === 'count') {
         setTargetCount((prev) => pickNewCount(countDifficulty, prev));
@@ -176,7 +175,8 @@ export function TypingGame() {
                 setFeedback('celebrate');
                 playCountAudio(targetCount, currentWord);
                 if ((wordIndex + 1) % LEVEL_SIZE === 0) {
-                  setShowLevelComplete(true);
+                  setCompletedLevelNumber(levelNumber);
+                  setShowLevelToast(true);
                 }
               }
             }
@@ -209,7 +209,8 @@ export function TypingGame() {
               setFeedback('celebrate');
               playCountAudio(targetCount, currentWord);
               if ((wordIndex + 1) % LEVEL_SIZE === 0) {
-                setShowLevelComplete(true);
+                setCompletedLevelNumber(levelNumber);
+                setShowLevelToast(true);
               }
             }
           } else if (result.kind === 'incorrect') {
@@ -244,7 +245,8 @@ export function TypingGame() {
             playAudio(getWordAudioPath(currentWord.id));
           }, WORD_SOUND_DELAY_MS);
           if ((wordIndex + 1) % LEVEL_SIZE === 0) {
-            setShowLevelComplete(true);
+            setCompletedLevelNumber(levelNumber);
+            setShowLevelToast(true);
           }
         }
       } else if (result.kind === 'incorrect') {
@@ -292,13 +294,22 @@ export function TypingGame() {
   }, [currentWord, mode, playCountAudio, targetCount]);
 
   useEffect(() => {
+    if (!showLevelToast) {
+      return undefined;
+    }
+    const timer = setTimeout(() => {
+      setShowLevelToast(false);
+    }, LEVEL_TOAST_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [showLevelToast]);
+
+  useEffect(() => {
     if (!isCompleted) {
       return undefined;
     }
-    const delay = showLevelComplete ? LEVEL_COMPLETE_MS : WORD_COMPLETE_MS;
-    const timer = setTimeout(handleNextWord, delay);
+    const timer = setTimeout(handleNextWord, WORD_COMPLETE_MS);
     return () => clearTimeout(timer);
-  }, [isCompleted, handleNextWord, showLevelComplete]);
+  }, [isCompleted, handleNextWord]);
 
   const countLayout: 'row' | 'tens' | 'grid' =
     countDifficulty === 'hard' ? 'grid' : countDifficulty === 'medium' ? 'tens' : 'row';
@@ -343,15 +354,15 @@ export function TypingGame() {
         quizLocked={quizLocked}
       />
 
-      {showLevelComplete && (
-        <div className={classes.levelCompleteOverlay} role="status">
-          <div className={classes.levelCompleteCard}>
-            <div className={classes.celebrateEmoji} aria-hidden="true">
-              🎆 🎉 👏
-            </div>
-            <h2 className={classes.levelCompleteTitle}>Level {levelNumber} complete!</h2>
-            <p className={classes.levelCompleteMessage}>Well done! High five! 🙌</p>
-          </div>
+      {showLevelToast && (
+        <div className={classes.levelToast} role="status" aria-live="polite">
+          <span className={classes.fireworkSpark} aria-hidden="true">
+            🎆
+          </span>
+          <span className={classes.toastTitle}>Level {completedLevelNumber} complete!</span>
+          <span className={classes.fireworkSpark} aria-hidden="true">
+            ✨
+          </span>
         </div>
       )}
     </main>

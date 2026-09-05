@@ -96,13 +96,13 @@ describe('TypingGame', () => {
     jest.useFakeTimers();
     render(<TypingGame />);
 
-    completeWords(firstLevelWords, ['1600', '1600', '1600', '1600', '1600', '3200'].map(Number));
+    completeWords(firstLevelWords);
 
     expect(screen.getByText(/^Level 2$/)).toBeInTheDocument();
     expect(screen.getByRole('region', { name: /prompt for baby/i })).toBeInTheDocument();
   });
 
-  it('shows a level-complete celebration when a level finishes', () => {
+  it('shows a level-complete celebration toast when a level finishes and auto-dismisses', () => {
     jest.useFakeTimers();
     render(<TypingGame />);
 
@@ -110,11 +110,16 @@ describe('TypingGame', () => {
 
     expect(screen.getByRole('status')).toHaveTextContent(/level 1 complete/i);
 
+    // After 1200ms, the celebration toast disappears
     act(() => {
-      jest.advanceTimersByTime(3200);
+      jest.advanceTimersByTime(1200);
     });
-
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
+
+    // After remaining word complete time (1500ms total), next word appears
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
     expect(screen.getByRole('region', { name: /prompt for baby/i })).toBeInTheDocument();
   });
 
@@ -140,7 +145,7 @@ describe('TypingGame', () => {
         fireEvent.keyDown(window, { key });
       }
       act(() => {
-        jest.advanceTimersByTime(i === 5 ? 3200 : 1600);
+        jest.advanceTimersByTime(1600);
       });
     }
 
@@ -155,7 +160,7 @@ describe('TypingGame', () => {
     jest.useFakeTimers();
     render(<TypingGame />);
 
-    completeWords(unlockWords, [1600, 1600, 1600, 1600, 1600, 3200, 1600, 1600, 1600, 1600]);
+    completeWords(unlockWords);
 
     fireEvent.click(screen.getByRole('button', { name: /quiz/i }));
     expect(

@@ -41,69 +41,75 @@
   letter-spacing: 0.06em;
 }
 
-.levelCompleteOverlay {
+.levelToast {
   position: fixed;
-  inset: 0;
-  z-index: 50;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  pointer-events: none;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  color: #fff;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 25px -5px rgb(99 102 241 / 40%);
+  font-weight: 800;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: rgb(15, 23, 42, 0.55);
-  animation: overlay-in 0.3s ease-out;
+  gap: 0.75rem;
+  animation: toast-burst 1.2s ease-out forwards;
 }
 
-.levelCompleteCard {
-  background-color: #fff;
-  border-radius: 1.5rem;
-  padding: 2rem 3rem;
-  text-align: center;
-  box-shadow: 0 20px 50px rgb(0, 0, 0, 0.3);
+.toastTitle {
+  white-space: nowrap;
 }
 
-.celebrateEmoji {
-  font-size: 3rem;
-  animation: emoji-bounce 0.6s ease-in-out 3;
+.fireworkSpark {
+  display: inline-block;
+  font-size: 1.5rem;
+  animation: spark-bounce 0.6s ease-in-out infinite alternate;
 }
 
-.levelCompleteTitle {
-  margin: 0.75rem 0 0.25rem;
-  font-size: 2rem;
-  font-weight: 900;
-  color: #1e293b;
-}
-
-.levelCompleteMessage {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #475569;
-}
-
-@keyframes overlay-in {
-  from {
+@keyframes toast-burst {
+  0% {
     opacity: 0;
+    transform: translate(-50%, -20px) scale(0.85);
   }
 
-  to {
+  15% {
     opacity: 1;
+    transform: translate(-50%, 0) scale(1.08);
+  }
+
+  30% {
+    transform: translate(-50%, 0) scale(1);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px) scale(0.95);
   }
 }
 
-@keyframes emoji-bounce {
-  0%,
-  100% {
-    transform: scale(1);
+@keyframes spark-bounce {
+  0% {
+    transform: scale(0.9) rotate(-10deg);
   }
 
-  50% {
-    transform: scale(1.25);
+  100% {
+    transform: scale(1.15) rotate(10deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .levelCompleteOverlay,
-  .levelCompleteCard,
-  .celebrateEmoji {
+  .levelToast,
+  .fireworkSpark {
     animation: none;
   }
 }
