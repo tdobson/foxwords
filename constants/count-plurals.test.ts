@@ -25,4 +25,14 @@ describe('getObjectSpokenLabel', () => {
   it('appends s for standard regular nouns', () => {
     expect(getObjectSpokenLabel({ word: cat, count: 2 })).toBe('Cats');
   });
+
+  it('returns Boxes for box count > 1', () => {
+    const boxWord = { id: 'box', word: 'BOX', promptLabel: 'Box', accentColor: '#D35400', ipa: [] };
+    expect(getObjectSpokenLabel({ word: boxWord, count: 2 })).toBe('Boxes');
+  });
+
+  it('returns Buses for bus count > 1', () => {
+    const busWord = { id: 'bus', word: 'BUS', promptLabel: 'Bus', accentColor: '#E67E22', ipa: [] };
+    expect(getObjectSpokenLabel({ word: busWord, count: 3 })).toBe('Buses');
+  });
 });

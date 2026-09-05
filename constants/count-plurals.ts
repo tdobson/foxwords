@@ -9,6 +9,8 @@ export const IRREGULAR_PLURALS: Record<string, string> = {
   splash: 'Splashes',
   orange: 'Oranges',
   games: 'Games',
+  box: 'Boxes',
+  bus: 'Buses',
 };
 
 export interface ObjectSpokenLabelOptions {
