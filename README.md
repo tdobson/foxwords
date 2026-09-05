@@ -2,7 +2,7 @@
 
 Letter Trail is a gentle, single-user typing and spelling game designed for toddlers and early learners using a physical keyboard.
 
-A child sees a familiar visual prompt (such as a picture or emoji of James, Grandma, Granny, Granddad, Grandpa, Mummy, Daddy, Sarah, Meg, or a Dog or Cat) and completes the target word by pressing the matching keys on a physical keyboard in sequence.
+A child sees a familiar visual prompt (such as a picture or emoji of James, Grandma, Granny, Grandad, Grandpa, Mummy, Daddy, Sarah, Meg, or a Dog or Cat) and completes the target word by pressing the matching keys on a physical keyboard in sequence.
 
 ## Prerequisites
 
@@ -70,5 +70,5 @@ npm run build
 
 - Physical keyboard input only (no on-screen touch keyboard).
 - No backend, user accounts, persistence, or external APIs.
-- Starter word set only (`JAMES`, `GRANDMA`, `GRANDDAD`, `MUMMY`, `DADDY`, `SARAH`, `BABY`, `GRANDPA`, `GRANNY`, `MEG`, `FOX`, `BED`, `MILK`, `ORANGE`, `BANANA`, `DOG`, `CAT`, `BIKE`, `BOOK`, `TRACTOR`, `CRANE`, `APPLE`, `JAM`, `BIG`, `SPLASH`, `RAIN`, `GAMES`, `JIGSAW`, `TRAM`, `TRAIN`, `RAIL`, `TRACK`).
+- Starter word set only (`JAMES`, `GRANDMA`, `GRANDAD`, `MUMMY`, `DADDY`, `SARAH`, `BABY`, `GRANDPA`, `GRANNY`, `MEG`, `FOX`, `BED`, `MILK`, `ORANGE`, `BANANA`, `DOG`, `CAT`, `BIKE`, `BOOK`, `TRACTOR`, `CRANE`, `APPLE`, `JAM`, `BIG`, `SPLASH`, `RAIN`, `GAMES`, `JIGSAW`, `TRAM`, `TRAIN`, `RAIL`, `TRACK`).
 - Uppercase matching only (case-insensitive for typing).
