@@ -36,6 +36,10 @@ export function playAudio(path: string): void {
   });
 }
 
+export function playWordSound(wordId: string): void {
+  playAudio(getWordAudioPath(wordId));
+}
+
 export async function saveAudio(
   kind: 'phoneme' | 'letter-name' | 'word' | 'number' | 'plural',
   id: string,
