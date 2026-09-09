@@ -1,0 +1,166 @@
+.gameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: calc(100vh - 80px);
+  padding: 1rem 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  gap: 1.5rem;
+  user-select: none;
+}
+
+.topBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+}
+
+.difficultyGroup {
+  display: flex;
+  gap: 0.5rem;
+  background-color: #f1f3f5;
+  padding: 4px;
+  border-radius: 9999px;
+}
+
+.diffButton {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #495057;
+  transition: all 0.2s ease;
+}
+
+.diffButton:hover {
+  color: #212529;
+}
+
+.diffButtonActive {
+  background-color: #fff;
+  color: #1971c2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.controlActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  color: #343a40;
+}
+
+.actionButton:hover {
+  background-color: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+.clockStage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.shake {
+  animation: shakeAnimation 0.4s ease-in-out;
+}
+
+@keyframes shakeAnimation {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+.celebrate {
+  animation: celebrateFlash 0.8s ease-in-out;
+}
+
+@keyframes celebrateFlash {
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.05); filter: brightness(1.2); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+.promptArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  width: 100%;
+  text-align: center;
+}
+
+.revealedText {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #212529;
+  letter-spacing: 0.03em;
+  min-height: 48px;
+}
+
+.ghostPrompt {
+  font-size: 1.25rem;
+  color: #868e96;
+  opacity: 0.75;
+  margin-top: 0.5rem;
+  font-style: italic;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 0.75; transform: translateY(0); }
+}
+
+.blankPrompt {
+  color: #adb5bd;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.keyboardGuide {
+  background-color: #f8f9fa;
+  border: 1px dashed #ced4da;
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
+  color: #495057;
+  text-align: center;
+}
+
+.keyBadge {
+  display: inline-block;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-family: monospace;
+  font-weight: 700;
+  padding: 2px 6px;
+  margin: 0 4px;
+  color: #1c7ed6;
+}

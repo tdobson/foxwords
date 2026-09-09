@@ -1,0 +1,103 @@
+.clockWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.clockSvg {
+  width: 100%;
+  height: auto;
+  user-select: none;
+  touch-action: none;
+}
+
+.outerRing {
+  fill: #f8f9fa;
+  stroke: #343a40;
+  stroke-width: 6;
+}
+
+.pastHemisphere {
+  fill: rgba(81, 207, 102, 0.16);
+}
+
+.toHemisphere {
+  fill: rgba(255, 146, 43, 0.16);
+}
+
+.centerDivide {
+  stroke: #ced4da;
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+
+.zoneBadgeText {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.pastBadgeText {
+  fill: #2b8a3e;
+}
+
+.toBadgeText {
+  fill: #d9480f;
+}
+
+.minuteTick {
+  stroke: #868e96;
+  stroke-width: 2;
+}
+
+.hourTick {
+  stroke: #212529;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.hourNumber {
+  font-size: 20px;
+  font-weight: 700;
+  fill: #212529;
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-family: inherit;
+}
+
+.minuteBadge {
+  font-size: 11px;
+  font-weight: 600;
+  fill: #868e96;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.hourHand {
+  stroke: #e03131;
+  stroke-width: 7;
+  stroke-linecap: round;
+  transform-origin: 150px 150px;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.minuteHand {
+  stroke: #1971c2;
+  stroke-width: 5;
+  stroke-linecap: round;
+  transform-origin: 150px 150px;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pin {
+  fill: #212529;
+}
+
+.pinInner {
+  fill: #f8f9fa;
+}
