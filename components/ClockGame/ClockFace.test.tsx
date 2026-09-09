@@ -1,10 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import {
-  ClockFace,
-  calculateHourAngle,
-  calculateMinuteAngle,
-} from './ClockFace';
+import { ClockFace, calculateHourAngle, calculateMinuteAngle } from './ClockFace';
 
 describe('ClockFace', () => {
   describe('angle calculations', () => {
@@ -37,7 +33,9 @@ describe('ClockFace', () => {
   describe('visual rendering', () => {
     it('renders with accessible aria-label', () => {
       render(<ClockFace hour={4} minute={30} spokenPhrase="It is half past 4" />);
-      const clockSvg = screen.getByRole('img', { name: /analog clock displaying it is half past 4/i });
+      const clockSvg = screen.getByRole('img', {
+        name: /analog clock displaying it is half past 4/i,
+      });
       expect(clockSvg).toBeInTheDocument();
     });
 
@@ -68,7 +66,7 @@ describe('ClockFace', () => {
     });
 
     it('renders minute markers around outer edge when enabled', () => {
-      render(<ClockFace hour={8} minute={45} showMinuteMarkers={true} />);
+      render(<ClockFace hour={8} minute={45} showMinuteMarkers />);
       expect(screen.getByTestId('minute-marker-15')).toBeInTheDocument();
       expect(screen.getByTestId('minute-marker-30')).toBeInTheDocument();
       expect(screen.getByTestId('minute-marker-45')).toBeInTheDocument();

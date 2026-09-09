@@ -1,0 +1,76 @@
+.navBar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--mantine-color-body);
+  border-bottom: 2px solid var(--mantine-color-gray-2);
+  padding: 8px 16px;
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.04);
+}
+
+.homeSection {
+  display: flex;
+  align-items: center;
+}
+
+.linksSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.navButton {
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.1s ease,
+    background-color 0.15s ease;
+  min-height: 40px;
+}
+
+.navButton:hover {
+  transform: translateY(-1px);
+}
+
+.navButton:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+  .navBar {
+    padding: 6px 10px;
+    gap: 8px;
+  }
+
+  .navButton {
+    padding: 0 10px;
+    font-size: 0.88rem;
+    min-height: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .navBar {
+    padding: 6px 8px;
+  }
+
+  .linksSection {
+    gap: 4px;
+  }
+
+  .navButton {
+    padding: 0 8px;
+    font-size: 0.8rem;
+    min-height: 34px;
+  }
+
+  .buttonLabel {
+    display: none;
+  }
+}

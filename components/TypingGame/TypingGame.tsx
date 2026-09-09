@@ -50,11 +50,15 @@ function pickNewCount(diff: CountDifficulty, prevCount?: number): number {
   return picked;
 }
 
-export function TypingGame() {
+export interface TypingGameProps {
+  initialMode?: GameMode;
+}
+
+export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
   const [wordIndex, setWordIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(0);
   const [difficulty, setDifficulty] = useState<DifficultyLevel>('reveal');
-  const [mode, setMode] = useState<GameMode>('words');
+  const [mode, setMode] = useState<GameMode>(initialMode);
   const [countDifficulty, setCountDifficulty] = useState<CountDifficulty>('easy');
   const [targetCount, setTargetCount] = useState(() => pickNewCount('easy'));
   const [numberNextIndex, setNumberNextIndex] = useState(0);

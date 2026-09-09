@@ -21,11 +21,11 @@
 }
 
 .pastHemisphere {
-  fill: rgba(81, 207, 102, 0.16);
+  fill: rgb(81, 207, 102, 0.16);
 }
 
 .toHemisphere {
-  fill: rgba(255, 146, 43, 0.16);
+  fill: rgb(255, 146, 43, 0.16);
 }
 
 .centerDivide {

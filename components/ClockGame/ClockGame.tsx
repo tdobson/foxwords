@@ -1,12 +1,8 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { CLOCK_CURRICULUM } from '../../constants/clock-curriculum';
-import {
-  ClockDifficulty,
-  ClockProgressionState,
-  ClockTargetTime,
-} from '../../types/clock.types';
+import { ClockDifficulty, ClockProgressionState, ClockTargetTime } from '../../types/clock.types';
 import { playClockAudio } from '../../utils/clock-audio';
 import { getClockProgressionResult } from '../../utils/clock-progression';
 import { ClockFace } from './ClockFace';
@@ -49,7 +45,9 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
 
   // Handle difficulty switch
   const handleDifficultyChange = (newDiff: ClockDifficulty) => {
-    if (newDiff === difficulty) return;
+    if (newDiff === difficulty) {
+      return;
+    }
     setDifficulty(newDiff);
     setTargetIndex(0);
     setShowHint(false);
@@ -79,7 +77,9 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
   // Process key input
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (isAdvancing) return;
+      if (isAdvancing) {
+        return;
+      }
 
       const result = getClockProgressionResult(currentTarget, progressionState, e.key);
 
@@ -169,11 +169,7 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
       {/* Main Clock Face Stage */}
       <div
         className={`${classes.clockStage} ${
-          feedback === 'shake'
-            ? classes.shake
-            : feedback === 'celebrate'
-              ? classes.celebrate
-              : ''
+          feedback === 'shake' ? classes.shake : feedback === 'celebrate' ? classes.celebrate : ''
         }`}
         data-testid="clock-stage"
       >

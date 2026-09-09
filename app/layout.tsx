@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 import './globals.css';
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
 import React from 'react';
+import { AppShellNav } from '../components/AppShellNav/AppShellNav';
 import { theme } from '../theme';
 
 export const metadata = {
@@ -18,7 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme}>
+          <AppShellNav />
+          {children}
+        </MantineProvider>
       </body>
     </html>
   );
