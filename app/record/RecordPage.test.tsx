@@ -5,6 +5,7 @@ import { PHONEMES } from '../../constants/phonemes';
 import { LETTER_NAMES } from '../../constants/letter-names';
 import { LEARNING_WORDS } from '../../constants/learning-words';
 import { COUNT_NUMBERS } from '../../constants/count-numbers';
+import { CLOCK_CURRICULUM } from '../../constants/clock-curriculum';
 
 describe('RecordPage', () => {
   const originalFetch = global.fetch;
@@ -38,12 +39,20 @@ describe('RecordPage', () => {
     const allNumbers = COUNT_NUMBERS.map((n) => n.slug);
     const allLetterNames = LETTER_NAMES.map((l) => l.slug);
     const allPhonemes = PHONEMES.map((p) => p.slug);
+    const allClocks = Array.from(
+      new Set(
+        Object.values(CLOCK_CURRICULUM)
+          .flat()
+          .map((target) => target.audioSlug)
+      )
+    );
     const totalCount =
       allPhonemes.length +
       allLetterNames.length +
       allWords.length +
       allNumbers.length +
-      allPlurals.length;
+      allPlurals.length +
+      allClocks.length;
 
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
@@ -53,6 +62,7 @@ describe('RecordPage', () => {
         words: allWords,
         numbers: allNumbers,
         plurals: allPlurals,
+        clocks: allClocks,
       }),
     } as Response);
 

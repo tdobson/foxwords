@@ -1,6 +1,17 @@
 export type DifficultyLevel = 'faint' | 'reveal';
-export type GameMode = 'words' | 'quiz' | 'count' | 'rhyme';
+export type GameMode = 'words' | 'quiz' | 'count' | 'rhyme' | 'clock';
 export type CountDifficulty = 'easy' | 'medium' | 'hard';
+export type RecordingKind = 'phoneme' | 'letter-name' | 'word' | 'number' | 'plural' | 'clock';
+
+export interface RecordingItem {
+  key: string;
+  kind: RecordingKind;
+  id: string;
+  name: string;
+  hint: string;
+  file: string;
+  path: string;
+}
 
 export interface RhymeChoice {
   wordId: string;

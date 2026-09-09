@@ -41,7 +41,7 @@ export function playWordSound(wordId: string): void {
 }
 
 export async function saveAudio(
-  kind: 'phoneme' | 'letter-name' | 'word' | 'number' | 'plural',
+  kind: 'phoneme' | 'letter-name' | 'word' | 'number' | 'plural' | 'clock',
   id: string,
   blob: Blob
 ): Promise<void> {

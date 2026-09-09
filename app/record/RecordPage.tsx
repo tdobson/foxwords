@@ -7,6 +7,7 @@ import { LETTER_NAMES } from '../../constants/letter-names';
 import { LEARNING_WORDS } from '../../constants/learning-words';
 import { COUNT_NUMBERS } from '../../constants/count-numbers';
 import { getObjectSpokenLabel } from '../../constants/count-plurals';
+import { CLOCK_CURRICULUM } from '../../constants/clock-curriculum';
 import {
   getLetterNameAudioPath,
   getNumberAudioPath,
@@ -16,20 +17,12 @@ import {
   playAudio,
   saveAudio,
 } from '../../utils/audio';
+import { getClockAudioPath } from '../../utils/clock-audio';
+import { RecordingItem } from '../../types/learning-word.types';
 import classes from './RecordPage.module.css';
 
-interface RecordingItem {
-  key: string;
-  kind: 'phoneme' | 'letter-name' | 'word' | 'number' | 'plural';
-  id: string;
-  name: string;
-  hint: string;
-  file: string;
-  path: string;
-}
-
 function createItems(): RecordingItem[] {
-  const phonemes = PHONEMES.map((phoneme) => ({
+  const phonemes: RecordingItem[] = PHONEMES.map((phoneme) => ({
     key: `phoneme-${phoneme.slug}`,
     kind: 'phoneme' as const,
     id: phoneme.slug,
@@ -38,7 +31,7 @@ function createItems(): RecordingItem[] {
     file: getPhonemeAudioPath(phoneme.slug),
     path: `public/audio/phonemes/${phoneme.slug}.webm`,
   }));
-  const letterNames = LETTER_NAMES.map((letterName) => ({
+  const letterNames: RecordingItem[] = LETTER_NAMES.map((letterName) => ({
     key: `letter-name-${letterName.slug}`,
     kind: 'letter-name' as const,
     id: letterName.slug,
@@ -47,7 +40,7 @@ function createItems(): RecordingItem[] {
     file: getLetterNameAudioPath(letterName.slug),
     path: `public/audio/letter-names/${letterName.slug}.webm`,
   }));
-  const words = LEARNING_WORDS.map((learningWord) => ({
+  const words: RecordingItem[] = LEARNING_WORDS.map((learningWord) => ({
     key: `word-${learningWord.id}`,
     kind: 'word' as const,
     id: learningWord.id,
@@ -56,7 +49,7 @@ function createItems(): RecordingItem[] {
     file: getWordAudioPath(learningWord.id),
     path: `public/audio/words/${learningWord.id}.webm`,
   }));
-  const numbers = COUNT_NUMBERS.map((numberItem) => ({
+  const numbers: RecordingItem[] = COUNT_NUMBERS.map((numberItem) => ({
     key: `number-${numberItem.slug}`,
     kind: 'number' as const,
     id: numberItem.slug,
@@ -65,16 +58,39 @@ function createItems(): RecordingItem[] {
     file: getNumberAudioPath(numberItem.slug),
     path: `public/audio/numbers/${numberItem.slug}.webm`,
   }));
-  const plurals = LEARNING_WORDS.filter((word) => word.id !== 'games').map((learningWord) => ({
-    key: `plural-${learningWord.id}`,
-    kind: 'plural' as const,
-    id: learningWord.id,
-    name: getObjectSpokenLabel({ word: learningWord, count: 2 }),
-    hint: `${learningWord.word} (plural)`,
-    file: getPluralAudioPath(learningWord.id),
-    path: `public/audio/plurals/${learningWord.id}.webm`,
+  const plurals: RecordingItem[] = LEARNING_WORDS.filter((word) => word.id !== 'games').map(
+    (learningWord) => ({
+      key: `plural-${learningWord.id}`,
+      kind: 'plural' as const,
+      id: learningWord.id,
+      name: getObjectSpokenLabel({ word: learningWord, count: 2 }),
+      hint: `${learningWord.word} (plural)`,
+      file: getPluralAudioPath(learningWord.id),
+      path: `public/audio/plurals/${learningWord.id}.webm`,
+    })
+  );
+
+  // Unique clock curriculum targets by audioSlug
+  const clockTargetMap = new Map<string, (typeof CLOCK_CURRICULUM)['easy'][0]>();
+  for (const targets of Object.values(CLOCK_CURRICULUM)) {
+    for (const target of targets) {
+      if (!clockTargetMap.has(target.audioSlug)) {
+        clockTargetMap.set(target.audioSlug, target);
+      }
+    }
+  }
+
+  const clockItems: RecordingItem[] = Array.from(clockTargetMap.values()).map((target) => ({
+    key: `clock-${target.audioSlug}`,
+    kind: 'clock' as const,
+    id: target.audioSlug,
+    name: target.spokenPhrase,
+    hint: `Clock: ${target.difficulty}`,
+    file: getClockAudioPath(target.audioSlug),
+    path: `public/audio/clock/${target.audioSlug}.webm`,
   }));
-  return [...phonemes, ...letterNames, ...words, ...numbers, ...plurals];
+
+  return [...phonemes, ...letterNames, ...words, ...numbers, ...plurals, ...clockItems];
 }
 
 export default function RecordPage() {
@@ -102,6 +118,7 @@ export default function RecordPage() {
           words: string[];
           numbers?: string[];
           plurals?: string[];
+          clocks?: string[];
         }>;
       })
       .then((existing) => {
@@ -114,6 +131,7 @@ export default function RecordPage() {
           ...existing.words,
           ...(existing.numbers ?? []),
           ...(existing.plurals ?? []),
+          ...(existing.clocks ?? []),
         ]);
         const firstMissingIndex = items.findIndex((item) => !onDisk.has(item.id));
         setIndex(firstMissingIndex === -1 ? items.length : firstMissingIndex);
