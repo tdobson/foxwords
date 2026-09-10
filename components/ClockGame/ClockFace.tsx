@@ -158,35 +158,85 @@ export function ClockFace({
             );
           })}
 
-        {/* Hour Hand (Red #e03131, short, thick) */}
-        {/* Drawn pointing straight up from (150, 150) to (150, 95) with length 55 */}
-        <line
+        {/* Hour Hand (Red #e03131, broad, prominent, classic clock spade hand) */}
+        <g
           data-testid="hour-hand"
           className={classes.hourHand}
-          x1={center}
-          y1={center + 8}
-          x2={center}
-          y2={center - 62}
           transform={`rotate(${hourAngle} ${center} ${center})`}
-          stroke="#e03131"
-        />
+        >
+          {/* Counterweight tail */}
+          <path
+            d={`M ${center - 7} ${center} L ${center - 8} ${center + 22} A 8 8 0 0 0 ${center + 8} ${center + 22} L ${center + 7} ${center} Z`}
+            fill="#b02525"
+          />
+          {/* Circular hub ring */}
+          <circle cx={center} cy={center} r={17} fill="#b02525" />
 
-        {/* Minute Hand (Blue #1971c2, longer, slender) */}
-        {/* Drawn pointing straight up from (150, 150) to (150, 60) with length 90 */}
-        <line
+          {/* Broad substantial body */}
+          <path
+            d={`M ${center - 7} ${center - 14} L ${center - 6} ${center - 40} L ${center - 14} ${center - 50} L ${center} ${center - 84} L ${center + 14} ${center - 50} L ${center + 6} ${center - 40} L ${center + 7} ${center - 14} Z`}
+            fill="#e03131"
+            stroke="#b02525"
+            strokeWidth="2.5"
+            strokeLinejoin="round"
+          />
+          {/* Inner diamond/arrow cutout for classic clock hand look */}
+          <polygon
+            points={`${center},${center - 52} ${center + 6},${center - 60} ${center},${center - 72} ${center - 6},${center - 60}`}
+            fill="#ffe3e3"
+            stroke="#b02525"
+            strokeWidth="1.2"
+          />
+          {/* Center ridge highlight */}
+          <line
+            x1={center}
+            y1={center - 12}
+            x2={center}
+            y2={center - 42}
+            stroke="#ffc9c9"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        </g>
+
+        {/* Minute Hand (Blue #1971c2, longer, slender, distinct pointer) */}
+        <g
           data-testid="minute-hand"
           className={classes.minuteHand}
-          x1={center}
-          y1={center + 12}
-          x2={center}
-          y2={center - 95}
           transform={`rotate(${minuteAngle} ${center} ${center})`}
-          stroke="#1971c2"
-        />
+        >
+          {/* Counterweight tail */}
+          <path
+            d={`M ${center - 5} ${center} L ${center - 6} ${center + 26} A 6 6 0 0 0 ${center + 6} ${center + 26} L ${center + 5} ${center} Z`}
+            fill="#1864ab"
+          />
+          {/* Circular hub */}
+          <circle cx={center} cy={center} r={13} fill="#1864ab" />
 
-        {/* Center pin */}
-        <circle className={classes.pin} cx={center} cy={center} r={7} />
-        <circle className={classes.pinInner} cx={center} cy={center} r={3} />
+          {/* Minute hand body */}
+          <path
+            d={`M ${center - 4.5} ${center - 12} L ${center - 3.5} ${center - 86} L ${center - 8.5} ${center - 96} L ${center} ${center - 122} L ${center + 8.5} ${center - 96} L ${center + 3.5} ${center - 86} L ${center + 4.5} ${center - 12} Z`}
+            fill="#1971c2"
+            stroke="#1864ab"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          {/* Inner accent highlight */}
+          <line
+            x1={center}
+            y1={center - 12}
+            x2={center}
+            y2={center - 114}
+            stroke="#a5d8ff"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </g>
+
+        {/* Center arbor nut */}
+        <circle className={classes.pin} cx={center} cy={center} r={10} />
+        <circle className={classes.pinInner} cx={center} cy={center} r={5} />
+        <circle cx={center} cy={center} r={2.5} fill="#e03131" />
       </svg>
     </div>
   );

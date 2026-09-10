@@ -79,19 +79,11 @@
 }
 
 .hourHand {
-  stroke: #e03131;
-  stroke-width: 7;
-  stroke-linecap: round;
-  transform-origin: 150px 150px;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 .minuteHand {
-  stroke: #1971c2;
-  stroke-width: 5;
-  stroke-linecap: round;
-  transform-origin: 150px 150px;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 .pin {
