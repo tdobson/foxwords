@@ -57,6 +57,11 @@ const GAME_NAV_ITEMS: NavItem[] = [
 export function AppShellNav() {
   const pathname = usePathname();
 
+  // Hide nav bar entirely inside child play route launcher
+  if (pathname?.startsWith('/play/')) {
+    return null;
+  }
+
   const isHomeActive = pathname === '/';
 
   return (

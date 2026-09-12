@@ -19,9 +19,9 @@ export function PromptCard({ word }: PromptCardProps) {
       role="region"
       aria-label={`Prompt for ${word.promptLabel}`}
     >
-      {word.promptPhoto ? (
+      {word.photoUrl || word.promptPhoto ? (
         <img
-          src={word.promptPhoto}
+          src={word.photoUrl || word.promptPhoto}
           alt={`Photo of ${word.promptLabel}`}
           className={classes.promptPhoto}
         />

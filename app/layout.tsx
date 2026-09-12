@@ -3,6 +3,7 @@ import './globals.css';
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
 import type React from 'react';
 import { AppShellNav } from '../components/AppShellNav/AppShellNav';
+import { ProfileProvider } from '../lib/play/profile-context';
 import { theme } from '../theme';
 
 export const metadata = {
@@ -21,8 +22,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <MantineProvider theme={theme}>
-          <AppShellNav />
-          {children}
+          <ProfileProvider>
+            <AppShellNav />
+            {children}
+          </ProfileProvider>
         </MantineProvider>
       </body>
     </html>

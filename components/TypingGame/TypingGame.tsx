@@ -5,6 +5,7 @@ import { COUNT_DIFFICULTIES } from '../../constants/count-difficulties';
 import { getCountNumberSlug } from '../../constants/count-numbers';
 import { LEARNING_WORDS, QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
 import { getPhonemeSlug } from '../../constants/phonemes';
+import { useProfile } from '../../lib/play/profile-context';
 import type {
   CountDifficulty,
   DifficultyLevel,
@@ -70,7 +71,9 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
   const [completedLevelNumber, setCompletedLevelNumber] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<'none' | 'shake' | 'celebrate'>('none');
 
-  const currentWord = LEARNING_WORDS[wordIndex % LEARNING_WORDS.length];
+  const { words: activeWords, audioOverrides } = useProfile();
+  const effectiveWords = activeWords && activeWords.length > 0 ? activeWords : LEARNING_WORDS;
+  const currentWord = effectiveWords[wordIndex % effectiveWords.length];
   const levelNumber = Math.floor(wordIndex / LEVEL_SIZE) + 1;
   const isQuiz = mode === 'quiz';
   const isCount = mode === 'count';
@@ -83,7 +86,9 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
       playAudio(getNumberAudioPath(slug));
     }
     setTimeout(() => {
-      if (count === 1) {
+      if (word.audioUrl) {
+        playAudio(word.audioUrl);
+      } else if (count === 1) {
         playAudio(getWordAudioPath(word.id));
       } else {
         playAudio(getPluralAudioPath(word.id));
@@ -92,7 +97,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
   }, []);
 
   const handleNextWord = useCallback(() => {
-    setWordIndex((prev) => (prev + 1) % LEARNING_WORDS.length);
+    setWordIndex((prev) => (prev + 1) % effectiveWords.length);
     setNextIndex(0);
     setNumberNextIndex(0);
     setHintRevealed(false);
@@ -101,7 +106,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
     setFeedback('none');
     setCompletedCount((prev) => prev + 1);
     setTargetCount((prev) => pickNewCount(countDifficulty, prev));
-  }, [countDifficulty]);
+  }, [countDifficulty, effectiveWords.length]);
 
   const handleCountDifficultyChange = useCallback((newDiff: CountDifficulty) => {
     setCountDifficulty(newDiff);
@@ -252,7 +257,11 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
           setFeedback('celebrate');
           // A short pause after the last letter, then the whole word.
           setTimeout(() => {
-            playAudio(getWordAudioPath(currentWord.id));
+            if (currentWord.audioUrl) {
+              playAudio(currentWord.audioUrl);
+            } else {
+              playAudio(getWordAudioPath(currentWord.id));
+            }
           }, WORD_SOUND_DELAY_MS);
           if ((wordIndex + 1) % LEVEL_SIZE === 0) {
             setCompletedLevelNumber(levelNumber);

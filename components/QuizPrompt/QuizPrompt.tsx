@@ -19,9 +19,9 @@ export function QuizPrompt({ word, isCorrect }: QuizPromptProps) {
       role="region"
       aria-label={`What letter does ${word.promptLabel} start with?`}
     >
-      {word.promptPhoto ? (
+      {word.photoUrl || word.promptPhoto ? (
         <img
-          src={word.promptPhoto}
+          src={word.photoUrl || word.promptPhoto}
           alt={`Photo of ${word.promptLabel}`}
           className={classes.promptPhoto}
         />
