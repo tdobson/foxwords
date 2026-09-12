@@ -21,7 +21,8 @@
       "*.js",
       "*.mjs",
       "*.cjs",
-      "*.json"
+      "*.json",
+      "**/*.css"
     ]
   },
   "formatter": {
@@ -38,6 +39,12 @@
     }
   },
   "css": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 100
+    },
     "linter": {
       "enabled": false
     }

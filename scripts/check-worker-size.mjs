@@ -1,10 +1,12 @@
 #!/usr/bin/env node
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 
-const WORKER_SCRIPT = path.resolve(process.cwd(), '.open-next/worker.js');
+const OPEN_NEXT_WORKER = path.resolve(process.cwd(), '.open-next/worker.js');
 const ASSETS_DIR = path.resolve(process.cwd(), '.open-next/assets');
+const TEMP_OUTDIR = path.resolve(process.cwd(), '.open-next/wrangler-dry-run-out');
 
 // Cloudflare free limit is 3,145,728 bytes (3 MiB). Conservative Foxwords budget is 2,500,000 bytes.
 const MAX_COMPRESSED_WORKER_BYTES = 2_500_000;
@@ -31,12 +33,28 @@ function getDirectorySize(dirPath) {
 }
 
 function checkWorkerSize() {
-  if (!fs.existsSync(WORKER_SCRIPT)) {
-    console.error(`Worker script not found at ${WORKER_SCRIPT}. Run yarn build first.`);
+  if (!fs.existsSync(OPEN_NEXT_WORKER)) {
+    console.error(`Worker script not found at ${OPEN_NEXT_WORKER}. Run yarn build first.`);
     process.exit(1);
   }
 
-  const rawBuffer = fs.readFileSync(WORKER_SCRIPT);
+  // Emulate Wrangler deploy packaging to measure the exact artifact Wrangler uploads
+  fs.mkdirSync(TEMP_OUTDIR, { recursive: true });
+  try {
+    execFileSync(
+      'yarn',
+      ['wrangler', 'deploy', '--dry-run', '--outdir', TEMP_OUTDIR, '--env', 'dev'],
+      { stdio: 'pipe' }
+    );
+  } catch (err) {
+    console.warn('Wrangler dry-run with outdir failed; falling back to .open-next/worker.js', err);
+  }
+
+  const finalWorkerScript = fs.existsSync(path.join(TEMP_OUTDIR, 'worker.js'))
+    ? path.join(TEMP_OUTDIR, 'worker.js')
+    : OPEN_NEXT_WORKER;
+
+  const rawBuffer = fs.readFileSync(finalWorkerScript);
   const rawSize = rawBuffer.length;
   const gzipBuffer = zlib.gzipSync(rawBuffer);
   const gzipSize = gzipBuffer.length;
@@ -46,8 +64,9 @@ function checkWorkerSize() {
   console.log('--------------------------------------------------');
   console.log('Foxwords Cloudflare Worker Bundle Size Analysis');
   console.log('--------------------------------------------------');
+  console.log(`Measured Worker Script:                     ${finalWorkerScript}`);
   console.log(
-    `Worker Raw Script (.open-next/worker.js):  ${formatBytes(rawSize)} (${rawSize} bytes)`
+    `Worker Raw Script:                          ${formatBytes(rawSize)} (${rawSize} bytes)`
   );
   console.log(
     `Worker Gzip Script (counted by Cloudflare): ${formatBytes(gzipSize)} (${gzipSize} bytes)`
@@ -56,7 +75,7 @@ function checkWorkerSize() {
     `Worker Script Budget Ceiling:               ${formatBytes(MAX_COMPRESSED_WORKER_BYTES)} (${MAX_COMPRESSED_WORKER_BYTES} bytes)`
   );
   console.log(
-    `Static Assets (.open-next/assets, Workers Assets): ${formatBytes(assetsSize)} (${assetsSize} bytes)`
+    `Static Assets (.open-next/assets):          ${formatBytes(assetsSize)} (${assetsSize} bytes)`
   );
   console.log(
     'Note: Static assets and R2 media are uploaded separately and DO NOT count towards the script limit.'

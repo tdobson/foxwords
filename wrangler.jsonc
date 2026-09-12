@@ -31,8 +31,22 @@
       "name": "foxwords-dev-worker",
       "vars": {
         "APP_ENV": "dev",
+        "SES_REGION": "eu-west-2",
         "APP_ORIGIN": "https://foxwords-dev.tdobson.net"
-      }
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "foxwords-dev",
+          "database_id": "faba9733-aea9-4f7e-930b-669c113f01b7"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "MEDIA",
+          "bucket_name": "foxwords-media"
+        }
+      ]
     },
     "production": {
       "name": "foxwords",
@@ -42,6 +56,7 @@
       ],
       "vars": {
         "APP_ENV": "production",
+        "SES_REGION": "eu-west-2",
         "APP_ORIGIN": "https://game.tdobson.net"
       },
       "d1_databases": [
