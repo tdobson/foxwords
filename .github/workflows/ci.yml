@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main, genericise-and-github]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Lint, Typecheck & Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Check Formatting & Linting (Biome)
+        run: ./scripts/low-priority.sh yarn format:test && ./scripts/low-priority.sh yarn lint
+
+      - name: Typecheck
+        run: ./scripts/low-priority.sh yarn typecheck
+
+      - name: Unit Tests (Jest)
+        run: ./scripts/low-priority.sh yarn jest
+
+  build-worker:
+    name: OpenNext Cloudflare Worker Build & Bundle Size
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build Cloudflare Worker Bundle
+        run: ./scripts/low-priority.sh yarn build
+
+      - name: Validate Cloudflare Worker Script Size (< 2.5 MB)
+        run: ./scripts/low-priority.sh node scripts/check-worker-size.mjs
