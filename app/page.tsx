@@ -1,5 +1,3 @@
-import React from 'react';
-import Link from 'next/link';
 import {
   IconClock,
   IconMusic,
@@ -7,6 +5,8 @@ import {
   IconQuestionMark,
   IconTypography,
 } from '@tabler/icons-react';
+import Link from 'next/link';
+import type React from 'react';
 import classes from './page.module.css';
 
 interface GameTile {

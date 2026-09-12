@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@/test-utils';
-import { CountPrompt } from './CountPrompt';
 import { LEARNING_WORDS } from '../../constants/learning-words';
+import { CountPrompt } from './CountPrompt';
 
 describe('CountPrompt', () => {
   const cat = LEARNING_WORDS.find((w) => w.id === 'cat')!;

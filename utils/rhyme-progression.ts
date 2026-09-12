@@ -1,4 +1,4 @@
-import { RhymeQuestion } from '../types/learning-word.types';
+import type { RhymeQuestion } from '../types/learning-word.types';
 
 export type RhymeSide = 'left' | 'right';
 

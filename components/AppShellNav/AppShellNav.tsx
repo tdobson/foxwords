@@ -1,8 +1,5 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Button } from '@mantine/core';
 import {
   IconClock,
@@ -12,6 +9,9 @@ import {
   IconQuestionMark,
   IconTypography,
 } from '@tabler/icons-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import type React from 'react';
 import classes from './AppShellNav.module.css';
 
 interface NavItem {

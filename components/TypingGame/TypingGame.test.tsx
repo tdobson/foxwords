@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, render, screen, userEvent } from '@/test-utils';
-import { TypingGame } from './TypingGame';
 import { QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
+import { TypingGame } from './TypingGame';
 
 const firstLevelWords = ['JAMES', 'GRANDMA', 'GRANDAD', 'MUMMY', 'DADDY', 'SARAH'];
 const unlockWords = [...firstLevelWords, 'BABY', 'GRANDPA', 'GRANNY', 'MEG'];

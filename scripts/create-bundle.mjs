@@ -1,6 +1,6 @@
+import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -35,17 +35,17 @@ set -e
 
 PORT=8000
 SCRIPT_DIR="$(cd "$(dirname "\${BASH_SOURCE[0]}")" && pwd)"
-cd "\$SCRIPT_DIR"
+cd "$SCRIPT_DIR"
 
 open_browser() {
   sleep 1
-  URL="http://localhost:\$PORT"
+  URL="http://localhost:$PORT"
   if command -v open >/dev/null 2>&1; then
-    open "\$URL"
+    open "$URL"
   elif command -v xdg-open >/dev/null 2>&1; then
-    xdg-open "\$URL"
+    xdg-open "$URL"
   else
-    echo "Please open \$URL in your web browser."
+    echo "Please open $URL in your web browser."
   fi
 }
 
@@ -54,19 +54,19 @@ echo "Starting Letter Trail Offline..."
 open_browser &
 
 if command -v python3 >/dev/null 2>&1; then
-  echo "Serving with Python 3 at http://localhost:\$PORT"
-  exec python3 -m http.server "\$PORT" --directory game
+  echo "Serving with Python 3 at http://localhost:$PORT"
+  exec python3 -m http.server "$PORT" --directory game
 elif command -v python >/dev/null 2>&1; then
-  echo "Serving with Python at http://localhost:\$PORT"
+  echo "Serving with Python at http://localhost:$PORT"
   # Try python -m http.server (Python 3) or fallback to SimpleHTTPServer (Python 2)
   if python -c 'import http.server' >/dev/null 2>&1; then
-    exec python -m http.server "\$PORT" --directory game
+    exec python -m http.server "$PORT" --directory game
   else
-    cd game && exec python -m SimpleHTTPServer "\$PORT"
+    cd game && exec python -m SimpleHTTPServer "$PORT"
   fi
 elif command -v npx >/dev/null 2>&1; then
-  echo "Serving with npx serve at http://localhost:\$PORT"
-  exec npx serve game -p "\$PORT"
+  echo "Serving with npx serve at http://localhost:$PORT"
+  exec npx serve game -p "$PORT"
 else
   echo "Error: Neither python3, python, nor npx was found on your system."
   echo "Please install Python 3 or Node.js to run this launcher, or use any static file web server pointing to the 'game' folder."

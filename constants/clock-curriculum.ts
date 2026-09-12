@@ -1,4 +1,4 @@
-import { ClockDifficulty, ClockTargetTime, ClockToken } from '../types/clock.types';
+import type { ClockDifficulty, ClockTargetTime, ClockToken } from '../types/clock.types';
 
 function formatNextHour(hour: number): number {
   return (hour % 12) + 1;

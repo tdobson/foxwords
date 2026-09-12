@@ -1,6 +1,6 @@
-import React from 'react';
 import { Paper, Title } from '@mantine/core';
-import { LearningWord } from '../../types/learning-word.types';
+import React from 'react';
+import type { LearningWord } from '../../types/learning-word.types';
 import classes from './PromptCard.module.css';
 
 export interface PromptCardProps {

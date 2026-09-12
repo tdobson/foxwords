@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@/test-utils';
+import type { LearningWord } from '../../types/learning-word.types';
 import { PromptCard } from './PromptCard';
-import { LearningWord } from '../../types/learning-word.types';
 
 describe('PromptCard', () => {
   const baseWord: LearningWord = {

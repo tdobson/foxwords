@@ -2,7 +2,11 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { CLOCK_CURRICULUM } from '../../constants/clock-curriculum';
-import { ClockDifficulty, ClockProgressionState, ClockTargetTime } from '../../types/clock.types';
+import type {
+  ClockDifficulty,
+  ClockProgressionState,
+  ClockTargetTime,
+} from '../../types/clock.types';
 import { playClockAudio } from '../../utils/clock-audio';
 import { getClockProgressionResult } from '../../utils/clock-progression';
 import { ClockFace } from './ClockFace';

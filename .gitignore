@@ -83,9 +83,13 @@ web_modules/
 .cache
 .parcel-cache
 
-# Next.js build output
+# Next.js and OpenNext build output
 .next
 out
+.open-next
+playwright-report
+test-results
+.wrangler
 
 # Nuxt.js build / generate output
 .nuxt

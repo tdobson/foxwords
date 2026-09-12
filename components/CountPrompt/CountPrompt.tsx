@@ -1,6 +1,6 @@
-import React from 'react';
 import { Paper } from '@mantine/core';
-import { LearningWord } from '../../types/learning-word.types';
+import React from 'react';
+import type { LearningWord } from '../../types/learning-word.types';
 import classes from './CountPrompt.module.css';
 
 export interface CountPromptProps {

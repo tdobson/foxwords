@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
-import { PHONEMES } from '../../constants/phonemes';
-import { LETTER_NAMES } from '../../constants/letter-names';
-import { LEARNING_WORDS } from '../../constants/learning-words';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { CLOCK_CURRICULUM } from '../../constants/clock-curriculum';
 import { COUNT_NUMBERS } from '../../constants/count-numbers';
 import { getObjectSpokenLabel } from '../../constants/count-plurals';
-import { CLOCK_CURRICULUM } from '../../constants/clock-curriculum';
+import { LEARNING_WORDS } from '../../constants/learning-words';
+import { LETTER_NAMES } from '../../constants/letter-names';
+import { PHONEMES } from '../../constants/phonemes';
+import type { RecordingItem } from '../../types/learning-word.types';
 import {
   getLetterNameAudioPath,
   getNumberAudioPath,
@@ -18,7 +19,6 @@ import {
   saveAudio,
 } from '../../utils/audio';
 import { getClockAudioPath } from '../../utils/clock-audio';
-import { RecordingItem } from '../../types/learning-word.types';
 import classes from './RecordPage.module.css';
 
 function createItems(): RecordingItem[] {

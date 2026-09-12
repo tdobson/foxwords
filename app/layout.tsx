@@ -1,7 +1,7 @@
 import '@mantine/core/styles.css';
 import './globals.css';
-import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
-import React from 'react';
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
+import type React from 'react';
 import { AppShellNav } from '../components/AppShellNav/AppShellNav';
 import { theme } from '../theme';
 
