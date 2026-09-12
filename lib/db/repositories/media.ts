@@ -97,4 +97,14 @@ export class MediaRepository {
       .bind(id, profileId, clipKey, assetId, now, now)
       .run();
   }
+
+  async deleteAudioOverride(profileId: string, clipKey: string): Promise<boolean> {
+    const existing = await this.getAudioOverride(profileId, clipKey);
+    if (!existing) return false;
+    await this.db
+      .prepare('DELETE FROM audio_overrides WHERE profile_id = ? AND clip_key = ?')
+      .bind(profileId, clipKey)
+      .run();
+    return true;
+  }
 }

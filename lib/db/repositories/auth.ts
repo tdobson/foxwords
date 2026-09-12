@@ -36,6 +36,13 @@ export class AuthRepository {
     return stmt.first<AuthTokenRow>();
   }
 
+  async findTokenByHash(tokenHash: string): Promise<AuthTokenRow | null> {
+    const stmt = this.db
+      .prepare('SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ?')
+      .bind(tokenHash);
+    return stmt.first<AuthTokenRow>();
+  }
+
   async findValidToken(tokenHash: string, now = Date.now()): Promise<AuthTokenRow | null> {
     const stmt = this.db
       .prepare('SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?')

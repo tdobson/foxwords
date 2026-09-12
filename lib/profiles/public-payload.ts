@@ -1,10 +1,11 @@
-import type { CustomWordRow, MediaAssetRow } from '../db/types';
+import type { AudioOverrideRow, CustomWordRow, MediaAssetRow } from '../db/types';
 import type { LearningWord } from '../../types/learning-word.types';
 import { LEARNING_WORDS } from '../../constants/learning-words';
 
 export interface PublicPlayPayload {
   childName: string;
   words: LearningWord[];
+  audioOverrides?: Record<string, string>;
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -28,10 +29,21 @@ export function buildPublicPlayPayload(params: {
   playToken: string;
   customWords: CustomWordRow[];
   assets: MediaAssetRow[];
+  audioOverrides?: AudioOverrideRow[];
 }): PublicPlayPayload {
   const assetMap = new Map<string, MediaAssetRow>();
   for (const a of params.assets) {
     assetMap.set(a.id, a);
+  }
+
+  // Map audio overrides
+  const audioOverridesMap: Record<string, string> = {};
+  if (params.audioOverrides) {
+    for (const ov of params.audioOverrides) {
+      if (assetMap.has(ov.asset_id)) {
+        audioOverridesMap[ov.clip_key] = `/api/play/${encodeURIComponent(params.playToken)}/assets/${encodeURIComponent(ov.asset_id)}`;
+      }
+    }
   }
 
   // 1. Convert custom words to LearningWord shape
@@ -70,5 +82,6 @@ export function buildPublicPlayPayload(params: {
   return {
     childName: params.childName,
     words,
+    audioOverrides: Object.keys(audioOverridesMap).length > 0 ? audioOverridesMap : undefined,
   };
 }

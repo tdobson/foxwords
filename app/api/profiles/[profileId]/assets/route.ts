@@ -45,6 +45,12 @@ export async function POST(
     return jsonError(404, 'not_found', 'Profile not found.');
   }
 
+  // Content-Length / 413 check before buffering
+  const contentLength = request.headers.get('content-length');
+  if (contentLength && parseInt(contentLength, 10) > 5 * 1024 * 1024 + 4096) {
+    return jsonError(413, 'payload_too_large', 'File size exceeds the 5 MiB maximum limit.');
+  }
+
   let formData: FormData;
   try {
     formData = await request.formData();

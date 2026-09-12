@@ -32,12 +32,14 @@ export async function GET(_request: NextRequest, context: { params: Promise<{ to
 
   const customWords = await profileRepo.listWordsForProfile(profile.id);
   const assets = await mediaRepo.listForProfile(profile.id);
+  const audioOverrides = await mediaRepo.listAudioOverrides(profile.id);
 
   const payload = buildPublicPlayPayload({
     childName: profile.child_name,
     playToken: token,
     customWords,
     assets,
+    audioOverrides,
   });
 
   return jsonSuccess(200, payload);

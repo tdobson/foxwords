@@ -100,3 +100,54 @@ export async function PUT(
     return jsonError(400, 'invalid_request', err.message);
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ profileId: string }> }
+) {
+  const { profileId } = await context.params;
+  const env = await getRuntimeEnv();
+
+  try {
+    assertSameOrigin(request, env.APP_ORIGIN);
+  } catch {
+    return jsonError(403, 'origin_rejected', 'Cross-origin request rejected.');
+  }
+
+  const authRepo = new AuthRepository(env.DB);
+  const userRepo = new UserRepository(env.DB);
+  const profileRepo = new ProfileRepository(env.DB);
+  const mediaRepo = new MediaRepository(env.DB);
+
+  const user = await getSessionUser(
+    authRepo,
+    userRepo,
+    request.headers.get('cookie') || request.headers.get('Cookie')
+  );
+  if (!user) {
+    return jsonError(401, 'unauthorized', 'Authentication required.');
+  }
+
+  const profile = await profileRepo.findOwnedById(user.id, profileId);
+  if (!profile) {
+    return jsonError(404, 'not_found', 'Profile not found.');
+  }
+
+  let body: any;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonError(400, 'invalid_request', 'Invalid JSON payload.');
+  }
+
+  if (!body || typeof body.clipKey !== 'string' || !body.clipKey.trim()) {
+    return jsonError(400, 'invalid_request', 'clipKey is required.');
+  }
+
+  const deleted = await mediaRepo.deleteAudioOverride(profile.id, body.clipKey.trim());
+  if (!deleted) {
+    return jsonError(404, 'not_found', 'Audio override not found.');
+  }
+
+  return jsonSuccess(200, { ok: true });
+}

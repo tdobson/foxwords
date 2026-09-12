@@ -153,6 +153,50 @@ export class ProfileRepository {
     };
   }
 
+  async updateWordOwned(
+    userId: string,
+    profileId: string,
+    wordId: string,
+    patch: Partial<CreateCustomWordInput>
+  ): Promise<CustomWordRow | null> {
+    const profile = await this.findOwnedById(userId, profileId);
+    if (!profile) return null;
+
+    const existing = await this.db
+      .prepare('SELECT id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at FROM custom_words WHERE id = ? AND profile_id = ?')
+      .bind(wordId, profileId)
+      .first<CustomWordRow>();
+    if (!existing) return null;
+
+    const word = patch.word !== undefined ? patch.word.toUpperCase().trim() : existing.word;
+    const category = patch.category !== undefined ? patch.category : existing.category;
+    const promptLabel = patch.promptLabel !== undefined ? patch.promptLabel.trim() : existing.prompt_label;
+    const promptEmoji = patch.promptEmoji !== undefined ? patch.promptEmoji : existing.prompt_emoji;
+    const photoAssetId = patch.photoAssetId !== undefined ? patch.photoAssetId : existing.photo_asset_id;
+    const audioAssetId = patch.audioAssetId !== undefined ? patch.audioAssetId : existing.audio_asset_id;
+    const sortOrder = patch.sortOrder !== undefined ? patch.sortOrder : existing.sort_order;
+    const now = Date.now();
+
+    await this.db
+      .prepare(
+        'UPDATE custom_words SET word = ?, category = ?, prompt_label = ?, prompt_emoji = ?, photo_asset_id = ?, audio_asset_id = ?, sort_order = ?, updated_at = ? WHERE id = ? AND profile_id = ?'
+      )
+      .bind(word, category, promptLabel, promptEmoji, photoAssetId, audioAssetId, sortOrder, now, wordId, profileId)
+      .run();
+
+    return {
+      ...existing,
+      word,
+      category,
+      prompt_label: promptLabel,
+      prompt_emoji: promptEmoji,
+      photo_asset_id: photoAssetId,
+      audio_asset_id: audioAssetId,
+      sort_order: sortOrder,
+      updated_at: now,
+    };
+  }
+
   async deleteWordOwned(userId: string, profileId: string, wordId: string): Promise<boolean> {
     const profile = await this.findOwnedById(userId, profileId);
     if (!profile) return false;

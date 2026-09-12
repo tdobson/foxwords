@@ -124,6 +124,10 @@ export async function DELETE(
   const authRepo = new AuthRepository(env.DB);
   const userRepo = new UserRepository(env.DB);
   const profileRepo = new ProfileRepository(env.DB);
+  const mediaRepo = new (await import('../../../../lib/db/repositories/media')).MediaRepository(
+    env.DB
+  );
+  const { deleteProfileAssetObject } = await import('../../../../lib/media/r2');
 
   const user = await getSessionUser(
     authRepo,
@@ -132,6 +136,21 @@ export async function DELETE(
   );
   if (!user) {
     return jsonError(401, 'unauthorized', 'Authentication required.');
+  }
+
+  const profile = await profileRepo.findOwnedById(user.id, profileId);
+  if (!profile) {
+    return jsonError(404, 'not_found', 'Profile not found.');
+  }
+
+  // Find assets to clean up R2 objects
+  const assets = await mediaRepo.listForProfile(profile.id);
+  for (const asset of assets) {
+    try {
+      await deleteProfileAssetObject(env, asset);
+    } catch {
+      // Ignore individual R2 delete failures on profile wipe
+    }
   }
 
   const success = await profileRepo.deleteOwned(user.id, profileId);

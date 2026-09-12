@@ -66,7 +66,8 @@ export class AuthService {
     await this.authRepo.createToken(tokenHash, user.id, expiresAt);
 
     // Form magic link URL pointing to verify endpoint
-    NaN
+    const baseOrigin = this.env.APP_ORIGIN || 'http://localhost:8787';
+    const origin = baseOrigin.endsWith('/') ? baseOrigin.slice(0, -1) : baseOrigin;
     const loginUrl = `${origin}/api/auth/verify?token=${encodeURIComponent(rawToken)}`;
 
     try {
@@ -100,7 +101,7 @@ export class AuthService {
     const consumed = await this.authRepo.consumeValidToken(tokenHash, now);
     if (!consumed) {
       // Check if it was expired or used for diagnostic clarity
-      const existing = await this.authRepo.findValidToken(tokenHash, 0);
+      const existing = await this.authRepo.findTokenByHash(tokenHash);
       if (existing && existing.used_at) {
         return { success: false, error: 'already_used' };
       }
