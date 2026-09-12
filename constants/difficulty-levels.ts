@@ -1,4 +1,4 @@
-import { DifficultyDefinition, DifficultyLevel } from '../types/learning-word.types';
+import type { DifficultyDefinition, DifficultyLevel } from '../types/learning-word.types';
 
 export const DIFFICULTY_LEVELS: Record<DifficultyLevel, DifficultyDefinition> = {
   faint: {

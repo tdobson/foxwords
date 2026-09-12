@@ -1,18 +1,16 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { LEARNING_WORDS, QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
-import { getPhonemeSlug } from '../../constants/phonemes';
 import { COUNT_DIFFICULTIES } from '../../constants/count-difficulties';
 import { getCountNumberSlug } from '../../constants/count-numbers';
-import {
+import { LEARNING_WORDS, QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
+import { getPhonemeSlug } from '../../constants/phonemes';
+import type {
   CountDifficulty,
   DifficultyLevel,
   GameMode,
   LearningWord,
 } from '../../types/learning-word.types';
-import { getProgressionResult } from '../../utils/progression';
-import { getCountProgressionResult } from '../../utils/count-progression';
 import {
   getLetterNameAudioPath,
   getNumberAudioPath,
@@ -21,6 +19,8 @@ import {
   getWordAudioPath,
   playAudio,
 } from '../../utils/audio';
+import { getCountProgressionResult } from '../../utils/count-progression';
+import { getProgressionResult } from '../../utils/progression';
 import { CountPrompt } from '../CountPrompt/CountPrompt';
 import { GameControls } from '../GameControls/GameControls';
 import { PromptCard } from '../PromptCard/PromptCard';

@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { CLOCK_CURRICULUM } from '../constants/clock-curriculum';
-import { ClockProgressionState, ClockTargetTime } from '../types/clock.types';
+import type { ClockProgressionState, ClockTargetTime } from '../types/clock.types';
 import { getClockProgressionResult, getRevealedText } from './clock-progression';
 
 describe('clock-progression matcher', () => {

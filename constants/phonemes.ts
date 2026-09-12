@@ -3,7 +3,7 @@
  * @module constants/phonemes
  */
 
-import { Phoneme } from '../types/learning-word.types';
+import type { Phoneme } from '../types/learning-word.types';
 
 export const PHONEMES: Phoneme[] = [
   // Short vowels

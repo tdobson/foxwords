@@ -1,4 +1,4 @@
-import { RhymeLevel } from '../types/learning-word.types';
+import type { RhymeLevel } from '../types/learning-word.types';
 
 export const RHYME_LEVELS: RhymeLevel[] = [
   {

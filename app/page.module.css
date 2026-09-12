@@ -1,6 +1,6 @@
 .launcherContainer {
   min-height: calc(100vh - 60px);
-  padding: 24px 16px;
+  padding: 32px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,7 +10,8 @@
 
 .header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
+  max-width: 640px;
 }
 
 .title {
@@ -25,12 +26,76 @@
   font-size: 1.2rem;
   color: var(--mantine-color-gray-7);
   font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.privacyNotice {
+  font-size: 0.95rem;
+  color: var(--mantine-color-gray-6);
+  background: rgb(255 255 255 / 70%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.primaryActions {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px;
+}
+
+.primaryBtn {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.primaryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 12%);
+}
+
+.joinBtn {
+  background: #2b8a3e;
+  color: white;
+}
+
+.parentBtn {
+  background: #1971c2;
+  color: white;
+}
+
+.starterBtn {
+  background: white;
+  color: #495057;
+  border: 2px solid #dee2e6;
+}
+
+.sectionHeading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--mantine-color-gray-7);
+  margin-bottom: 16px;
+  text-align: center;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
   max-width: 1080px;
   width: 100%;
 }
@@ -39,7 +104,7 @@
   text-decoration: none;
   background: #fff;
   border-radius: 20px;
-  padding: 24px 20px;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,13 +129,13 @@
 }
 
 .iconWrapper {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   transition: transform 0.2s ease;
 }
 
@@ -79,14 +144,14 @@
 }
 
 .tileTitle {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   color: var(--mantine-color-dark-9);
 }
 
 .tileDescription {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--mantine-color-gray-6);
   line-height: 1.4;
 }
@@ -160,6 +225,15 @@
 @media (max-width: 768px) {
   .title {
     font-size: 2.2rem;
+  }
+
+  .primaryActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryBtn {
+    justify-content: center;
   }
 
   .grid {

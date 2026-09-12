@@ -1,12 +1,15 @@
-import React from 'react';
-import Link from 'next/link';
 import {
   IconClock,
+  IconKey,
   IconMusic,
   IconNumbers,
+  IconPlayerPlay,
   IconQuestionMark,
+  IconSettings,
   IconTypography,
 } from '@tabler/icons-react';
+import Link from 'next/link';
+import type React from 'react';
 import classes from './page.module.css';
 
 interface GameTile {
@@ -22,35 +25,35 @@ const GAMES: GameTile[] = [
     href: '/words',
     title: 'Words',
     description: 'Spell familiar names and everyday words letter by letter',
-    icon: <IconTypography size={44} stroke={2.2} />,
+    icon: <IconTypography size={40} stroke={2.2} />,
     className: classes.tileWords,
   },
   {
     href: '/counting',
     title: 'Counting',
     description: 'Count friendly animals and spell numbers 1 to 20',
-    icon: <IconNumbers size={44} stroke={2.2} />,
+    icon: <IconNumbers size={40} stroke={2.2} />,
     className: classes.tileCounting,
   },
   {
     href: '/clock',
     title: 'Clock',
     description: 'Read the analog clock and type the spoken time',
-    icon: <IconClock size={44} stroke={2.2} />,
+    icon: <IconClock size={40} stroke={2.2} />,
     className: classes.tileClock,
   },
   {
     href: '/quiz',
     title: 'Quiz',
     description: 'Listen to the word and pick the correct photo',
-    icon: <IconQuestionMark size={44} stroke={2.2} />,
+    icon: <IconQuestionMark size={40} stroke={2.2} />,
     className: classes.tileQuiz,
   },
   {
     href: '/rhyme',
     title: 'Rhyme Time',
     description: 'Pick words that rhyme and hear playful sounds',
-    icon: <IconMusic size={44} stroke={2.2} />,
+    icon: <IconMusic size={40} stroke={2.2} />,
     className: classes.tileRhyme,
   },
 ];
@@ -59,10 +62,44 @@ export default function HomePage() {
   return (
     <main className={classes.launcherContainer}>
       <div className={classes.header}>
-        <h1 className={classes.title}>Letter Trail</h1>
-        <p className={classes.subtitle}>Choose an activity to play and learn</p>
+        <h1 className={classes.title}>Foxwords</h1>
+        <p className={classes.subtitle}>
+          Personalised phonics, counting, and teaching clocks for young learners
+        </p>
+        <div className={classes.privacyNotice}>
+          No child account is required to play. The parent portal is only for setup and family voice
+          recording.
+        </div>
       </div>
 
+      <div className={classes.primaryActions}>
+        <Link
+          href="/join"
+          className={`${classes.primaryBtn} ${classes.joinBtn}`}
+          data-testid="join-code-button"
+        >
+          <IconKey size={22} />
+          Play with a family code
+        </Link>
+        <Link
+          href="/parent/login"
+          className={`${classes.primaryBtn} ${classes.parentBtn}`}
+          data-testid="parent-setup-button"
+        >
+          <IconSettings size={22} />
+          Set up Foxwords
+        </Link>
+        <Link
+          href="/words"
+          className={`${classes.primaryBtn} ${classes.starterBtn}`}
+          data-testid="starter-game-button"
+        >
+          <IconPlayerPlay size={22} />
+          Try Tim's starter game
+        </Link>
+      </div>
+
+      <div className={classes.sectionHeading}>Starter Activities</div>
       <div className={classes.grid}>
         {GAMES.map((game) => (
           <Link key={game.href} href={game.href} className={`${classes.tile} ${game.className}`}>

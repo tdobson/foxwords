@@ -1,5 +1,5 @@
 import React from 'react';
-import { DifficultyLevel } from '../../types/learning-word.types';
+import type { DifficultyLevel } from '../../types/learning-word.types';
 import classes from './WordTiles.module.css';
 
 export interface WordTilesProps {

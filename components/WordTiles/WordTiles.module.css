@@ -26,7 +26,7 @@
     background-color 0.15s ease;
 }
 
-.tile[data-state='completed'] {
+.tile[data-state="completed"] {
   background-color: #c2410c;
   color: #fff;
   border: 3px solid #9a3412;
@@ -34,7 +34,7 @@
   transform: scale(1.02);
 }
 
-.tile[data-state='active'] {
+.tile[data-state="active"] {
   background-color: #fff;
   color: #1e293b;
   border: 4px solid #f97316;
@@ -42,13 +42,13 @@
   animation: pulse 1.5s infinite ease-in-out;
 }
 
-.tile[data-state='faint'] {
+.tile[data-state="faint"] {
   background-color: #f8fafc;
   color: #cbd5e1;
   border: 2px dashed #e2e8f0;
 }
 
-.tile[data-state='hidden'] {
+.tile[data-state="hidden"] {
   background-color: #f1f5f9;
   color: transparent;
   border: 2px dashed #cbd5e1;
@@ -70,7 +70,7 @@
     transition: none;
   }
 
-  .tile[data-state='active'] {
+  .tile[data-state="active"] {
     animation: none;
   }
 }

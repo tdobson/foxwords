@@ -56,6 +56,12 @@ export interface LearningWord {
   promptRepeat?: number;
   /** Photo path in public/images/words (e.g. /images/words/daddy.jpg) */
   promptPhoto?: string;
+  /** Authenticated or public media URL for family photos (served via API/R2) */
+  photoUrl?: string;
+  /** Authenticated or public media URL for custom family audio */
+  audioUrl?: string;
+  /** Origin source of the audio for this word */
+  audioSource?: 'family' | 'tim' | 'speech';
   ipa: string[];
 }
 

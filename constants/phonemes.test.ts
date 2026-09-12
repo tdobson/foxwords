@@ -1,5 +1,5 @@
-import { PHONEMES, getPhonemeSlug } from './phonemes';
 import { LEARNING_WORDS } from './learning-words';
+import { getPhonemeSlug, PHONEMES } from './phonemes';
 
 describe('phonemes', () => {
   it('has a unique slug for every phoneme', () => {

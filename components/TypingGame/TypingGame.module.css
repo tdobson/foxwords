@@ -122,11 +122,11 @@
   transition: transform 0.2s ease;
 }
 
-.interactiveArea[data-feedback='shake'] {
+.interactiveArea[data-feedback="shake"] {
   animation: shake 0.35s ease-in-out;
 }
 
-.interactiveArea[data-feedback='celebrate'] {
+.interactiveArea[data-feedback="celebrate"] {
   animation: celebrate 0.8s ease-in-out;
 }
 
@@ -170,8 +170,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .interactiveArea[data-feedback='shake'],
-  .interactiveArea[data-feedback='celebrate'] {
+  .interactiveArea[data-feedback="shake"],
+  .interactiveArea[data-feedback="celebrate"] {
     animation: none;
   }
 }

@@ -1,4 +1,4 @@
-import { LearningWord } from '../types/learning-word.types';
+import type { LearningWord } from '../types/learning-word.types';
 
 export const IRREGULAR_PLURALS: Record<string, string> = {
   daddy: 'Daddies',

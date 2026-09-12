@@ -3,9 +3,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { LEARNING_WORDS } from '../../constants/learning-words';
 import { RHYME_LEVELS } from '../../constants/rhyme-levels';
-import { LearningWord, RhymeQuestion } from '../../types/learning-word.types';
+import type { LearningWord, RhymeQuestion } from '../../types/learning-word.types';
 import { playWordSound } from '../../utils/audio';
-import { RhymeSide, resolveRhymeInput } from '../../utils/rhyme-progression';
+import { type RhymeSide, resolveRhymeInput } from '../../utils/rhyme-progression';
 import classes from './RhymeGame.module.css';
 
 const SHAKE_MS = 400;
