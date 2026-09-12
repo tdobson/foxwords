@@ -1,3 +1,5 @@
+'use client';
+
 import { Alert, Button, Container, Paper, Stack, Text, Title } from '@mantine/core';
 import { IconAlertTriangle, IconArrowLeft } from '@tabler/icons-react';
 import Link from 'next/link';
