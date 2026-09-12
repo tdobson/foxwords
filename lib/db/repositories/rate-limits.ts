@@ -8,7 +8,12 @@ export class RateLimitRepository {
    * Checks if an action is rate limited and increments the counter atomically.
    * Returns true if request is allowed, false if limit exceeded.
    */
-  async consume(bucket: string, windowMs: number, maxRequests: number, now = Date.now()): Promise<boolean> {
+  async consume(
+    bucket: string,
+    windowMs: number,
+    maxRequests: number,
+    now = Date.now()
+  ): Promise<boolean> {
     const result = await this.db
       .prepare(
         `INSERT INTO rate_limits (bucket, window_started_at, request_count)

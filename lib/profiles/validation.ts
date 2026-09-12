@@ -1,5 +1,5 @@
-import { validateWord } from '../security/crypto';
 import type { CustomWordCategory } from '../db/types';
+import { validateWord } from '../security/crypto';
 
 export const VALID_CATEGORIES: ReadonlyArray<CustomWordCategory> = [
   'vip',
@@ -68,17 +68,18 @@ export function validateCustomItemInput(body: any): ValidatedCustomItemInput {
     promptEmoji = body.promptEmoji.trim() || null;
   }
 
-  const photoAssetId = typeof body.photoAssetId === 'string' && body.photoAssetId.trim()
-    ? body.photoAssetId.trim()
-    : null;
+  const photoAssetId =
+    typeof body.photoAssetId === 'string' && body.photoAssetId.trim()
+      ? body.photoAssetId.trim()
+      : null;
 
-  const audioAssetId = typeof body.audioAssetId === 'string' && body.audioAssetId.trim()
-    ? body.audioAssetId.trim()
-    : null;
+  const audioAssetId =
+    typeof body.audioAssetId === 'string' && body.audioAssetId.trim()
+      ? body.audioAssetId.trim()
+      : null;
 
-  const sortOrder = typeof body.sortOrder === 'number' && Number.isInteger(body.sortOrder)
-    ? body.sortOrder
-    : 0;
+  const sortOrder =
+    typeof body.sortOrder === 'number' && Number.isInteger(body.sortOrder) ? body.sortOrder : 0;
 
   return {
     word,

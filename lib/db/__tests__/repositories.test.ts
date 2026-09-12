@@ -1,9 +1,9 @@
 import type { D1DatabaseLike, D1PreparedStatementLike } from '../client';
-import { UserRepository } from '../repositories/users';
 import { AuthRepository } from '../repositories/auth';
-import { ProfileRepository } from '../repositories/profiles';
 import { MediaRepository } from '../repositories/media';
+import { ProfileRepository } from '../repositories/profiles';
 import { RateLimitRepository } from '../repositories/rate-limits';
+import { UserRepository } from '../repositories/users';
 
 class FakeD1Database implements D1DatabaseLike {
   private tables = new Map<string, Array<Record<string, unknown>>>();
@@ -41,7 +41,9 @@ class FakeD1Database implements D1DatabaseLike {
     };
   }
 
-  async batch<T>(statements: D1PreparedStatementLike[]): Promise<Array<{ results: T[]; success: boolean }>> {
+  async batch<T>(
+    statements: D1PreparedStatementLike[]
+  ): Promise<Array<{ results: T[]; success: boolean }>> {
     const out: Array<{ results: T[]; success: boolean }> = [];
     for (const stmt of statements) {
       const res = await stmt.all<T>();
@@ -58,23 +60,37 @@ class FakeD1Database implements D1DatabaseLike {
     const normalized = query.trim().replace(/\s+/g, ' ');
 
     // users
-    if (normalized.startsWith('SELECT id, email, stripe_customer_id, subscription_status, created_at, updated_at FROM users WHERE id = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, email, stripe_customer_id, subscription_status, created_at, updated_at FROM users WHERE id = ?'
+      )
+    ) {
       const id = args[0];
-      return (this.tables.get('users')!.filter((u) => u.id === id) as unknown[]) as T[];
+      return this.tables.get('users')!.filter((u) => u.id === id) as unknown[] as T[];
     }
-    if (normalized.startsWith('SELECT id, email, stripe_customer_id, subscription_status, created_at, updated_at FROM users WHERE email = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, email, stripe_customer_id, subscription_status, created_at, updated_at FROM users WHERE email = ?'
+      )
+    ) {
       const email = args[0];
-      return (this.tables.get('users')!.filter((u) => u.email === email) as unknown[]) as T[];
+      return this.tables.get('users')!.filter((u) => u.email === email) as unknown[] as T[];
     }
     if (normalized.startsWith('INSERT INTO users')) {
       const [id, email, stripe_customer_id, subscription_status, created_at, updated_at] = args;
       if (this.tables.get('users')!.some((u) => u.email === email)) {
         throw new Error('UNIQUE constraint failed: users.email');
       }
-      this.tables.get('users')!.push({ id, email, stripe_customer_id, subscription_status, created_at, updated_at });
+      this.tables
+        .get('users')!
+        .push({ id, email, stripe_customer_id, subscription_status, created_at, updated_at });
       return [];
     }
-    if (normalized.startsWith('UPDATE users SET stripe_customer_id = ?, subscription_status = ?, updated_at = ? WHERE id = ?')) {
+    if (
+      normalized.startsWith(
+        'UPDATE users SET stripe_customer_id = ?, subscription_status = ?, updated_at = ? WHERE id = ?'
+      )
+    ) {
       const [stripe_customer_id, subscription_status, updated_at, id] = args;
       const user = this.tables.get('users')!.find((u) => u.id === id);
       if (user) {
@@ -88,18 +104,34 @@ class FakeD1Database implements D1DatabaseLike {
     // auth_tokens
     if (normalized.startsWith('INSERT INTO auth_tokens')) {
       const [token_hash, user_id, expires_at, created_at] = args;
-      this.tables.get('auth_tokens')!.push({ token_hash, user_id, expires_at, used_at: null, created_at });
+      this.tables
+        .get('auth_tokens')!
+        .push({ token_hash, user_id, expires_at, used_at: null, created_at });
       return [];
     }
-    if (normalized.startsWith('SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?'
+      )
+    ) {
       const [token_hash, now] = args as [string, number];
-      return (this.tables.get('auth_tokens')!.filter(
-        (t) => t.token_hash === token_hash && t.used_at === null && (t.expires_at as number) > now
-      ) as unknown[]) as T[];
+      return this.tables
+        .get('auth_tokens')!
+        .filter(
+          (t) => t.token_hash === token_hash && t.used_at === null && (t.expires_at as number) > now
+        ) as unknown[] as T[];
     }
-    if (normalized.startsWith('UPDATE auth_tokens SET used_at = ? WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?')) {
+    if (
+      normalized.startsWith(
+        'UPDATE auth_tokens SET used_at = ? WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?'
+      )
+    ) {
       const [used_at, token_hash, now] = args as [number, string, number];
-      const tok = this.tables.get('auth_tokens')!.find((t) => t.token_hash === token_hash && t.used_at === null && (t.expires_at as number) > now);
+      const tok = this.tables
+        .get('auth_tokens')!
+        .find(
+          (t) => t.token_hash === token_hash && t.used_at === null && (t.expires_at as number) > now
+        );
       if (tok) {
         tok.used_at = used_at;
         return [tok as unknown as T];
@@ -116,14 +148,22 @@ class FakeD1Database implements D1DatabaseLike {
     // sessions
     if (normalized.startsWith('INSERT INTO sessions')) {
       const [session_hash, user_id, expires_at, created_at, last_seen_at] = args;
-      this.tables.get('sessions')!.push({ session_hash, user_id, expires_at, created_at, last_seen_at });
+      this.tables
+        .get('sessions')!
+        .push({ session_hash, user_id, expires_at, created_at, last_seen_at });
       return [];
     }
-    if (normalized.startsWith('SELECT session_hash, user_id, expires_at, created_at, last_seen_at FROM sessions WHERE session_hash = ? AND expires_at > ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT session_hash, user_id, expires_at, created_at, last_seen_at FROM sessions WHERE session_hash = ? AND expires_at > ?'
+      )
+    ) {
       const [session_hash, now] = args as [string, number];
-      return (this.tables.get('sessions')!.filter(
-        (s) => s.session_hash === session_hash && (s.expires_at as number) > now
-      ) as unknown[]) as T[];
+      return this.tables
+        .get('sessions')!
+        .filter(
+          (s) => s.session_hash === session_hash && (s.expires_at as number) > now
+        ) as unknown[] as T[];
     }
     if (normalized.startsWith('UPDATE sessions SET last_seen_at = ? WHERE session_hash = ?')) {
       const [last_seen_at, session_hash] = args;
@@ -139,30 +179,62 @@ class FakeD1Database implements D1DatabaseLike {
     }
 
     // child_profiles
-    if (normalized.startsWith('SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE user_id = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE user_id = ?'
+      )
+    ) {
       const [user_id] = args;
-      return (this.tables.get('child_profiles')!.filter((p) => p.user_id === user_id) as unknown[]) as T[];
+      return this.tables
+        .get('child_profiles')!
+        .filter((p) => p.user_id === user_id) as unknown[] as T[];
     }
-    if (normalized.startsWith('SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE id = ? AND user_id = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE id = ? AND user_id = ?'
+      )
+    ) {
       const [id, user_id] = args;
-      return (this.tables.get('child_profiles')!.filter((p) => p.id === id && p.user_id === user_id) as unknown[]) as T[];
+      return this.tables
+        .get('child_profiles')!
+        .filter((p) => p.id === id && p.user_id === user_id) as unknown[] as T[];
     }
-    if (normalized.startsWith('SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE play_token_hash = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE play_token_hash = ?'
+      )
+    ) {
       const [hash] = args;
-      return (this.tables.get('child_profiles')!.filter((p) => p.play_token_hash === hash) as unknown[]) as T[];
+      return this.tables
+        .get('child_profiles')!
+        .filter((p) => p.play_token_hash === hash) as unknown[] as T[];
     }
-    if (normalized.startsWith('SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE play_code = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE play_code = ?'
+      )
+    ) {
       const [code] = args;
-      return (this.tables.get('child_profiles')!.filter((p) => p.play_code === code) as unknown[]) as T[];
+      return this.tables
+        .get('child_profiles')!
+        .filter((p) => p.play_code === code) as unknown[] as T[];
     }
     if (normalized.startsWith('INSERT INTO child_profiles')) {
       const [id, user_id, child_name, play_token_hash, play_code, created_at, updated_at] = args;
-      this.tables.get('child_profiles')!.push({ id, user_id, child_name, play_token_hash, play_code, created_at, updated_at });
+      this.tables
+        .get('child_profiles')!
+        .push({ id, user_id, child_name, play_token_hash, play_code, created_at, updated_at });
       return [];
     }
-    if (normalized.startsWith('UPDATE child_profiles SET child_name = ?, play_token_hash = ?, play_code = ?, updated_at = ? WHERE id = ? AND user_id = ?')) {
+    if (
+      normalized.startsWith(
+        'UPDATE child_profiles SET child_name = ?, play_token_hash = ?, play_code = ?, updated_at = ? WHERE id = ? AND user_id = ?'
+      )
+    ) {
       const [child_name, play_token_hash, play_code, updated_at, id, user_id] = args;
-      const prof = this.tables.get('child_profiles')!.find((p) => p.id === id && p.user_id === user_id);
+      const prof = this.tables
+        .get('child_profiles')!
+        .find((p) => p.id === id && p.user_id === user_id);
       if (prof) {
         prof.child_name = child_name;
         prof.play_token_hash = play_token_hash;
@@ -173,27 +245,59 @@ class FakeD1Database implements D1DatabaseLike {
     }
     if (normalized.startsWith('DELETE FROM child_profiles WHERE id = ? AND user_id = ?')) {
       const [id, user_id] = args;
-      const filtered = this.tables.get('child_profiles')!.filter((p) => !(p.id === id && p.user_id === user_id));
+      const filtered = this.tables
+        .get('child_profiles')!
+        .filter((p) => !(p.id === id && p.user_id === user_id));
       this.tables.set('child_profiles', filtered);
       return [];
     }
 
     // custom_words
-    if (normalized.startsWith('SELECT id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at FROM custom_words WHERE profile_id = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at FROM custom_words WHERE profile_id = ?'
+      )
+    ) {
       const [profile_id] = args;
-      return (this.tables.get('custom_words')!.filter((w) => w.profile_id === profile_id) as unknown[]) as T[];
+      return this.tables
+        .get('custom_words')!
+        .filter((w) => w.profile_id === profile_id) as unknown[] as T[];
     }
     if (normalized.startsWith('INSERT INTO custom_words')) {
-      const [id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at] = args;
+      const [
+        id,
+        profile_id,
+        word,
+        category,
+        prompt_label,
+        prompt_emoji,
+        photo_asset_id,
+        audio_asset_id,
+        sort_order,
+        created_at,
+        updated_at,
+      ] = args;
       this.tables.get('custom_words')!.push({
-        id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at
+        id,
+        profile_id,
+        word,
+        category,
+        prompt_label,
+        prompt_emoji,
+        photo_asset_id,
+        audio_asset_id,
+        sort_order,
+        created_at,
+        updated_at,
       });
       return [];
     }
     if (normalized.startsWith('DELETE FROM custom_words WHERE id = ? AND profile_id = ?')) {
       const [id, profile_id] = args;
       const before = this.tables.get('custom_words')!.length;
-      const filtered = this.tables.get('custom_words')!.filter((w) => !(w.id === id && w.profile_id === profile_id));
+      const filtered = this.tables
+        .get('custom_words')!
+        .filter((w) => !(w.id === id && w.profile_id === profile_id));
       this.tables.set('custom_words', filtered);
       if (filtered.length < before) {
         return [{ id }] as unknown[] as T[];
@@ -202,57 +306,95 @@ class FakeD1Database implements D1DatabaseLike {
     }
 
     // media_assets
-    if (normalized.startsWith('SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE id = ? AND profile_id = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE id = ? AND profile_id = ?'
+      )
+    ) {
       const [id, profile_id] = args;
-      return (this.tables.get('media_assets')!.filter((m) => m.id === id && m.profile_id === profile_id) as unknown[]) as T[];
+      return this.tables
+        .get('media_assets')!
+        .filter((m) => m.id === id && m.profile_id === profile_id) as unknown[] as T[];
     }
-    if (normalized.startsWith('SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE id = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE id = ?'
+      )
+    ) {
       const [id] = args;
-      return (this.tables.get('media_assets')!.filter((m) => m.id === id) as unknown[]) as T[];
+      return this.tables.get('media_assets')!.filter((m) => m.id === id) as unknown[] as T[];
     }
-    if (normalized.startsWith('SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE profile_id = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE profile_id = ?'
+      )
+    ) {
       const [profile_id] = args;
-      return (this.tables.get('media_assets')!.filter((m) => m.profile_id === profile_id) as unknown[]) as T[];
+      return this.tables
+        .get('media_assets')!
+        .filter((m) => m.profile_id === profile_id) as unknown[] as T[];
     }
     if (normalized.startsWith('INSERT INTO media_assets')) {
       const [id, profile_id, r2_key, kind, content_type, byte_size, created_at] = args;
-      this.tables.get('media_assets')!.push({ id, profile_id, r2_key, kind, content_type, byte_size, created_at });
+      this.tables
+        .get('media_assets')!
+        .push({ id, profile_id, r2_key, kind, content_type, byte_size, created_at });
       return [];
     }
     if (normalized.startsWith('DELETE FROM media_assets WHERE id = ? AND profile_id = ?')) {
       const [id, profile_id] = args;
-      const filtered = this.tables.get('media_assets')!.filter((m) => !(m.id === id && m.profile_id === profile_id));
+      const filtered = this.tables
+        .get('media_assets')!
+        .filter((m) => !(m.id === id && m.profile_id === profile_id));
       this.tables.set('media_assets', filtered);
       return [];
     }
 
     // audio_overrides
-    if (normalized.startsWith('SELECT id, profile_id, clip_key, asset_id, created_at, updated_at FROM audio_overrides WHERE profile_id = ? AND clip_key = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT id, profile_id, clip_key, asset_id, created_at, updated_at FROM audio_overrides WHERE profile_id = ? AND clip_key = ?'
+      )
+    ) {
       const [profile_id, clip_key] = args;
-      return (this.tables.get('audio_overrides')!.filter((a) => a.profile_id === profile_id && a.clip_key === clip_key) as unknown[]) as T[];
+      return this.tables
+        .get('audio_overrides')!
+        .filter((a) => a.profile_id === profile_id && a.clip_key === clip_key) as unknown[] as T[];
     }
     if (normalized.includes('INSERT INTO audio_overrides')) {
       const [id, profile_id, clip_key, asset_id, created_at, updated_at] = args;
-      const existing = this.tables.get('audio_overrides')!.find((a) => a.profile_id === profile_id && a.clip_key === clip_key);
+      const existing = this.tables
+        .get('audio_overrides')!
+        .find((a) => a.profile_id === profile_id && a.clip_key === clip_key);
       if (existing) {
         existing.asset_id = asset_id;
         existing.updated_at = updated_at;
       } else {
-        this.tables.get('audio_overrides')!.push({ id, profile_id, clip_key, asset_id, created_at, updated_at });
+        this.tables
+          .get('audio_overrides')!
+          .push({ id, profile_id, clip_key, asset_id, created_at, updated_at });
       }
       return [];
     }
 
     // rate_limits
     if (normalized.includes('INSERT INTO rate_limits (bucket, window_started_at, request_count)')) {
-      const [bucket, now, _now2, windowMs, maxRequests] = args as [string, number, number, number, number];
+      const [bucket, now, _now2, windowMs, maxRequests] = args as [
+        string,
+        number,
+        number,
+        number,
+        number,
+      ];
       const existing = this.tables.get('rate_limits')!.find((r) => r.bucket === bucket);
-      if (!existing || (now - (existing.window_started_at as number)) > windowMs) {
+      if (!existing || now - (existing.window_started_at as number) > windowMs) {
         if (existing) {
           existing.window_started_at = now;
           existing.request_count = 1;
         } else {
-          this.tables.get('rate_limits')!.push({ bucket, window_started_at: now, request_count: 1 });
+          this.tables
+            .get('rate_limits')!
+            .push({ bucket, window_started_at: now, request_count: 1 });
         }
         return [{ request_count: 1 }] as unknown[] as T[];
       }
@@ -264,9 +406,13 @@ class FakeD1Database implements D1DatabaseLike {
 
       return [];
     }
-    if (normalized.startsWith('SELECT bucket, window_started_at, request_count FROM rate_limits WHERE bucket = ?')) {
+    if (
+      normalized.startsWith(
+        'SELECT bucket, window_started_at, request_count FROM rate_limits WHERE bucket = ?'
+      )
+    ) {
       const [bucket] = args;
-      return (this.tables.get('rate_limits')!.filter((r) => r.bucket === bucket) as unknown[]) as T[];
+      return this.tables.get('rate_limits')!.filter((r) => r.bucket === bucket) as unknown[] as T[];
     }
     if (normalized.includes('INSERT INTO rate_limits')) {
       const [bucket, window_started_at] = args;
@@ -279,7 +425,11 @@ class FakeD1Database implements D1DatabaseLike {
       }
       return [];
     }
-    if (normalized.startsWith('UPDATE rate_limits SET request_count = request_count + 1 WHERE bucket = ?')) {
+    if (
+      normalized.startsWith(
+        'UPDATE rate_limits SET request_count = request_count + 1 WHERE bucket = ?'
+      )
+    ) {
       const [bucket] = args;
       const existing = this.tables.get('rate_limits')!.find((r) => r.bucket === bucket);
       if (existing) existing.request_count = (existing.request_count as number) + 1;
@@ -419,7 +569,9 @@ describe('Foxwords D1 Repositories', () => {
       const stranger = await profileRepo.findOwnedById('usr_stranger', 'prof_1');
       expect(stranger).toBeNull();
 
-      const patchResult = await profileRepo.updateOwned('usr_stranger', 'prof_1', { childName: 'Hacked' });
+      const patchResult = await profileRepo.updateOwned('usr_stranger', 'prof_1', {
+        childName: 'Hacked',
+      });
       expect(patchResult).toBeNull();
 
       const deleted = await profileRepo.deleteOwned('usr_stranger', 'prof_1');

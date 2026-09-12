@@ -11,6 +11,7 @@
       "app/**",
       "components/**",
       "constants/**",
+      "lib/**",
       "test-utils/**",
       "tests/**",
       "types/**",

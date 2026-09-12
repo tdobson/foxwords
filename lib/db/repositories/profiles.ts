@@ -26,7 +26,9 @@ export class ProfileRepository {
 
   async listForUser(userId: string): Promise<ChildProfileRow[]> {
     const stmt = this.db
-      .prepare('SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE user_id = ? ORDER BY created_at ASC')
+      .prepare(
+        'SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE user_id = ? ORDER BY created_at ASC'
+      )
       .bind(userId);
     const result = await stmt.all<ChildProfileRow>();
     return result.results;
@@ -34,21 +36,27 @@ export class ProfileRepository {
 
   async findOwnedById(userId: string, profileId: string): Promise<ChildProfileRow | null> {
     const stmt = this.db
-      .prepare('SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE id = ? AND user_id = ?')
+      .prepare(
+        'SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE id = ? AND user_id = ?'
+      )
       .bind(profileId, userId);
     return stmt.first<ChildProfileRow>();
   }
 
   async findByPlayTokenHash(tokenHash: string): Promise<ChildProfileRow | null> {
     const stmt = this.db
-      .prepare('SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE play_token_hash = ?')
+      .prepare(
+        'SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE play_token_hash = ?'
+      )
       .bind(tokenHash);
     return stmt.first<ChildProfileRow>();
   }
 
   async findByPlayCode(playCode: string): Promise<ChildProfileRow | null> {
     const stmt = this.db
-      .prepare('SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE play_code = ?')
+      .prepare(
+        'SELECT id, user_id, child_name, play_token_hash, play_code, created_at, updated_at FROM child_profiles WHERE play_code = ?'
+      )
       .bind(playCode.toUpperCase().trim());
     return stmt.first<ChildProfileRow>();
   }
@@ -56,8 +64,18 @@ export class ProfileRepository {
   async create(input: CreateProfileInput): Promise<ChildProfileRow> {
     const now = Date.now();
     await this.db
-      .prepare('INSERT INTO child_profiles (id, user_id, child_name, play_token_hash, play_code, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
-      .bind(input.id, input.userId, input.childName.trim(), input.playTokenHash, input.playCode.toUpperCase().trim(), now, now)
+      .prepare(
+        'INSERT INTO child_profiles (id, user_id, child_name, play_token_hash, play_code, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+      )
+      .bind(
+        input.id,
+        input.userId,
+        input.childName.trim(),
+        input.playTokenHash,
+        input.playCode.toUpperCase().trim(),
+        now,
+        now
+      )
       .run();
     return {
       id: input.id,
@@ -84,7 +102,9 @@ export class ProfileRepository {
     const now = Date.now();
 
     await this.db
-      .prepare('UPDATE child_profiles SET child_name = ?, play_token_hash = ?, play_code = ?, updated_at = ? WHERE id = ? AND user_id = ?')
+      .prepare(
+        'UPDATE child_profiles SET child_name = ?, play_token_hash = ?, play_code = ?, updated_at = ? WHERE id = ? AND user_id = ?'
+      )
       .bind(childName, playTokenHash, playCode, now, profileId, userId)
       .run();
 
@@ -110,7 +130,9 @@ export class ProfileRepository {
   // Custom words belonging to a profile
   async listWordsForProfile(profileId: string): Promise<CustomWordRow[]> {
     const stmt = this.db
-      .prepare('SELECT id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at FROM custom_words WHERE profile_id = ? ORDER BY sort_order ASC, created_at ASC')
+      .prepare(
+        'SELECT id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at FROM custom_words WHERE profile_id = ? ORDER BY sort_order ASC, created_at ASC'
+      )
       .bind(profileId);
     const result = await stmt.all<CustomWordRow>();
     return result.results;
@@ -122,7 +144,9 @@ export class ProfileRepository {
 
     const now = Date.now();
     await this.db
-      .prepare('INSERT INTO custom_words (id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+      .prepare(
+        'INSERT INTO custom_words (id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+      )
       .bind(
         input.id,
         input.profileId,
@@ -163,17 +187,22 @@ export class ProfileRepository {
     if (!profile) return null;
 
     const existing = await this.db
-      .prepare('SELECT id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at FROM custom_words WHERE id = ? AND profile_id = ?')
+      .prepare(
+        'SELECT id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at FROM custom_words WHERE id = ? AND profile_id = ?'
+      )
       .bind(wordId, profileId)
       .first<CustomWordRow>();
     if (!existing) return null;
 
     const word = patch.word !== undefined ? patch.word.toUpperCase().trim() : existing.word;
     const category = patch.category !== undefined ? patch.category : existing.category;
-    const promptLabel = patch.promptLabel !== undefined ? patch.promptLabel.trim() : existing.prompt_label;
+    const promptLabel =
+      patch.promptLabel !== undefined ? patch.promptLabel.trim() : existing.prompt_label;
     const promptEmoji = patch.promptEmoji !== undefined ? patch.promptEmoji : existing.prompt_emoji;
-    const photoAssetId = patch.photoAssetId !== undefined ? patch.photoAssetId : existing.photo_asset_id;
-    const audioAssetId = patch.audioAssetId !== undefined ? patch.audioAssetId : existing.audio_asset_id;
+    const photoAssetId =
+      patch.photoAssetId !== undefined ? patch.photoAssetId : existing.photo_asset_id;
+    const audioAssetId =
+      patch.audioAssetId !== undefined ? patch.audioAssetId : existing.audio_asset_id;
     const sortOrder = patch.sortOrder !== undefined ? patch.sortOrder : existing.sort_order;
     const now = Date.now();
 
@@ -181,7 +210,18 @@ export class ProfileRepository {
       .prepare(
         'UPDATE custom_words SET word = ?, category = ?, prompt_label = ?, prompt_emoji = ?, photo_asset_id = ?, audio_asset_id = ?, sort_order = ?, updated_at = ? WHERE id = ? AND profile_id = ?'
       )
-      .bind(word, category, promptLabel, promptEmoji, photoAssetId, audioAssetId, sortOrder, now, wordId, profileId)
+      .bind(
+        word,
+        category,
+        promptLabel,
+        promptEmoji,
+        photoAssetId,
+        audioAssetId,
+        sortOrder,
+        now,
+        wordId,
+        profileId
+      )
       .run();
 
     return {

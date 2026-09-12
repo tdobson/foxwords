@@ -23,13 +23,7 @@ export function serializeSessionCookie(token: string, appEnv: string): string {
 
 export function clearSessionCookie(appEnv: string): string {
   const isSecure = appEnv !== 'local';
-  const parts = [
-    `${SESSION_COOKIE_NAME}=`,
-    'Path=/',
-    'HttpOnly',
-    'SameSite=Lax',
-    'Max-Age=0',
-  ];
+  const parts = [`${SESSION_COOKIE_NAME}=`, 'Path=/', 'HttpOnly', 'SameSite=Lax', 'Max-Age=0'];
   if (isSecure) {
     parts.push('Secure');
   }

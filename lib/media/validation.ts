@@ -69,7 +69,13 @@ export function validateUpload(declaredContentType: string, buffer: ArrayBuffer)
 
   if (normalizedMime === 'audio/webm') {
     // EBML header 1A 45 DF A3
-    if (bytes.length < 4 || bytes[0] !== 0x1a || bytes[1] !== 0x45 || bytes[2] !== 0xdf || bytes[3] !== 0xa3) {
+    if (
+      bytes.length < 4 ||
+      bytes[0] !== 0x1a ||
+      bytes[1] !== 0x45 ||
+      bytes[2] !== 0xdf ||
+      bytes[3] !== 0xa3
+    ) {
       throw new Error('Signature mismatch: file does not match WebM magic bytes');
     }
     return { kind: 'word-audio', contentType: 'audio/webm', extension: 'webm', byteSize };
@@ -77,19 +83,37 @@ export function validateUpload(declaredContentType: string, buffer: ArrayBuffer)
 
   if (normalizedMime === 'audio/ogg' || normalizedMime === 'application/ogg') {
     // OggS: 4F 67 67 53
-    if (bytes.length < 4 || bytes[0] !== 0x4f || bytes[1] !== 0x67 || bytes[2] !== 0x67 || bytes[3] !== 0x53) {
+    if (
+      bytes.length < 4 ||
+      bytes[0] !== 0x4f ||
+      bytes[1] !== 0x67 ||
+      bytes[2] !== 0x67 ||
+      bytes[3] !== 0x53
+    ) {
       throw new Error('Signature mismatch: file does not match Ogg magic bytes');
     }
     return { kind: 'word-audio', contentType: 'audio/ogg', extension: 'ogg', byteSize };
   }
 
-  if (normalizedMime === 'audio/mp4' || normalizedMime === 'audio/m4a' || normalizedMime === 'audio/x-m4a') {
+  if (
+    normalizedMime === 'audio/mp4' ||
+    normalizedMime === 'audio/m4a' ||
+    normalizedMime === 'audio/x-m4a'
+  ) {
     // ftyp at offset 4: 66 74 79 70
-    if (bytes.length < 8 || bytes[4] !== 0x66 || bytes[5] !== 0x74 || bytes[6] !== 0x79 || bytes[7] !== 0x70) {
+    if (
+      bytes.length < 8 ||
+      bytes[4] !== 0x66 ||
+      bytes[5] !== 0x74 ||
+      bytes[6] !== 0x79 ||
+      bytes[7] !== 0x70
+    ) {
       throw new Error('Signature mismatch: file does not match MP4/M4A magic bytes');
     }
     return { kind: 'word-audio', contentType: 'audio/mp4', extension: 'm4a', byteSize };
   }
 
-  throw new Error(`Unsupported file type: ${declaredContentType}. Allowed: JPEG, PNG, WebP, WebM, Ogg, MP4/M4A.`);
+  throw new Error(
+    `Unsupported file type: ${declaredContentType}. Allowed: JPEG, PNG, WebP, WebM, Ogg, MP4/M4A.`
+  );
 }

@@ -1,5 +1,5 @@
-import { buildPublicPlayPayload } from '../public-payload';
 import type { CustomWordRow, MediaAssetRow } from '../../db/types';
+import { buildPublicPlayPayload } from '../public-payload';
 
 describe('buildPublicPlayPayload', () => {
   it('combines custom words with built-in words and constructs public play-token media URLs', () => {

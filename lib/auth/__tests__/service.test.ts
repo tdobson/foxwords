@@ -1,7 +1,7 @@
-import type { D1DatabaseLike, D1PreparedStatementLike } from '../../db/client';
 import type { RuntimeEnv } from '../../cloudflare-context';
-import { AuthService } from '../service';
+import type { D1DatabaseLike, D1PreparedStatementLike } from '../../db/client';
 import { defaultLocalMailSink } from '../../email/ses';
+import { AuthService } from '../service';
 
 class FakeD1 implements D1DatabaseLike {
   public users: any[] = [];
@@ -21,10 +21,16 @@ class FakeD1 implements D1DatabaseLike {
         if (norm.startsWith('SELECT id, email')) {
           const [email] = boundArgs as [string];
           const found = this.users.find((u) => u.email === email);
-          return (found as unknown) as T;
+          return found as unknown as T;
         }
         if (norm.includes('INSERT INTO rate_limits')) {
-          const [bucket, now, _now2, windowMs, maxRequests] = boundArgs as [string, number, number, number, number];
+          const [bucket, now, _now2, windowMs, maxRequests] = boundArgs as [
+            string,
+            number,
+            number,
+            number,
+            number,
+          ];
           const existing = this.rate_limits.find((r) => r.bucket === bucket);
           if (!existing || now - existing.window_started_at > windowMs) {
             if (existing) {
@@ -33,27 +39,37 @@ class FakeD1 implements D1DatabaseLike {
             } else {
               this.rate_limits.push({ bucket, window_started_at: now, request_count: 1 });
             }
-            return ({ request_count: 1 } as unknown) as T;
+            return { request_count: 1 } as unknown as T;
           }
           if (existing.request_count < maxRequests) {
             existing.request_count += 1;
-            return ({ request_count: existing.request_count } as unknown) as T;
+            return { request_count: existing.request_count } as unknown as T;
           }
           return null;
         }
-        if (norm.startsWith('UPDATE auth_tokens SET used_at = ? WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?')) {
+        if (
+          norm.startsWith(
+            'UPDATE auth_tokens SET used_at = ? WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?'
+          )
+        ) {
           const [used_at, token_hash, now] = boundArgs as [number, string, number];
-          const tok = this.auth_tokens.find((t) => t.token_hash === token_hash && t.used_at === null && t.expires_at > now);
+          const tok = this.auth_tokens.find(
+            (t) => t.token_hash === token_hash && t.used_at === null && t.expires_at > now
+          );
           if (tok) {
             tok.used_at = used_at;
-            return (tok as unknown) as T;
+            return tok as unknown as T;
           }
           return null;
         }
-        if (norm.startsWith('SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ?')) {
+        if (
+          norm.startsWith(
+            'SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ?'
+          )
+        ) {
           const [token_hash] = boundArgs as [string];
           const tok = this.auth_tokens.find((t) => t.token_hash === token_hash);
-          return (tok as unknown) as T;
+          return tok as unknown as T;
         }
         return null;
       },
@@ -77,8 +93,12 @@ class FakeD1 implements D1DatabaseLike {
       },
     };
   }
-  async batch() { return []; }
-  async exec() { return { count: 0, duration: 0 }; }
+  async batch() {
+    return [];
+  }
+  async exec() {
+    return { count: 0, duration: 0 };
+  }
 }
 
 describe('AuthService', () => {

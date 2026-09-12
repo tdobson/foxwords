@@ -15,21 +15,27 @@ export class MediaRepository {
 
   async findById(id: string): Promise<MediaAssetRow | null> {
     const stmt = this.db
-      .prepare('SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE id = ?')
+      .prepare(
+        'SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE id = ?'
+      )
       .bind(id);
     return stmt.first<MediaAssetRow>();
   }
 
   async findOwnedById(profileId: string, assetId: string): Promise<MediaAssetRow | null> {
     const stmt = this.db
-      .prepare('SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE id = ? AND profile_id = ?')
+      .prepare(
+        'SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE id = ? AND profile_id = ?'
+      )
       .bind(assetId, profileId);
     return stmt.first<MediaAssetRow>();
   }
 
   async listForProfile(profileId: string): Promise<MediaAssetRow[]> {
     const stmt = this.db
-      .prepare('SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE profile_id = ? ORDER BY created_at ASC')
+      .prepare(
+        'SELECT id, profile_id, r2_key, kind, content_type, byte_size, created_at FROM media_assets WHERE profile_id = ? ORDER BY created_at ASC'
+      )
       .bind(profileId);
     const result = await stmt.all<MediaAssetRow>();
     return result.results;
@@ -38,8 +44,18 @@ export class MediaRepository {
   async create(input: CreateMediaAssetInput): Promise<MediaAssetRow> {
     const now = Date.now();
     await this.db
-      .prepare('INSERT INTO media_assets (id, profile_id, r2_key, kind, content_type, byte_size, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
-      .bind(input.id, input.profileId, input.r2Key, input.kind, input.contentType, input.byteSize, now)
+      .prepare(
+        'INSERT INTO media_assets (id, profile_id, r2_key, kind, content_type, byte_size, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+      )
+      .bind(
+        input.id,
+        input.profileId,
+        input.r2Key,
+        input.kind,
+        input.contentType,
+        input.byteSize,
+        now
+      )
       .run();
     return {
       id: input.id,
@@ -65,26 +81,37 @@ export class MediaRepository {
   // Audio Overrides
   async getAudioOverride(profileId: string, clipKey: string): Promise<AudioOverrideRow | null> {
     const stmt = this.db
-      .prepare('SELECT id, profile_id, clip_key, asset_id, created_at, updated_at FROM audio_overrides WHERE profile_id = ? AND clip_key = ?')
+      .prepare(
+        'SELECT id, profile_id, clip_key, asset_id, created_at, updated_at FROM audio_overrides WHERE profile_id = ? AND clip_key = ?'
+      )
       .bind(profileId, clipKey);
     return stmt.first<AudioOverrideRow>();
   }
 
   async listAudioOverrides(profileId: string): Promise<AudioOverrideRow[]> {
     const stmt = this.db
-      .prepare('SELECT id, profile_id, clip_key, asset_id, created_at, updated_at FROM audio_overrides WHERE profile_id = ?')
+      .prepare(
+        'SELECT id, profile_id, clip_key, asset_id, created_at, updated_at FROM audio_overrides WHERE profile_id = ?'
+      )
       .bind(profileId);
     const result = await stmt.all<AudioOverrideRow>();
     return result.results;
   }
 
-  async setAudioOverride(id: string, profileId: string, clipKey: string, assetId: string): Promise<void> {
+  async setAudioOverride(
+    id: string,
+    profileId: string,
+    clipKey: string,
+    assetId: string
+  ): Promise<void> {
     const asset = await this.findOwnedById(profileId, assetId);
     if (!asset) {
       throw new Error(`Media asset ${assetId} does not belong to profile ${profileId}`);
     }
     if (asset.kind !== 'system-audio') {
-      throw new Error(`Media asset ${assetId} must be system-audio to set as audio override (got ${asset.kind})`);
+      throw new Error(
+        `Media asset ${assetId} must be system-audio to set as audio override (got ${asset.kind})`
+      );
     }
 
     const now = Date.now();

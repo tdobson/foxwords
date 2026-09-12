@@ -43,7 +43,7 @@ export function resolveWordAudio(
 }
 
 export function resolveSystemClip(
-  clipKey: string,
+  _clipKey: string,
   familyOverrideUrl: string | undefined,
   timClipPath: string | undefined,
   speechFallbackText: string

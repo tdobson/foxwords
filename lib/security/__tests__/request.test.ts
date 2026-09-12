@@ -1,8 +1,13 @@
 import { assertSameOrigin, type RequestLike } from '../request';
 
-function makeMockRequest(url: string, init: { method?: string; headers?: Record<string, string> } = {}): RequestLike {
+function makeMockRequest(
+  url: string,
+  init: { method?: string; headers?: Record<string, string> } = {}
+): RequestLike {
   const method = init.method ?? 'GET';
-  const headerMap = new Map(Object.entries(init.headers ?? {}).map(([k, v]) => [k.toLowerCase(), v]));
+  const headerMap = new Map(
+    Object.entries(init.headers ?? {}).map(([k, v]) => [k.toLowerCase(), v])
+  );
   return {
     url,
     method,
@@ -57,7 +62,9 @@ describe('Security Request Validation', () => {
         Origin: '%',
       },
     });
-    expect(() => assertSameOrigin(badOriginReq, 'http://localhost:8787')).toThrow(/Malformed Origin header/);
+    expect(() => assertSameOrigin(badOriginReq, 'http://localhost:8787')).toThrow(
+      /Malformed Origin header/
+    );
 
     const badRefererReq = makeMockRequest('http://localhost:8787/api/auth/request', {
       method: 'POST',
@@ -65,6 +72,8 @@ describe('Security Request Validation', () => {
         Referer: '%',
       },
     });
-    expect(() => assertSameOrigin(badRefererReq, 'http://localhost:8787')).toThrow(/Malformed Referer header/);
+    expect(() => assertSameOrigin(badRefererReq, 'http://localhost:8787')).toThrow(
+      /Malformed Referer header/
+    );
   });
 });

@@ -1,11 +1,16 @@
-import type { MediaAssetRow } from '../db/types';
 import type { RuntimeEnv } from '../cloudflare-context';
+import type { MediaAssetRow } from '../db/types';
 import type { ValidatedUpload } from './validation';
 
 const ID_REGEX = /^[A-Za-z0-9_-]{1,64}$/;
 const EXT_REGEX = /^[a-z0-9]{2,5}$/;
 
-export function makeR2Key(envPrefix: string, profileId: string, assetId: string, extension: string): string {
+export function makeR2Key(
+  envPrefix: string,
+  profileId: string,
+  assetId: string,
+  extension: string
+): string {
   if (!ID_REGEX.test(profileId)) {
     throw new Error(`Invalid profileId in R2 key generation: ${profileId}`);
   }

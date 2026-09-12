@@ -1,6 +1,11 @@
-import type { MediaAssetRow } from '../../db/types';
 import type { RuntimeEnv } from '../../cloudflare-context';
-import { deleteProfileAssetObject, getProfileAssetResponse, makeR2Key, putProfileAsset } from '../r2';
+import type { MediaAssetRow } from '../../db/types';
+import {
+  deleteProfileAssetObject,
+  getProfileAssetResponse,
+  makeR2Key,
+  putProfileAsset,
+} from '../r2';
 import type { ValidatedUpload } from '../validation';
 
 describe('R2 Media Storage', () => {
@@ -73,7 +78,9 @@ describe('R2 Media Storage', () => {
   });
 
   it('rejects unvalidated profileId, assetId, or unknown env in makeR2Key', () => {
-    expect(() => makeR2Key('invalid_env', 'prof_1', 'asset_1', 'jpg')).toThrow(/Unsupported environment/);
+    expect(() => makeR2Key('invalid_env', 'prof_1', 'asset_1', 'jpg')).toThrow(
+      /Unsupported environment/
+    );
     expect(() => makeR2Key('dev', 'bad/profile', 'asset_1', 'jpg')).toThrow(/Invalid profileId/);
     expect(() => makeR2Key('dev', 'prof_1', '../bad', 'jpg')).toThrow(/Invalid assetId/);
     expect(makeR2Key('production', 'prof_1', 'asset_1', 'jpg')).toBe('prod/prof_1/asset_1.jpg');

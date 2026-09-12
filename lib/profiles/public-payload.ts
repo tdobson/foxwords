@@ -1,6 +1,6 @@
-import type { AudioOverrideRow, CustomWordRow, MediaAssetRow } from '../db/types';
-import type { LearningWord } from '../../types/learning-word.types';
 import { LEARNING_WORDS } from '../../constants/learning-words';
+import type { LearningWord } from '../../types/learning-word.types';
+import type { AudioOverrideRow, CustomWordRow, MediaAssetRow } from '../db/types';
 
 export interface PublicPlayPayload {
   childName: string;
@@ -41,7 +41,8 @@ export function buildPublicPlayPayload(params: {
   if (params.audioOverrides) {
     for (const ov of params.audioOverrides) {
       if (assetMap.has(ov.asset_id)) {
-        audioOverridesMap[ov.clip_key] = `/api/play/${encodeURIComponent(params.playToken)}/assets/${encodeURIComponent(ov.asset_id)}`;
+        audioOverridesMap[ov.clip_key] =
+          `/api/play/${encodeURIComponent(params.playToken)}/assets/${encodeURIComponent(ov.asset_id)}`;
       }
     }
   }

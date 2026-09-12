@@ -7,7 +7,9 @@ export class AuthRepository {
   async createToken(tokenHash: string, userId: string, expiresAt: number): Promise<AuthTokenRow> {
     const now = Date.now();
     await this.db
-      .prepare('INSERT INTO auth_tokens (token_hash, user_id, expires_at, used_at, created_at) VALUES (?, ?, ?, NULL, ?)')
+      .prepare(
+        'INSERT INTO auth_tokens (token_hash, user_id, expires_at, used_at, created_at) VALUES (?, ?, ?, NULL, ?)'
+      )
       .bind(tokenHash, userId, expiresAt, now)
       .run();
     return {
@@ -38,14 +40,18 @@ export class AuthRepository {
 
   async findTokenByHash(tokenHash: string): Promise<AuthTokenRow | null> {
     const stmt = this.db
-      .prepare('SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ?')
+      .prepare(
+        'SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ?'
+      )
       .bind(tokenHash);
     return stmt.first<AuthTokenRow>();
   }
 
   async findValidToken(tokenHash: string, now = Date.now()): Promise<AuthTokenRow | null> {
     const stmt = this.db
-      .prepare('SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?')
+      .prepare(
+        'SELECT token_hash, user_id, expires_at, used_at, created_at FROM auth_tokens WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?'
+      )
       .bind(tokenHash, now);
     return stmt.first<AuthTokenRow>();
   }
@@ -60,7 +66,9 @@ export class AuthRepository {
   async createSession(sessionHash: string, userId: string, expiresAt: number): Promise<SessionRow> {
     const now = Date.now();
     await this.db
-      .prepare('INSERT INTO sessions (session_hash, user_id, expires_at, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?)')
+      .prepare(
+        'INSERT INTO sessions (session_hash, user_id, expires_at, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?)'
+      )
       .bind(sessionHash, userId, expiresAt, now, now)
       .run();
     return {
@@ -74,7 +82,9 @@ export class AuthRepository {
 
   async findValidSession(sessionHash: string, now = Date.now()): Promise<SessionRow | null> {
     const stmt = this.db
-      .prepare('SELECT session_hash, user_id, expires_at, created_at, last_seen_at FROM sessions WHERE session_hash = ? AND expires_at > ?')
+      .prepare(
+        'SELECT session_hash, user_id, expires_at, created_at, last_seen_at FROM sessions WHERE session_hash = ? AND expires_at > ?'
+      )
       .bind(sessionHash, now);
     const row = await stmt.first<SessionRow>();
     if (!row) return null;
@@ -89,9 +99,6 @@ export class AuthRepository {
   }
 
   async deleteSession(sessionHash: string): Promise<void> {
-    await this.db
-      .prepare('DELETE FROM sessions WHERE session_hash = ?')
-      .bind(sessionHash)
-      .run();
+    await this.db.prepare('DELETE FROM sessions WHERE session_hash = ?').bind(sessionHash).run();
   }
 }

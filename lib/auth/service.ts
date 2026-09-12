@@ -102,7 +102,7 @@ export class AuthService {
     if (!consumed) {
       // Check if it was expired or used for diagnostic clarity
       const existing = await this.authRepo.findTokenByHash(tokenHash);
-      if (existing && existing.used_at) {
+      if (existing?.used_at) {
         return { success: false, error: 'already_used' };
       }
       if (existing && existing.expires_at <= now) {
@@ -112,7 +112,11 @@ export class AuthService {
     }
 
     // Token was atomically consumed; create session
-    const { setCookieHeader } = await createSession(this.authRepo, consumed.user_id, this.env.APP_ENV);
+    const { setCookieHeader } = await createSession(
+      this.authRepo,
+      consumed.user_id,
+      this.env.APP_ENV
+    );
 
     return {
       success: true,

@@ -40,7 +40,9 @@ export function assertSameOrigin(request: RequestLike, expectedOrigin: string): 
       throw new OriginRejectedError(`Malformed Origin header rejected: ${originHeader}`);
     }
     if (originVal !== expected) {
-      throw new OriginRejectedError(`Cross-origin request rejected. Expected: ${expected}, Received: ${originHeader}`);
+      throw new OriginRejectedError(
+        `Cross-origin request rejected. Expected: ${expected}, Received: ${originHeader}`
+      );
     }
     return;
   }
@@ -54,7 +56,9 @@ export function assertSameOrigin(request: RequestLike, expectedOrigin: string): 
       throw new OriginRejectedError(`Malformed Referer header rejected: ${refererHeader}`);
     }
     if (refererVal !== expected) {
-      throw new OriginRejectedError(`Cross-origin request rejected. Expected: ${expected}, Referer: ${refererHeader}`);
+      throw new OriginRejectedError(
+        `Cross-origin request rejected. Expected: ${expected}, Referer: ${refererHeader}`
+      );
     }
     return;
   }

@@ -14,14 +14,18 @@ export class UserRepository {
 
   async findById(id: string): Promise<UserRow | null> {
     const stmt = this.db
-      .prepare('SELECT id, email, stripe_customer_id, subscription_status, created_at, updated_at FROM users WHERE id = ?')
+      .prepare(
+        'SELECT id, email, stripe_customer_id, subscription_status, created_at, updated_at FROM users WHERE id = ?'
+      )
       .bind(id);
     return stmt.first<UserRow>();
   }
 
   async findByEmail(email: string): Promise<UserRow | null> {
     const stmt = this.db
-      .prepare('SELECT id, email, stripe_customer_id, subscription_status, created_at, updated_at FROM users WHERE email = ?')
+      .prepare(
+        'SELECT id, email, stripe_customer_id, subscription_status, created_at, updated_at FROM users WHERE email = ?'
+      )
       .bind(email.toLowerCase().trim());
     return stmt.first<UserRow>();
   }
@@ -56,7 +60,9 @@ export class UserRepository {
   ): Promise<void> {
     const now = Date.now();
     await this.db
-      .prepare('UPDATE users SET stripe_customer_id = ?, subscription_status = ?, updated_at = ? WHERE id = ?')
+      .prepare(
+        'UPDATE users SET stripe_customer_id = ?, subscription_status = ?, updated_at = ? WHERE id = ?'
+      )
       .bind(stripeCustomerId, subscriptionStatus, now, id)
       .run();
   }

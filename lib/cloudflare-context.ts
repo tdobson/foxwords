@@ -27,8 +27,8 @@ export async function getRuntimeEnv(): Promise<RuntimeEnv> {
   try {
     const { getCloudflareContext } = await import('@opennextjs/cloudflare');
     const ctx = await getCloudflareContext();
-    if (ctx && ctx.env) {
-      return (ctx.env as unknown) as RuntimeEnv;
+    if (ctx?.env) {
+      return ctx.env as unknown as RuntimeEnv;
     }
   } catch {
     // Falling through to process.env fallback for node/local tooling

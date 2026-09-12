@@ -1,4 +1,9 @@
-import { buildCanonicalRequest, buildStringToSign, calculateSigningKey, signAwsRequest } from '../aws-sigv4';
+import {
+  buildCanonicalRequest,
+  buildStringToSign,
+  calculateSigningKey,
+  signAwsRequest,
+} from '../aws-sigv4';
 
 describe('AWS Signature V4 (Web Crypto)', () => {
   const date = new Date('2026-09-12T12:00:00Z');

@@ -1,11 +1,29 @@
 import type { D1DatabaseLike, D1PreparedStatementLike } from '../../db/client';
 import { AuthRepository } from '../../db/repositories/auth';
 import { UserRepository } from '../../db/repositories/users';
-import { clearSessionCookie, createSession, getSessionUser, serializeSessionCookie } from '../session';
+import {
+  clearSessionCookie,
+  createSession,
+  getSessionUser,
+  serializeSessionCookie,
+} from '../session';
 
 class InMemoryD1 implements D1DatabaseLike {
-  public sessions: Array<{ session_hash: string; user_id: string; expires_at: number; created_at: number; last_seen_at: number }> = [];
-  public users: Array<{ id: string; email: string; stripe_customer_id: string | null; subscription_status: 'free' | 'plus'; created_at: number; updated_at: number }> = [];
+  public sessions: Array<{
+    session_hash: string;
+    user_id: string;
+    expires_at: number;
+    created_at: number;
+    last_seen_at: number;
+  }> = [];
+  public users: Array<{
+    id: string;
+    email: string;
+    stripe_customer_id: string | null;
+    subscription_status: 'free' | 'plus';
+    created_at: number;
+    updated_at: number;
+  }> = [];
 
   prepare(query: string): D1PreparedStatementLike {
     const args: unknown[] = [];
@@ -19,12 +37,12 @@ class InMemoryD1 implements D1DatabaseLike {
         if (norm.startsWith('SELECT session_hash')) {
           const [hash, now] = args as [string, number];
           const found = this.sessions.find((s) => s.session_hash === hash && s.expires_at > now);
-          return (found as unknown) as T;
+          return found as unknown as T;
         }
         if (norm.startsWith('SELECT id, email')) {
           const [id] = args as [string];
           const found = this.users.find((u) => u.id === id);
-          return (found as unknown) as T;
+          return found as unknown as T;
         }
         return null;
       },
@@ -32,7 +50,13 @@ class InMemoryD1 implements D1DatabaseLike {
       run: async () => {
         const norm = query.trim().replace(/\s+/g, ' ');
         if (norm.startsWith('INSERT INTO sessions')) {
-          const [session_hash, user_id, expires_at, created_at, last_seen_at] = args as [string, string, number, number, number];
+          const [session_hash, user_id, expires_at, created_at, last_seen_at] = args as [
+            string,
+            string,
+            number,
+            number,
+            number,
+          ];
           this.sessions.push({ session_hash, user_id, expires_at, created_at, last_seen_at });
         } else if (norm.startsWith('DELETE FROM sessions')) {
           const [hash] = args as [string];
@@ -46,8 +70,12 @@ class InMemoryD1 implements D1DatabaseLike {
       },
     };
   }
-  async batch() { return []; }
-  async exec() { return { count: 0, duration: 0 }; }
+  async batch() {
+    return [];
+  }
+  async exec() {
+    return { count: 0, duration: 0 };
+  }
 }
 
 describe('Security Session Management', () => {

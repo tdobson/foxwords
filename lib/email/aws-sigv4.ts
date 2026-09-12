@@ -74,8 +74,10 @@ export async function buildCanonicalRequest(input: {
     .sort();
 
   const canonicalHeaders = sortedHeaderKeys
-    .map((k) => `${k}:${input.headers[k].trim()}
-`)
+    .map(
+      (k) => `${k}:${input.headers[k].trim()}
+`
+    )
     .join('');
 
   const signedHeaders = sortedHeaderKeys.join(';');

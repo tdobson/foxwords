@@ -49,17 +49,32 @@ describe('profile-audio resolver', () => {
 
   it('system clip follows family override -> Tim clip -> speech fallback', () => {
     // 1. Family override wins
-    const r1 = resolveSystemClip('clock:one-oclock', '/api/play/tok/assets/a1', '/audio/clock/one-oclock.webm', 'one o clock');
+    const r1 = resolveSystemClip(
+      'clock:one-oclock',
+      '/api/play/tok/assets/a1',
+      '/audio/clock/one-oclock.webm',
+      'one o clock'
+    );
     expect(r1.source).toBe('family');
     expect(r1.audioPath).toBe('/api/play/tok/assets/a1');
 
     // 2. Tim clip wins if no family override
-    const r2 = resolveSystemClip('clock:one-oclock', undefined, '/audio/clock/one-oclock.webm', 'one o clock');
+    const r2 = resolveSystemClip(
+      'clock:one-oclock',
+      undefined,
+      '/audio/clock/one-oclock.webm',
+      'one o clock'
+    );
     expect(r2.source).toBe('tim');
     expect(r2.audioPath).toBe('/audio/clock/one-oclock.webm');
 
     // 3. Speech fallback
-    const r3 = resolveSystemClip('clock:twelve-forty-seven', undefined, undefined, 'twelve forty-seven');
+    const r3 = resolveSystemClip(
+      'clock:twelve-forty-seven',
+      undefined,
+      undefined,
+      'twelve forty-seven'
+    );
     expect(r3.source).toBe('speech');
     expect(r3.utteranceText).toBe('twelve forty-seven');
   });
