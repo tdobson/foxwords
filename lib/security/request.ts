@@ -10,6 +10,13 @@ export interface RequestLike {
   };
 }
 
+export class OriginRejectedError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'OriginRejectedError';
+  }
+}
+
 export function assertSameOrigin(request: RequestLike, expectedOrigin: string): void {
   const method = request.method.toUpperCase();
   // Safe idempotent methods do not require CSRF origin validation
@@ -17,23 +24,41 @@ export function assertSameOrigin(request: RequestLike, expectedOrigin: string): 
     return;
   }
 
-  const expected = new URL(expectedOrigin).origin;
+  let expected: string;
+  try {
+    expected = new URL(expectedOrigin).origin;
+  } catch {
+    throw new OriginRejectedError(`Invalid expected origin configuration: ${expectedOrigin}`);
+  }
+
   const originHeader = request.headers.get('origin');
   if (originHeader) {
-    if (new URL(originHeader).origin !== expected) {
-      throw new Error(`Cross-origin request rejected. Expected: ${expected}, Received: ${originHeader}`);
+    let originVal: string;
+    try {
+      originVal = new URL(originHeader).origin;
+    } catch {
+      throw new OriginRejectedError(`Malformed Origin header rejected: ${originHeader}`);
+    }
+    if (originVal !== expected) {
+      throw new OriginRejectedError(`Cross-origin request rejected. Expected: ${expected}, Received: ${originHeader}`);
     }
     return;
   }
 
   const refererHeader = request.headers.get('referer');
   if (refererHeader) {
-    if (new URL(refererHeader).origin !== expected) {
-      throw new Error(`Cross-origin request rejected. Expected: ${expected}, Referer: ${refererHeader}`);
+    let refererVal: string;
+    try {
+      refererVal = new URL(refererHeader).origin;
+    } catch {
+      throw new OriginRejectedError(`Malformed Referer header rejected: ${refererHeader}`);
+    }
+    if (refererVal !== expected) {
+      throw new OriginRejectedError(`Cross-origin request rejected. Expected: ${expected}, Referer: ${refererHeader}`);
     }
     return;
   }
 
   // If both origin and referer are missing on state-changing requests, reject
-  throw new Error('Missing Origin or Referer header on state-changing request');
+  throw new OriginRejectedError('Missing Origin or Referer header on state-changing request');
 }

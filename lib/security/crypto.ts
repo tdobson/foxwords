@@ -48,9 +48,28 @@ export function validateWord(value: string): string {
 }
 
 export function normalizePlayCode(value: string): string {
-  const cleaned = value.trim().toUpperCase().replace(/-/g, '');
-  if (!/^[A-Z0-9]{4,6}$/.test(cleaned)) {
+  const trimmed = value.trim().toUpperCase();
+  // Accepts 4-6 alphanumeric characters with at most one single hyphen separator
+  // Not at the start, not at the end, and not multiple hyphens: e.g. ABCD, ABC-D, ABC-DE, ABCDEF
+  const hyphenCount = (trimmed.match(/-/g) || []).length;
+  if (hyphenCount > 1) {
+    throw new Error('Invalid family play code. Must contain at most one hyphen.');
+  }
+
+  if (hyphenCount === 1) {
+    if (trimmed.startsWith('-') || trimmed.endsWith('-')) {
+      throw new Error('Invalid family play code format: hyphen cannot be at start or end.');
+    }
+    const parts = trimmed.split('-');
+    const withoutHyphen = parts.join('');
+    if (!/^[A-Z0-9]{4,6}$/.test(withoutHyphen)) {
+      throw new Error('Invalid family play code. Must be 4 to 6 alphanumeric characters.');
+    }
+    return withoutHyphen;
+  }
+
+  if (!/^[A-Z0-9]{4,6}$/.test(trimmed)) {
     throw new Error('Invalid family play code. Must be 4 to 6 alphanumeric characters.');
   }
-  return cleaned;
+  return trimmed;
 }

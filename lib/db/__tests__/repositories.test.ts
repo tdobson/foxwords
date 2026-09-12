@@ -97,6 +97,15 @@ class FakeD1Database implements D1DatabaseLike {
         (t) => t.token_hash === token_hash && t.used_at === null && (t.expires_at as number) > now
       ) as unknown[]) as T[];
     }
+    if (normalized.startsWith('UPDATE auth_tokens SET used_at = ? WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?')) {
+      const [used_at, token_hash, now] = args as [number, string, number];
+      const tok = this.tables.get('auth_tokens')!.find((t) => t.token_hash === token_hash && t.used_at === null && (t.expires_at as number) > now);
+      if (tok) {
+        tok.used_at = used_at;
+        return [tok as unknown as T];
+      }
+      return [];
+    }
     if (normalized.startsWith('UPDATE auth_tokens SET used_at = ? WHERE token_hash = ?')) {
       const [used_at, token_hash] = args;
       const tok = this.tables.get('auth_tokens')!.find((t) => t.token_hash === token_hash);
@@ -183,8 +192,12 @@ class FakeD1Database implements D1DatabaseLike {
     }
     if (normalized.startsWith('DELETE FROM custom_words WHERE id = ? AND profile_id = ?')) {
       const [id, profile_id] = args;
+      const before = this.tables.get('custom_words')!.length;
       const filtered = this.tables.get('custom_words')!.filter((w) => !(w.id === id && w.profile_id === profile_id));
       this.tables.set('custom_words', filtered);
+      if (filtered.length < before) {
+        return [{ id }] as unknown[] as T[];
+      }
       return [];
     }
 
@@ -231,6 +244,26 @@ class FakeD1Database implements D1DatabaseLike {
     }
 
     // rate_limits
+    if (normalized.includes('INSERT INTO rate_limits (bucket, window_started_at, request_count)')) {
+      const [bucket, now, _now2, windowMs, maxRequests] = args as [string, number, number, number, number];
+      const existing = this.tables.get('rate_limits')!.find((r) => r.bucket === bucket);
+      if (!existing || (now - (existing.window_started_at as number)) > windowMs) {
+        if (existing) {
+          existing.window_started_at = now;
+          existing.request_count = 1;
+        } else {
+          this.tables.get('rate_limits')!.push({ bucket, window_started_at: now, request_count: 1 });
+        }
+        return [{ request_count: 1 }] as unknown[] as T[];
+      }
+
+      if ((existing.request_count as number) < maxRequests) {
+        existing.request_count = (existing.request_count as number) + 1;
+        return [{ request_count: existing.request_count }] as unknown[] as T[];
+      }
+
+      return [];
+    }
     if (normalized.startsWith('SELECT bucket, window_started_at, request_count FROM rate_limits WHERE bucket = ?')) {
       const [bucket] = args;
       return (this.tables.get('rate_limits')!.filter((r) => r.bucket === bucket) as unknown[]) as T[];
@@ -308,18 +341,41 @@ describe('Foxwords D1 Repositories', () => {
   });
 
   describe('AuthRepository', () => {
-    it('creates, verifies and consumes single-use auth tokens', async () => {
+    it('creates, verifies and consumes single-use auth tokens atomically', async () => {
       const now = Date.now();
       const expiresAt = now + 15 * 60 * 1000;
       await authRepo.createToken('hash_token_abc', 'usr_123', expiresAt);
 
-      const valid = await authRepo.findValidToken('hash_token_abc', now);
+      // Atomic consume returns the consumed token
+      const consumed = await authRepo.consumeValidToken('hash_token_abc', now);
+      expect(consumed).not.toBeNull();
+      expect(consumed?.user_id).toBe('usr_123');
+      expect(consumed?.used_at).toBe(now);
+
+      // Second attempt to consume (replay attack) returns null
+      const replayed = await authRepo.consumeValidToken('hash_token_abc', now);
+      expect(replayed).toBeNull();
+    });
+
+    it('returns null for expired auth tokens on consume', async () => {
+      const now = Date.now();
+      await authRepo.createToken('hash_token_exp', 'usr_123', now - 1000);
+      const res = await authRepo.consumeValidToken('hash_token_exp', now);
+      expect(res).toBeNull();
+    });
+
+    it('creates, verifies and consumes single-use auth tokens with markTokenUsed', async () => {
+      const now = Date.now();
+      const expiresAt = now + 15 * 60 * 1000;
+      await authRepo.createToken('hash_token_manual', 'usr_123', expiresAt);
+
+      const valid = await authRepo.findValidToken('hash_token_manual', now);
       expect(valid).not.toBeNull();
       expect(valid?.user_id).toBe('usr_123');
 
-      await authRepo.markTokenUsed('hash_token_abc', now);
+      await authRepo.markTokenUsed('hash_token_manual', now);
 
-      const used = await authRepo.findValidToken('hash_token_abc', now);
+      const used = await authRepo.findValidToken('hash_token_manual', now);
       expect(used).toBeNull();
     });
 
@@ -441,6 +497,24 @@ describe('Foxwords D1 Repositories', () => {
     });
 
     it('manages audio overrides with upsert semantics', async () => {
+      // Must create system-audio assets owned by prof_1 first
+      await mediaRepo.create({
+        id: 'asset_audio_1',
+        profileId: 'prof_1',
+        r2Key: 'dev/prof_1/asset_audio_1.webm',
+        kind: 'system-audio',
+        contentType: 'audio/webm',
+        byteSize: 2048,
+      });
+      await mediaRepo.create({
+        id: 'asset_audio_2',
+        profileId: 'prof_1',
+        r2Key: 'dev/prof_1/asset_audio_2.webm',
+        kind: 'system-audio',
+        contentType: 'audio/webm',
+        byteSize: 2048,
+      });
+
       await mediaRepo.setAudioOverride('ov_1', 'prof_1', 'word:cat', 'asset_audio_1');
       const initial = await mediaRepo.getAudioOverride('prof_1', 'word:cat');
       expect(initial?.asset_id).toBe('asset_audio_1');

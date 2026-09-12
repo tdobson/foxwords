@@ -100,6 +100,12 @@ describe('Security Session Management', () => {
     expect(user).not.toBeNull();
     expect(user?.id).toBe('usr_1');
 
+    // Also test cookie when it is preceded by another cookie
+    const precededCookieHeader = `other=1; __Host-foxwords_session=${rawToken}`;
+    const userPreceded = await getSessionUser(authRepo, userRepo, precededCookieHeader);
+    expect(userPreceded).not.toBeNull();
+    expect(userPreceded?.id).toBe('usr_1');
+
     const badUser = await getSessionUser(authRepo, userRepo, '__Host-foxwords_session=wrong-token');
     expect(badUser).toBeNull();
   });

@@ -156,10 +156,10 @@ export class ProfileRepository {
   async deleteWordOwned(userId: string, profileId: string, wordId: string): Promise<boolean> {
     const profile = await this.findOwnedById(userId, profileId);
     if (!profile) return false;
-    await this.db
-      .prepare('DELETE FROM custom_words WHERE id = ? AND profile_id = ?')
+    const deleted = await this.db
+      .prepare('DELETE FROM custom_words WHERE id = ? AND profile_id = ? RETURNING id')
       .bind(wordId, profileId)
-      .run();
-    return true;
+      .first<{ id: string }>();
+    return deleted !== null;
   }
 }

@@ -49,4 +49,22 @@ describe('Security Request Validation', () => {
     });
     expect(() => assertSameOrigin(req, 'http://localhost:8787')).not.toThrow();
   });
+
+  it('rejects malformed origin or referer with OriginRejectedError without throwing unhandled TypeError', () => {
+    const badOriginReq = makeMockRequest('http://localhost:8787/api/auth/request', {
+      method: 'POST',
+      headers: {
+        Origin: '%',
+      },
+    });
+    expect(() => assertSameOrigin(badOriginReq, 'http://localhost:8787')).toThrow(/Malformed Origin header/);
+
+    const badRefererReq = makeMockRequest('http://localhost:8787/api/auth/request', {
+      method: 'POST',
+      headers: {
+        Referer: '%',
+      },
+    });
+    expect(() => assertSameOrigin(badRefererReq, 'http://localhost:8787')).toThrow(/Malformed Referer header/);
+  });
 });

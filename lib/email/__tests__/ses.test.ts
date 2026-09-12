@@ -44,4 +44,31 @@ describe('SES Magic-Link Mailer', () => {
       })
     ).rejects.toThrow(/AWS credentials missing/);
   });
+
+  it('escapes potential injection in loginUrl and rejects non-http protocols', async () => {
+    const localEnv: RuntimeEnv = {
+      DB: {} as any,
+      APP_ENV: 'local',
+      SES_REGION: 'eu-west-2',
+      APP_ORIGIN: 'http://localhost:8787',
+    };
+
+    const res = await sendMagicLink(localEnv, {
+      toEmail: 'parent@example.com',
+      loginUrl: 'http://localhost:8787/api/auth/verify?token=abc"><img src=x onerror=alert(1)>',
+    });
+
+    expect(res.status).toBe('mocked');
+    const sent = defaultLocalMailSink.getSent();
+    const last = sent[sent.length - 1];
+    expect(last.html).not.toContain('"><img src=x onerror=alert(1)>');
+    expect(last.html).toContain('%22%3E%3Cimg%20src=x%20onerror=alert(1)%3E');
+
+    await expect(
+      sendMagicLink(localEnv, {
+        toEmail: 'parent@example.com',
+        loginUrl: 'javascript:alert(1)',
+      })
+    ).rejects.toThrow(/Invalid magic link URL scheme/);
+  });
 });

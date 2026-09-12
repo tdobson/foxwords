@@ -14,8 +14,11 @@ describe('Tooling configuration', () => {
     expect(packageJson.scripts.lint).not.toContain('oxlint');
   });
 
-  test('format:test invokes biome format', () => {
-    expect(packageJson.scripts['format:test']).toContain('biome format');
+  test('format:test invokes biome format check', () => {
+    expect(
+      packageJson.scripts['format:test'].includes('biome format') ||
+        packageJson.scripts['format:test'].includes('biome check --formatter-enabled=true')
+    ).toBe(true);
   });
 
   test('jest is run through scripts/low-priority.sh', () => {

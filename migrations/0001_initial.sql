@@ -35,6 +35,17 @@ CREATE TABLE IF NOT EXISTS child_profiles (
   updated_at INTEGER NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS media_assets (
+  id TEXT PRIMARY KEY NOT NULL,
+  profile_id TEXT NOT NULL REFERENCES child_profiles(id) ON DELETE CASCADE,
+  r2_key TEXT NOT NULL UNIQUE,
+  kind TEXT NOT NULL CHECK (kind IN ('photo', 'word-audio', 'system-audio')),
+  content_type TEXT NOT NULL,
+  byte_size INTEGER NOT NULL,
+  created_at INTEGER NOT NULL,
+  UNIQUE(id, profile_id)
+);
+
 CREATE TABLE IF NOT EXISTS custom_words (
   id TEXT PRIMARY KEY NOT NULL,
   profile_id TEXT NOT NULL REFERENCES child_profiles(id) ON DELETE CASCADE,
@@ -46,27 +57,20 @@ CREATE TABLE IF NOT EXISTS custom_words (
   audio_asset_id TEXT,
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_at INTEGER NOT NULL,
-  updated_at INTEGER NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS media_assets (
-  id TEXT PRIMARY KEY NOT NULL,
-  profile_id TEXT NOT NULL REFERENCES child_profiles(id) ON DELETE CASCADE,
-  r2_key TEXT NOT NULL UNIQUE,
-  kind TEXT NOT NULL CHECK (kind IN ('photo', 'word-audio', 'system-audio')),
-  content_type TEXT NOT NULL,
-  byte_size INTEGER NOT NULL,
-  created_at INTEGER NOT NULL
+  updated_at INTEGER NOT NULL,
+  FOREIGN KEY (photo_asset_id, profile_id) REFERENCES media_assets(id, profile_id) ON DELETE SET NULL,
+  FOREIGN KEY (audio_asset_id, profile_id) REFERENCES media_assets(id, profile_id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS audio_overrides (
   id TEXT PRIMARY KEY NOT NULL,
   profile_id TEXT NOT NULL REFERENCES child_profiles(id) ON DELETE CASCADE,
   clip_key TEXT NOT NULL,
-  asset_id TEXT NOT NULL REFERENCES media_assets(id) ON DELETE CASCADE,
+  asset_id TEXT NOT NULL,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL,
-  UNIQUE(profile_id, clip_key)
+  UNIQUE(profile_id, clip_key),
+  FOREIGN KEY (asset_id, profile_id) REFERENCES media_assets(id, profile_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS rate_limits (

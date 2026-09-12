@@ -53,8 +53,14 @@ export async function createSession(
 
 export function parseSessionToken(cookieHeader: string | null): string | null {
   if (!cookieHeader) return null;
-  const match = cookieHeader.match(new RegExp(`(?:^|;\s*)${SESSION_COOKIE_NAME}=([^;]+)`));
-  return match ? match[1] : null;
+  const parts = cookieHeader.split(';');
+  for (const part of parts) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key === SESSION_COOKIE_NAME) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
 }
 
 export async function getSessionUser(

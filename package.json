@@ -13,7 +13,7 @@
     "jest": "scripts/low-priority.sh jest --runInBand",
     "jest:watch": "scripts/low-priority.sh jest --watch",
     "e2e": "scripts/low-priority.sh playwright test",
-    "format:test": "scripts/low-priority.sh biome format .",
+    "format:test": "scripts/low-priority.sh biome check --formatter-enabled=true .",
     "format:write": "scripts/low-priority.sh biome format --write .",
     "test": "yarn format:test && yarn lint && yarn typecheck && yarn jest",
     "preview": "scripts/low-priority.sh opennextjs-cloudflare build && scripts/low-priority.sh wrangler dev",

@@ -79,6 +79,14 @@ export class MediaRepository {
   }
 
   async setAudioOverride(id: string, profileId: string, clipKey: string, assetId: string): Promise<void> {
+    const asset = await this.findOwnedById(profileId, assetId);
+    if (!asset) {
+      throw new Error(`Media asset ${assetId} does not belong to profile ${profileId}`);
+    }
+    if (asset.kind !== 'system-audio') {
+      throw new Error(`Media asset ${assetId} must be system-audio to set as audio override (got ${asset.kind})`);
+    }
+
     const now = Date.now();
     await this.db
       .prepare(

@@ -60,6 +60,10 @@ describe('Security Crypto & Sanitization', () => {
       expect(() => normalizePlayCode('ab')).toThrow();
       expect(() => normalizePlayCode('toolongcode123')).toThrow();
       expect(() => normalizePlayCode('a$#1')).toThrow();
+      expect(() => normalizePlayCode('A-B-C-D')).toThrow(/at most one hyphen/);
+      expect(() => normalizePlayCode('AB--CD')).toThrow(/at most one hyphen/);
+      expect(() => normalizePlayCode('-ABC1')).toThrow(/cannot be at start or end/);
+      expect(() => normalizePlayCode('ABC1-')).toThrow(/cannot be at start or end/);
     });
   });
 });

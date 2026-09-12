@@ -67,6 +67,7 @@ export async function sendMagicLink(
 
   const form = new URLSearchParams();
   form.set('Action', 'SendEmail');
+  form.set('Version', '2010-12-01');
   form.set('Source', sender);
   form.set('Destination.ToAddresses.member.1', input.toEmail);
   form.set('Message.Subject.Data', subject);

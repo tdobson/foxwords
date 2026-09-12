@@ -9,32 +9,26 @@ export class RateLimitRepository {
    * Returns true if request is allowed, false if limit exceeded.
    */
   async consume(bucket: string, windowMs: number, maxRequests: number, now = Date.now()): Promise<boolean> {
-    const existing = await this.db
-      .prepare('SELECT bucket, window_started_at, request_count FROM rate_limits WHERE bucket = ?')
-      .bind(bucket)
+    const result = await this.db
+      .prepare(
+        `INSERT INTO rate_limits (bucket, window_started_at, request_count)
+         VALUES (?, ?, 1)
+         ON CONFLICT(bucket) DO UPDATE SET
+           request_count = CASE
+             WHEN (? - window_started_at) > ? THEN 1
+             WHEN request_count < ? THEN request_count + 1
+             ELSE request_count
+           END,
+           window_started_at = CASE
+             WHEN (? - window_started_at) > ? THEN ?
+             ELSE window_started_at
+           END
+         WHERE (? - window_started_at) > ? OR request_count < ?
+         RETURNING request_count`
+      )
+      .bind(bucket, now, now, windowMs, maxRequests, now, windowMs, now, now, windowMs, maxRequests)
       .first<RateLimitRow>();
 
-    if (!existing || now - existing.window_started_at > windowMs) {
-      await this.db
-        .prepare(
-          `INSERT INTO rate_limits (bucket, window_started_at, request_count)
-           VALUES (?, ?, 1)
-           ON CONFLICT(bucket) DO UPDATE SET window_started_at = excluded.window_started_at, request_count = 1`
-        )
-        .bind(bucket, now)
-        .run();
-      return true;
-    }
-
-    if (existing.request_count >= maxRequests) {
-      return false;
-    }
-
-    await this.db
-      .prepare('UPDATE rate_limits SET request_count = request_count + 1 WHERE bucket = ?')
-      .bind(bucket)
-      .run();
-
-    return true;
+    return result !== null;
   }
 }
