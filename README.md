@@ -1,13 +1,22 @@
-# Letter Trail
+# Foxwords
 
-Letter Trail is a gentle, single-user typing and spelling game designed for toddlers and early learners using a physical keyboard.
+Foxwords is a personalised, joyful early-learning web application designed for young children (ages ~2–6). It combines multi-sensory phonics spelling, counting practice, interactive teaching clock games, and personalized vocabulary practice.
 
-A child sees a familiar visual prompt (such as a picture or emoji of James, Grandma, Granny, Grandad, Grandpa, Mummy, Daddy, Sarah, Meg, or a Dog or Cat) and completes the target word by pressing the matching keys on a physical keyboard in sequence.
+The app comes loaded with a default starter curriculum voiced by Tim Dobson, and allows families to tailor the experience to their child:
+- Adding the child's name, family members (Mum, Dad, Grandad), siblings, pets, and favourite toys.
+- Uploading photos for personalized photo-quiz identification and spelling cards.
+- Recording family voices directly in the browser so words speak with a parent's voice, falling back gracefully to default voice clips.
+- Children access their customized game on tablets with zero login hurdles via a unique play URL (`/play/[slug]`) or a simple family code (e.g. `LION-9`).
+
+## Licensing
+
+- **Code:** GNU Affero General Public License v3.0 (`AGPL-3.0`) — see [LICENSE](LICENSE).
+- **Educational Content & Media:** Creative Commons Attribution-ShareAlike 3.0 Unported (`CC-BY-SA-3.0`) — see [CONTENT-LICENSE](CONTENT-LICENSE), [NOTICE](NOTICE), and [docs/content-manifest.md](docs/content-manifest.md).
 
 ## Prerequisites
 
 - Node.js >= 20
-- Yarn (v4) or npm
+- Yarn (v4)
 
 ## Installation
 
@@ -18,57 +27,39 @@ yarn install
 ## Running the Development Server
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Usage Example
-
-1. Open the local game screen. The game starts on `JAMES` with the prompt card and letter tiles displayed.
-2. Press the keys **J**, **A**, **M**, **E**, **S** in order on your physical keyboard.
-3. Each correct key fills the corresponding tile with a solid warm color and moves focus to the next letter.
-4. Pressing an incorrect key causes a gentle shake animation without resetting progress or penalizing the child.
-5. Once the word is complete, a brief celebration animation plays and the game automatically transitions to the next word (`GRANDMA`).
-6. Click **New word** at any time to skip to the next word.
-
-## Difficulty / Scaffold Modes
-
-The game includes two visual scaffolding modes selectable via the controls at the bottom:
-
-1. **Reveal:** Only the current letter is visible. It appears faintly until completed, and the next letter is revealed only when the previous one is typed. This is the default mode.
-2. **Faint:** All unfinished letters are visible with faint outlines to encourage recall.
-
-## Levels
-
-Every 6 words form a level. The game shows a level label so each group of words has a natural pause point before continuing.
-
-## Audio
-
-When you press a correct key, the game plays the phoneme for that letter from `public/audio/phonemes/{slug}.webm`. When a word starts and when it is completed, it plays the word sound from `public/audio/words/{id}.webm`.
-
-The game plays audio only when the file exists. You can record every phoneme and every word sound using the recording interface at [http://localhost:3000/record](http://localhost:3000/record): record, preview, and download each clip, then drop the files into the matching folder. Files are named exactly as shown on the page. Each phoneme is recorded once and reused across every word that contains it.
-
-## Word Data
-
-Word fixtures are defined in `constants/learning-words.ts` with local visual prompt glyphs and accent colors.
-
-## Running Tests and Verification
+To run the Cloudflare Worker runtime emulation locally:
 
 ```bash
-# Run full suite (Next typegen, oxfmt, oxlint, stylelint, TypeScript, Jest)
-npm run test
-
-# Run Jest unit and behavioral tests only
-npm run jest
-
-# Run production build
-npm run build
+yarn dev:worker
 ```
 
-## Prototype Limitations
+## Running Quality Checks and Tests
 
-- Physical keyboard input only (no on-screen touch keyboard).
-- No backend, user accounts, persistence, or external APIs.
-- Starter word set only (`JAMES`, `GRANDMA`, `GRANDAD`, `MUMMY`, `DADDY`, `SARAH`, `BABY`, `GRANDPA`, `GRANNY`, `MEG`, `FOX`, `BED`, `MILK`, `ORANGE`, `BANANA`, `DOG`, `CAT`, `BIKE`, `BOOK`, `TRACTOR`, `CRANE`, `APPLE`, `JAM`, `BIG`, `SPLASH`, `RAIN`, `GAMES`, `JIGSAW`, `TRAM`, `TRAIN`, `RAIL`, `TRACK`).
-- Uppercase matching only (case-insensitive for typing).
+All commands run through `scripts/low-priority.sh` to preserve system responsiveness:
+
+```bash
+# Run the full test and verification pipeline (formatting, Biome lint, typecheck, Jest)
+yarn test
+
+# Run Jest unit and behavioral tests
+yarn jest
+
+# Run Biome checks
+yarn lint
+
+# Run Playwright end-to-end tests
+yarn e2e
+```
+
+## Self-Hosting with Cloudflare D1 & R2
+
+Foxwords compiles via OpenNext to a Cloudflare Worker backed by:
+- **Cloudflare D1**: SQLite edge database storing parents, child profiles, and custom vocabulary metadata.
+- **Cloudflare R2**: Object storage for parent-uploaded photos and audio recordings.
+- **AWS SES**: Passwordless magic link authentication for the parent portal.
+- **Edge Assets**: Bundled default curriculum voice audio and photos served via Cloudflare Workers Assets.

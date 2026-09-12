@@ -1,11 +1,11 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@/test-utils';
-import RecordPage from './RecordPage';
-import { PHONEMES } from '../../constants/phonemes';
-import { LETTER_NAMES } from '../../constants/letter-names';
-import { LEARNING_WORDS } from '../../constants/learning-words';
-import { COUNT_NUMBERS } from '../../constants/count-numbers';
 import { CLOCK_CURRICULUM } from '../../constants/clock-curriculum';
+import { COUNT_NUMBERS } from '../../constants/count-numbers';
+import { LEARNING_WORDS } from '../../constants/learning-words';
+import { LETTER_NAMES } from '../../constants/letter-names';
+import { PHONEMES } from '../../constants/phonemes';
+import RecordPage from './RecordPage';
 
 describe('RecordPage', () => {
   const originalFetch = global.fetch;

@@ -1,4 +1,4 @@
-import { CountProgressionInput, CountProgressionResult } from '../types/learning-word.types';
+import type { CountProgressionInput, CountProgressionResult } from '../types/learning-word.types';
 
 export function getCountProgressionResult(input: CountProgressionInput): CountProgressionResult {
   const { targetNumber, nextIndex, key } = input;

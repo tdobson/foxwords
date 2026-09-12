@@ -5,7 +5,6 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 export default withBundleAnalyzer({
-  output: 'export',
   images: {
     unoptimized: true,
   },

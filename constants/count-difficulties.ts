@@ -1,4 +1,4 @@
-import { CountDifficulty, CountDifficultyDefinition } from '../types/learning-word.types';
+import type { CountDifficulty, CountDifficultyDefinition } from '../types/learning-word.types';
 
 export const COUNT_DIFFICULTIES: Record<CountDifficulty, CountDifficultyDefinition> = {
   easy: {

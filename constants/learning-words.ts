@@ -1,4 +1,4 @@
-import { LearningWord } from '../types/learning-word.types';
+import type { LearningWord } from '../types/learning-word.types';
 
 export interface LearningWordFixture {
   id: string;

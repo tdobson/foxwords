@@ -1,13 +1,14 @@
 import '@mantine/core/styles.css';
 import './globals.css';
-import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
-import React from 'react';
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
+import type React from 'react';
 import { AppShellNav } from '../components/AppShellNav/AppShellNav';
 import { theme } from '../theme';
 
 export const metadata = {
-  title: 'Letter Trail',
-  description: 'A gentle typing game for learning to spell familiar words.',
+  title: 'Foxwords',
+  description:
+    'Foxwords is a joyful, personalised early-learning game with phonics spelling, interactive clocks, and family voice practice.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -19,7 +19,7 @@
   filter: drop-shadow(0 4px 8px rgb(0, 0, 0, 0.08));
 }
 
-.promptArt[data-multi='true'] {
+.promptArt[data-multi="true"] {
   font-size: 3.5rem;
   letter-spacing: 0.15em;
 }

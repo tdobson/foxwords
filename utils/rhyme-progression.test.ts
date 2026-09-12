@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { RhymeQuestion } from '../types/learning-word.types';
+import type { RhymeQuestion } from '../types/learning-word.types';
 import { resolveRhymeInput } from './rhyme-progression';
 
 const question: RhymeQuestion = {

@@ -1,4 +1,4 @@
-import { ProgressionInput, ProgressionResult } from '../types/learning-word.types';
+import type { ProgressionInput, ProgressionResult } from '../types/learning-word.types';
 
 export function getProgressionResult(input: ProgressionInput): ProgressionResult {
   const { word, nextIndex, key } = input;

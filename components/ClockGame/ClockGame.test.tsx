@@ -1,7 +1,7 @@
-import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { ClockGame } from './ClockGame';
+import React from 'react';
 import * as clockAudio from '../../utils/clock-audio';
+import { ClockGame } from './ClockGame';
 
 jest.mock('../../utils/clock-audio', () => ({
   playClockAudio: jest.fn(),

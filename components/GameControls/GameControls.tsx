@@ -1,9 +1,9 @@
-import React from 'react';
 import { Button, SegmentedControl, Text } from '@mantine/core';
-import { DIFFICULTY_LEVELS } from '../../constants/difficulty-levels';
+import React from 'react';
 import { COUNT_DIFFICULTIES } from '../../constants/count-difficulties';
+import { DIFFICULTY_LEVELS } from '../../constants/difficulty-levels';
 import { QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
-import { CountDifficulty, DifficultyLevel, GameMode } from '../../types/learning-word.types';
+import type { CountDifficulty, DifficultyLevel, GameMode } from '../../types/learning-word.types';
 import classes from './GameControls.module.css';
 
 export interface GameControlsProps {
