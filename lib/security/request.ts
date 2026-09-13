@@ -24,11 +24,30 @@ export function assertSameOrigin(request: RequestLike, expectedOrigin: string): 
     return;
   }
 
-  let expected: string;
+  // Derive allowed origins: configured APP_ORIGIN plus request's own host/URL origin
+  const allowedOrigins = new Set<string>();
   try {
-    expected = new URL(expectedOrigin).origin;
+    allowedOrigins.add(new URL(expectedOrigin).origin);
   } catch {
-    throw new OriginRejectedError(`Invalid expected origin configuration: ${expectedOrigin}`);
+    // Ignore invalid expectedOrigin format
+  }
+
+  try {
+    if (request.url) {
+      allowedOrigins.add(new URL(request.url).origin);
+    }
+  } catch {
+    // Ignore invalid request.url format
+  }
+
+  const hostHeader = request.headers.get('host') || request.headers.get('x-forwarded-host');
+  if (hostHeader) {
+    const proto = request.headers.get('x-forwarded-proto') || 'https';
+    try {
+      allowedOrigins.add(new URL(`${proto}://${hostHeader}`).origin);
+    } catch {
+      // Ignore
+    }
   }
 
   const originHeader = request.headers.get('origin');
@@ -39,9 +58,9 @@ export function assertSameOrigin(request: RequestLike, expectedOrigin: string): 
     } catch {
       throw new OriginRejectedError(`Malformed Origin header rejected: ${originHeader}`);
     }
-    if (originVal !== expected) {
+    if (!allowedOrigins.has(originVal)) {
       throw new OriginRejectedError(
-        `Cross-origin request rejected. Expected: ${expected}, Received: ${originHeader}`
+        `Cross-origin request rejected. Allowed: ${[...allowedOrigins].join(', ')}, Received: ${originHeader}`
       );
     }
     return;
@@ -55,9 +74,9 @@ export function assertSameOrigin(request: RequestLike, expectedOrigin: string): 
     } catch {
       throw new OriginRejectedError(`Malformed Referer header rejected: ${refererHeader}`);
     }
-    if (refererVal !== expected) {
+    if (!allowedOrigins.has(refererVal)) {
       throw new OriginRejectedError(
-        `Cross-origin request rejected. Expected: ${expected}, Referer: ${refererHeader}`
+        `Cross-origin request rejected. Allowed: ${[...allowedOrigins].join(', ')}, Referer: ${refererHeader}`
       );
     }
     return;
