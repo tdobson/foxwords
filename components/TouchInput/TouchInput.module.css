@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
+  width: 100%;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--mantine-spacing-xs);
+  width: 100%;
+}
+
+.textInput {
+  flex: 1;
+}
+
+.toggleButton {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 var(--mantine-spacing-sm);
+  font-size: 1rem;
+}
+
+.keypad {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--mantine-spacing-sm);
+  background-color: var(--mantine-color-gray-1);
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-md);
+  margin-top: 4px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.keyButton {
+  min-width: 44px;
+  min-height: 44px;
+  height: 48px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 0;
+  flex: 1;
+  max-width: 56px;
+  touch-action: manipulation;
+}
+
+.actionKey {
+  min-width: 58px;
+  max-width: 80px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
