@@ -71,13 +71,15 @@ export class AuthService {
     const loginUrl = `${origin}/api/auth/verify?token=${encodeURIComponent(rawToken)}`;
 
     try {
-      await sendMagicLink(this.env, {
+      const result = await sendMagicLink(this.env, {
         toEmail: email,
         loginUrl,
       });
-    } catch {
-      // Correlation logged without leaking email or token
-      // We do NOT reveal to caller whether SES failed or not
+      console.log(
+        `[AUTH] Magic link dispatched for ${email}: status=${result.status}, msgId=${result.messageId}`
+      );
+    } catch (err: any) {
+      console.error(`[AUTH] Failed to send magic link for ${email}:`, err?.message || err);
     }
 
     return {

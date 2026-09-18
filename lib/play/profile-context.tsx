@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { LEARNING_WORDS } from '../../constants/learning-words';
 import type { LearningWord } from '../../types/learning-word.types';
 import { mergeProfileWithCurriculum, type PlayProfile } from './profile';
@@ -33,24 +33,39 @@ export function ProfileProvider({
   children: React.ReactNode;
   initialProfile?: PlayProfile | null;
 }) {
-  const [profile, setProfile] = useState<PlayProfile | null>(initialProfile);
+  const [profile, setProfileState] = useState<PlayProfile | null>(initialProfile);
   const [loading] = useState(false);
   const [error] = useState<string | null>(null);
 
+  const setProfile = useCallback((newProf: PlayProfile | null) => {
+    setProfileState(newProf);
+    if (typeof window !== 'undefined') {
+      try {
+        if (newProf) {
+          sessionStorage.setItem('foxwords_play_profile', JSON.stringify(newProf));
+        } else {
+          sessionStorage.removeItem('foxwords_play_profile');
+        }
+      } catch {
+        // Ignore session storage write errors
+      }
+    }
+  }, []);
+
   useEffect(() => {
     // Check if client has local cached profile in sessionStorage
-    if (!profile && typeof window !== 'undefined') {
+    if (typeof window !== 'undefined') {
       try {
         const cached = sessionStorage.getItem('foxwords_play_profile');
         if (cached) {
           const parsed = JSON.parse(cached);
-          setProfile(parsed);
+          setProfileState(parsed);
         }
       } catch {
         // Ignore JSON parse errors from local cache
       }
     }
-  }, [profile]);
+  }, []);
 
   const { childName, words, audioOverrides } = mergeProfileWithCurriculum(profile);
 
@@ -63,20 +78,7 @@ export function ProfileProvider({
         audioOverrides,
         loading,
         error,
-        setProfile: (newProf) => {
-          setProfile(newProf);
-          if (typeof window !== 'undefined') {
-            try {
-              if (newProf) {
-                sessionStorage.setItem('foxwords_play_profile', JSON.stringify(newProf));
-              } else {
-                sessionStorage.removeItem('foxwords_play_profile');
-              }
-            } catch {
-              // Ignore session storage write errors
-            }
-          }
-        },
+        setProfile,
       }}
     >
       {children}
