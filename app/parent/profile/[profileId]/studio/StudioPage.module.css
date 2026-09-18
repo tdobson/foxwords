@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xl);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.recordButton {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  touch-action: manipulation;
+  padding: 0;
+  box-shadow: 0 4px 12px rgb(0, 0, 0, 0.15);
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.recordButton:active {
+  transform: scale(0.95);
+}
+
+.recordingPulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(224, 49, 49, 0.6);
+  }
+
+  70% {
+    box-shadow: 0 0 0 16px rgb(224, 49, 49, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(224, 49, 49, 0);
+  }
+}
+
+.cardPrompt {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--mantine-spacing-sm);
+}
+
+.actionButton {
+  min-height: 48px;
+  min-width: 48px;
+  touch-action: manipulation;
+}
