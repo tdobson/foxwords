@@ -282,7 +282,7 @@ export default function ProfileCustomiserPage() {
       ) : (
         <Stack gap="xl">
           <Paper p="lg" radius="md" withBorder>
-            <Group justify="space-between" align="flex-start">
+            <Group justify="space-between" align="center">
               <div>
                 <Title order={2} size="h3">
                   {childName}&apos;s Foxwords
@@ -291,8 +291,49 @@ export default function ProfileCustomiserPage() {
                   Family Play Code: <Badge color="indigo">{playCode}</Badge>
                 </Text>
               </div>
+              <Button
+                component={Link}
+                href={`/parent/profile/${profileId}/studio`}
+                color="indigo"
+                size="md"
+                leftSection={<IconMicrophone size={20} />}
+                data-testid="voice-studio-btn"
+              >
+                Voice Studio
+              </Button>
             </Group>
           </Paper>
+
+          <Card
+            p="md"
+            radius="md"
+            withBorder
+            style={{
+              background:
+                'linear-gradient(135deg, rgba(76, 110, 245, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%)',
+              borderColor: 'var(--mantine-color-indigo-4)',
+            }}
+          >
+            <Group justify="space-between" align="center">
+              <div>
+                <Text fw={600} size="md">
+                  Family Voice Studio
+                </Text>
+                <Text size="sm" c="dimmed">
+                  Record family voice prompts and personalise learning words for {childName}.
+                </Text>
+              </div>
+              <Button
+                component={Link}
+                href={`/parent/profile/${profileId}/studio`}
+                color="indigo"
+                variant="light"
+                leftSection={<IconMicrophone size={16} />}
+              >
+                Open Studio
+              </Button>
+            </Group>
+          </Card>
 
           <div>
             <Group justify="space-between" mb="md">

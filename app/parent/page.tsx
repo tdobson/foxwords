@@ -19,6 +19,7 @@ import {
 import {
   IconDeviceTablet,
   IconLogout,
+  IconMicrophone,
   IconPencil,
   IconPlayerPlay,
   IconPlus,
@@ -86,9 +87,14 @@ export default function ParentDashboardPage() {
         body: JSON.stringify({ childName: newChildName.trim() }),
       });
       if (res.ok) {
+        const data: any = await res.json();
         setNewChildName('');
         setCreateOpened(false);
-        fetchProfiles();
+        if (data?.profile?.id) {
+          router.push(`/parent/profile/${data.profile.id}/studio`);
+        } else {
+          fetchProfiles();
+        }
       } else {
         const data: any = await res.json();
         alert(data?.error?.message || 'Failed to create child profile');
@@ -214,16 +220,28 @@ export default function ParentDashboardPage() {
                 </Text>
 
                 <Group justify="space-between" mt="auto">
-                  <Button
-                    component={Link}
-                    href={`/play/${p.playCode}`}
-                    variant="light"
-                    color="indigo"
-                    size="xs"
-                    leftSection={<IconPlayerPlay size={14} />}
-                  >
-                    Open Game
-                  </Button>
+                  <Group gap="xs">
+                    <Button
+                      component={Link}
+                      href={`/play/${p.playCode}`}
+                      variant="light"
+                      color="indigo"
+                      size="xs"
+                      leftSection={<IconPlayerPlay size={14} />}
+                    >
+                      Open Game
+                    </Button>
+                    <Button
+                      component={Link}
+                      href={`/parent/profile/${p.id}/studio`}
+                      variant="filled"
+                      color="indigo"
+                      size="xs"
+                      leftSection={<IconMicrophone size={14} />}
+                    >
+                      Voice Studio
+                    </Button>
+                  </Group>
 
                   <Group gap="xs">
                     <Button
