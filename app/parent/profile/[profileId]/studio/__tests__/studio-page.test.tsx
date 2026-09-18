@@ -209,4 +209,52 @@ describe('ParentVoiceStudioPage', () => {
       expect(screen.getByRole('link', { name: /connect tablet/i })).toBeInTheDocument();
     });
   });
+
+  it('unlocks tablet play code when Chapter 1 items are completed via custom words with audio', async () => {
+    global.fetch = jest.fn((url: string) => {
+      if (url.includes('/api/profiles/prof_test/audio-overrides')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ overrides: [] }),
+        });
+      }
+      if (url.includes('/api/profiles/prof_test')) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              profile: {
+                id: 'prof_test',
+                childName: 'Leo',
+                playCode: 'LEO482',
+                words: [
+                  { word: 'LEO', audio_asset_id: 'ast_leo' },
+                  { word: 'MUM', audio_asset_id: 'ast_mum' },
+                  { word: 'DAD', audio_asset_id: 'ast_dad' },
+                  { word: 'GRANDAD', audio_asset_id: 'ast_grandad' },
+                ],
+              },
+            }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    }) as any;
+
+    render(
+      <MantineProvider>
+        <ParentVoiceStudioPage />
+      </MantineProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('LEO')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /enter studio/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Chapter 1 Complete! Play Code Unlocked/i)).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /connect tablet/i })).toBeInTheDocument();
+    });
+  });
 });

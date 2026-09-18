@@ -122,6 +122,13 @@ export default function ParentVoiceStudioPage() {
           for (const ov of ovData.overrides || []) {
             initialOverrides[ov.clip_key] = ov.asset_id;
           }
+          // Also index any existing custom words with recorded audio assets
+          for (const w of pData.profile.words || []) {
+            if (w.audio_asset_id && w.word) {
+              const wordKey = `word_${w.word.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+              initialOverrides[wordKey] = w.audio_asset_id;
+            }
+          }
           setRecordedAssets((prev) => ({ ...prev, ...initialOverrides }));
         }
       } catch (err: any) {
