@@ -77,8 +77,36 @@ export function buildPublicPlayPayload(params: {
     };
   });
 
-  // 2. Combine custom learning words at the top, followed by standard LEARNING_WORDS
-  const words: LearningWord[] = [...customLearningWords, ...LEARNING_WORDS];
+  // 2. Filter out hardcoded prototype words ('james', 'sarah') from starter curriculum
+  const starterWords = LEARNING_WORDS.filter((w) => w.id !== 'james' && w.id !== 'sarah');
+
+  // 3. Ensure child name exists as VIP word at index 0
+  const normalizedChildWord = params.childName.trim().toUpperCase();
+  const existingChildCustomIndex = customLearningWords.findIndex(
+    (w) => w.word.toUpperCase() === normalizedChildWord
+  );
+
+  let childVipWord: LearningWord;
+  let remainingCustomWords: LearningWord[];
+
+  if (existingChildCustomIndex >= 0) {
+    childVipWord = customLearningWords[existingChildCustomIndex];
+    remainingCustomWords = customLearningWords.filter((_, idx) => idx !== existingChildCustomIndex);
+  } else {
+    childVipWord = {
+      id: `child_${normalizedChildWord.toLowerCase()}`,
+      word: normalizedChildWord,
+      promptLabel: params.childName.trim(),
+      accentColor: CATEGORY_COLORS.vip || '#e03131',
+      promptImage: '🧒',
+      audioSource: 'speech',
+      ipa: Array.from(normalizedChildWord).map(() => ''),
+    };
+    remainingCustomWords = customLearningWords;
+  }
+
+  // 4. Combine child VIP word first, then custom family/sibling words, then starter curriculum
+  const words: LearningWord[] = [childVipWord, ...remainingCustomWords, ...starterWords];
 
   return {
     childName: params.childName,

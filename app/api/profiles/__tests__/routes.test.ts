@@ -612,7 +612,8 @@ describe('Profile and Child-Play API Routes', () => {
       expect(playRes.status).toBe(200);
       const payload: any = await playRes.json();
       expect(payload.childName).toBe('Emma');
-      expect(payload.words[0].word).toBe('KITTEN');
+      expect(payload.words[0].word).toBe('EMMA');
+      expect(payload.words[1].word).toBe('KITTEN');
 
       const serialized = JSON.stringify(payload);
       expect(serialized).not.toContain('parent@example.com');
