@@ -13,13 +13,3 @@ export async function GET() {
     clocks: audioInventory.clock ?? [],
   });
 }
-
-export async function POST() {
-  return NextResponse.json(
-    {
-      error:
-        'The legacy filesystem audio recording endpoint is retired on Cloudflare Workers. Family audio is recorded to authenticated profile R2 storage.',
-    },
-    { status: 410 }
-  );
-}

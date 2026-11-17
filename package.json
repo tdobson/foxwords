@@ -26,6 +26,7 @@
     "@next/bundle-analyzer": "^16.0.0",
     "@tabler/icons-react": "^3.35.0",
     "next": "16.2.9",
+    "qrcode": "^1",
     "react": "19.2.7",
     "react-dom": "19.2.7"
   },
@@ -40,6 +41,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.0.0",
+    "@types/qrcode": "^1",
     "@types/react": "19.2.17",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",

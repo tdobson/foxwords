@@ -7,7 +7,6 @@ import {
   Card,
   Container,
   Group,
-  Modal,
   Paper,
   SimpleGrid,
   Skeleton,
@@ -44,10 +43,10 @@ export default function ParentDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Add child modal state
-  const [createOpened, setCreateOpened] = useState(false);
+  const [addingChild, setAddingChild] = useState(false);
   const [newChildName, setNewChildName] = useState('');
   const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
 
   const fetchProfiles = async () => {
     setLoading(true);
@@ -59,13 +58,13 @@ export default function ParentDashboardPage() {
         return;
       }
       if (!res.ok) {
-        setError('Could not load profiles. Please try again.');
+        setError('Could not load your children. Please try again.');
         return;
       }
       const data: any = await res.json();
       setProfiles(data.profiles || []);
     } catch {
-      setError('Network error loading profiles.');
+      setError('Network error loading your children.');
     } finally {
       setLoading(false);
     }
@@ -77,37 +76,39 @@ export default function ParentDashboardPage() {
 
   const handleCreateChild = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newChildName.trim()) return;
+    const childName = newChildName.trim();
+    if (!childName) return;
     setCreating(true);
+    setCreateError(null);
 
     try {
       const res = await fetch('/api/profiles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ childName: newChildName.trim() }),
+        body: JSON.stringify({ childName }),
       });
       if (res.ok) {
         const data: any = await res.json();
-        setNewChildName('');
-        setCreateOpened(false);
         if (data?.profile?.id) {
           router.push(`/parent/profile/${data.profile.id}/studio`);
-        } else {
-          fetchProfiles();
+          return;
         }
+        setNewChildName('');
+        setAddingChild(false);
+        fetchProfiles();
       } else {
-        const data: any = await res.json();
-        alert(data?.error?.message || 'Failed to create child profile');
+        const data: any = await res.json().catch(() => null);
+        setCreateError(data?.error?.message || 'We could not add that name. Please try again.');
       }
     } catch {
-      alert('Network error creating child profile');
+      setCreateError('Network error. Check your internet connection and try again.');
     } finally {
       setCreating(false);
     }
   };
 
   const handleDeleteProfile = async (profileId: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete ${name}'s space? This cannot be undone.`)) {
+    if (!confirm(`Delete ${name}'s Foxwords space? This cannot be undone.`)) {
       return;
     }
 
@@ -118,10 +119,10 @@ export default function ParentDashboardPage() {
       if (res.ok) {
         setProfiles((prev) => prev.filter((p) => p.id !== profileId));
       } else {
-        alert('Could not delete profile.');
+        setError('Could not delete that space. Please try again.');
       }
     } catch {
-      alert('Network error deleting profile.');
+      setError('Network error deleting that space.');
     }
   };
 
@@ -133,15 +134,60 @@ export default function ParentDashboardPage() {
     }
   };
 
+  const nameForm = (
+    <form onSubmit={handleCreateChild} data-testid="child-name-form">
+      <Stack gap="md">
+        <TextInput
+          label="What's your child's first name?"
+          placeholder="e.g. Maya"
+          required
+          autoFocus
+          autoComplete="off"
+          enterKeyHint="go"
+          value={newChildName}
+          onChange={(e) => setNewChildName(e.currentTarget.value)}
+          disabled={creating}
+          error={createError}
+          data-testid="child-name-input"
+        />
+        <Group>
+          <Button
+            type="submit"
+            color="indigo"
+            loading={creating}
+            disabled={!newChildName.trim()}
+            data-testid="child-name-submit"
+          >
+            Continue
+          </Button>
+          {profiles.length > 0 && (
+            <Button
+              variant="subtle"
+              color="gray"
+              onClick={() => {
+                setAddingChild(false);
+                setCreateError(null);
+              }}
+            >
+              Cancel
+            </Button>
+          )}
+        </Group>
+      </Stack>
+    </form>
+  );
+
+  const isFirstRun = !loading && profiles.length === 0;
+
   return (
     <Container size="md" py="xl" data-testid="parent-dashboard-screen">
       <Group justify="space-between" mb="xl">
         <div>
           <Title order={1} size="h2">
-            Foxwords Parent Space
+            Your Foxwords
           </Title>
           <Text c="dimmed" size="sm">
-            Personalise learning words, family photos, and familiar voices.
+            Play, record family voices and connect devices for each child.
           </Text>
         </div>
         <Group>
@@ -158,7 +204,7 @@ export default function ParentDashboardPage() {
       </Group>
 
       {error && (
-        <Alert color="red" mb="lg" radius="md">
+        <Alert color="red" mb="lg" radius="md" role="alert">
           {error}
         </Alert>
       )}
@@ -168,88 +214,79 @@ export default function ParentDashboardPage() {
           <Skeleton height={90} radius="md" />
           <Skeleton height={90} radius="md" />
         </Stack>
-      ) : profiles.length === 0 ? (
-        <Paper p="xl" radius="md" withBorder ta="center">
-          <Stack align="center" gap="sm">
-            <Title order={2} size="h3">
-              No child spaces yet
-            </Title>
-            <Text c="dimmed" size="sm" maw={400}>
-              Make one for your child, then add favourite words, photos, and your own voice
-              recordings.
+      ) : isFirstRun ? (
+        <Paper p="xl" radius="md" withBorder maw={520} mx="auto">
+          <Stack gap="md">
+            <Text size="sm" c="dimmed">
+              Let&apos;s start with one child. You can add more later.
             </Text>
-            <Button
-              mt="md"
-              color="indigo"
-              size="md"
-              leftSection={<IconPlus size={18} />}
-              onClick={() => setCreateOpened(true)}
-              data-testid="add-first-child-btn"
-            >
-              Add a child
-            </Button>
+            {nameForm}
           </Stack>
         </Paper>
       ) : (
         <Stack gap="md">
-          <Group justify="flex-end">
-            <Button
-              color="indigo"
-              leftSection={<IconPlus size={16} />}
-              onClick={() => setCreateOpened(true)}
-              data-testid="add-child-btn"
-            >
-              Add another child
-            </Button>
-          </Group>
+          {addingChild ? (
+            <Paper p="lg" radius="md" withBorder maw={520}>
+              {nameForm}
+            </Paper>
+          ) : (
+            <Group justify="flex-end">
+              <Button
+                color="indigo"
+                leftSection={<IconPlus size={16} />}
+                onClick={() => setAddingChild(true)}
+                data-testid="add-child-btn"
+              >
+                Add another child
+              </Button>
+            </Group>
+          )}
 
           <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
             {profiles.map((p) => (
-              <Card key={p.id} p="lg" radius="md" withBorder>
-                <Group justify="space-between" mb="xs">
-                  <Title order={3} size="h4">
+              <Card key={p.id} p="lg" radius="md" withBorder data-testid="child-card">
+                <Group justify="space-between" mb="xs" wrap="nowrap">
+                  <Title order={2} size="h3" data-testid="child-card-name">
                     {p.childName}
                   </Title>
                   <Badge color="teal" variant="light">
-                    Code: {p.playCode}
+                    Code {p.playCode}
                   </Badge>
                 </Group>
 
                 <Text size="xs" c="dimmed" mb="md">
-                  Created {new Date(p.createdAt).toLocaleDateString()}
+                  Added {new Date(p.createdAt).toLocaleDateString()}
                 </Text>
 
-                <Group justify="space-between" mt="auto">
+                <Stack gap="xs">
+                  <Button
+                    component={Link}
+                    href={`/play/${p.playCode}`}
+                    color="indigo"
+                    leftSection={<IconPlayerPlay size={16} />}
+                    data-testid="play-now-btn"
+                  >
+                    Play now
+                  </Button>
                   <Group gap="xs">
-                    <Button
-                      component={Link}
-                      href={`/play/${p.playCode}`}
-                      variant="light"
-                      color="indigo"
-                      size="xs"
-                      leftSection={<IconPlayerPlay size={14} />}
-                    >
-                      Open Game
-                    </Button>
                     <Button
                       component={Link}
                       href={`/parent/profile/${p.id}/studio`}
-                      variant="filled"
+                      variant="light"
                       color="indigo"
                       size="xs"
                       leftSection={<IconMicrophone size={14} />}
+                      data-testid="record-voices-btn"
                     >
-                      Voice Studio
+                      Record voices
                     </Button>
-                  </Group>
-
-                  <Group gap="xs">
                     <Button
                       component={Link}
                       href={`/parent/profile/${p.id}`}
                       variant="default"
                       size="xs"
                       leftSection={<IconPencil size={14} />}
+                      data-testid="customise-btn"
                     >
                       Customise
                     </Button>
@@ -259,54 +296,27 @@ export default function ParentDashboardPage() {
                       variant="default"
                       size="xs"
                       leftSection={<IconDeviceTablet size={14} />}
+                      data-testid="connect-device-btn"
                     >
-                      Connect
+                      Connect a device
                     </Button>
                     <Button
                       variant="subtle"
                       color="red"
                       size="xs"
+                      aria-label={`Delete ${p.childName}'s space`}
                       onClick={() => handleDeleteProfile(p.id, p.childName)}
+                      data-testid="delete-child-btn"
                     >
                       <IconTrash size={14} />
                     </Button>
                   </Group>
-                </Group>
+                </Stack>
               </Card>
             ))}
           </SimpleGrid>
         </Stack>
       )}
-
-      <Modal
-        opened={createOpened}
-        onClose={() => setCreateOpened(false)}
-        title="Create Child Learning Space"
-        centered
-      >
-        <form onSubmit={handleCreateChild}>
-          <Stack gap="md">
-            <TextInput
-              label="Child's Name"
-              placeholder="e.g. Maya or Leo"
-              required
-              value={newChildName}
-              onChange={(e) => setNewChildName(e.currentTarget.value)}
-              disabled={creating}
-              data-testid="new-child-name-input"
-            />
-            <Button
-              type="submit"
-              color="indigo"
-              loading={creating}
-              disabled={!newChildName.trim()}
-              data-testid="confirm-create-child"
-            >
-              Create Child Space
-            </Button>
-          </Stack>
-        </form>
-      </Modal>
     </Container>
   );
 }

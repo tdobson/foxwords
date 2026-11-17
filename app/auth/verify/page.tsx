@@ -14,17 +14,23 @@ export default function AuthVerifyErrorPage() {
             That link has expired or is invalid
           </Title>
           <Text size="sm" c="dimmed">
-            For safety, magic sign-in links work only once and expire after 15 minutes.
+            For safety, sign-in links work only once and expire after 15 minutes.
           </Text>
 
           <Stack gap="xs" w="100%" mt="md">
-            <Button component={Link} href="/parent/login" color="indigo">
+            <Button
+              component={Link}
+              href="/parent/login"
+              color="indigo"
+              data-testid="send-new-link-btn"
+            >
               Send me a new link
             </Button>
             <Button
               component={Link}
               href="/"
               variant="subtle"
+              data-testid="verify-home-btn"
               color="gray"
               leftSection={<IconArrowLeft size={16} />}
             >

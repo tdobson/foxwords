@@ -49,7 +49,7 @@ export default function ParentLoginPage() {
         return;
       }
 
-      router.push('/parent/check-email');
+      router.push(`/parent/check-email?email=${encodeURIComponent(cleanEmail)}`);
     } catch {
       setError('Network error. Check your internet connection.');
     } finally {
@@ -66,7 +66,7 @@ export default function ParentLoginPage() {
               Set up Foxwords
             </Title>
             <Text size="sm" c="dimmed" ta="center">
-              Your email is the key to your family space. No password required.
+              Your email is the key to your family space. No password needed, just a link.
             </Text>
 
             {error && (
@@ -79,7 +79,10 @@ export default function ParentLoginPage() {
               label="Email address"
               placeholder="parent@example.com"
               type="email"
+              inputMode="email"
               autoComplete="email"
+              enterKeyHint="go"
+              autoFocus
               required
               value={email}
               onChange={(e) => setEmail(e.currentTarget.value)}
@@ -95,13 +98,13 @@ export default function ParentLoginPage() {
               leftSection={<IconMail size={18} />}
               data-testid="submit-login"
             >
-              Email me a magic link
+              Email me a sign-in link
             </Button>
 
             <Text size="xs" c="dimmed" ta="center">
-              We never share your email address. Return to{' '}
+              We only use your email to sign you in. Back to{' '}
               <Anchor component={Link} href="/">
-                Foxwords home
+                the home page
               </Anchor>
               .
             </Text>

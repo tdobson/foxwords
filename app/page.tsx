@@ -64,42 +64,49 @@ export default function HomePage() {
       <div className={classes.header}>
         <h1 className={classes.title}>Foxwords</h1>
         <p className={classes.subtitle}>
-          Personalised phonics, counting, and teaching clocks for young learners
+          Phonics, counting and clock games that sound like the people your child loves.
         </p>
         <div className={classes.privacyNotice}>
-          No child account is required to play. The parent portal is only for setup and family voice
-          recording.
+          Children never need an account. Grown-ups sign in with an email link to set things up.
         </div>
       </div>
 
-      <div className={classes.primaryActions}>
-        <Link
-          href="/join"
-          className={`${classes.primaryBtn} ${classes.joinBtn}`}
-          data-testid="join-code-button"
-        >
-          <IconKey size={22} />
-          Play with a family code
-        </Link>
+      <div className={classes.pathCards}>
         <Link
           href="/parent/login"
-          className={`${classes.primaryBtn} ${classes.parentBtn}`}
+          className={`${classes.pathCard} ${classes.parentCard}`}
           data-testid="parent-setup-button"
         >
-          <IconSettings size={22} />
-          Set up Foxwords
+          <span className={classes.pathIcon}>
+            <IconSettings size={28} stroke={2.2} />
+          </span>
+          <span className={classes.pathTitle}>Set up for my child</span>
+          <span className={classes.pathText}>
+            Add your child&apos;s name and family names, record your own voices, then play on any
+            device.
+          </span>
         </Link>
         <Link
-          href="/words"
-          className={`${classes.primaryBtn} ${classes.starterBtn}`}
-          data-testid="starter-game-button"
+          href="/join"
+          className={`${classes.pathCard} ${classes.joinCard}`}
+          data-testid="join-code-button"
         >
-          <IconPlayerPlay size={22} />
-          Try Tim's starter game
+          <span className={classes.pathIcon}>
+            <IconKey size={28} stroke={2.2} />
+          </span>
+          <span className={classes.pathTitle}>I have a family code</span>
+          <span className={classes.pathText}>
+            Type the code from a grown-up to open your child&apos;s game on this device.
+          </span>
         </Link>
       </div>
 
-      <div className={classes.sectionHeading}>Starter Activities</div>
+      <Link href="/words" className={classes.demoLink} data-testid="demo-game-button">
+        <IconPlayerPlay size={18} />
+        Try a demo game
+      </Link>
+
+      <div className={classes.sectionHeading}>Demo games</div>
       <div className={classes.grid}>
         {GAMES.map((game) => (
           <Link key={game.href} href={game.href} className={`${classes.tile} ${game.className}`}>

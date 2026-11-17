@@ -13,7 +13,7 @@ describe('AppShellNav', () => {
     mockUsePathname.mockReturnValue('/');
   });
 
-  it('renders Home button and all 5 game links', () => {
+  it('renders Home, the five game links and a Grown-ups link', () => {
     render(<AppShellNav />);
 
     expect(screen.getByRole('link', { name: /home/i })).toHaveAttribute('href', '/');
@@ -22,6 +22,7 @@ describe('AppShellNav', () => {
     expect(screen.getByRole('link', { name: /clock/i })).toHaveAttribute('href', '/clock');
     expect(screen.getByRole('link', { name: /quiz/i })).toHaveAttribute('href', '/quiz');
     expect(screen.getByRole('link', { name: /rhyme/i })).toHaveAttribute('href', '/rhyme');
+    expect(screen.getByTestId('nav-grown-ups')).toHaveAttribute('href', '/parent');
   });
 
   it('highlights the active route based on usePathname', () => {
@@ -37,15 +38,6 @@ describe('AppShellNav', () => {
     expect(wordsLink).toHaveAttribute('data-active', 'false');
   });
 
-  it('highlights words route when on /words', () => {
-    mockUsePathname.mockReturnValue('/words');
-    render(<AppShellNav />);
-
-    const wordsLink = screen.getByRole('link', { name: /words/i });
-    expect(wordsLink).toHaveAttribute('aria-current', 'page');
-    expect(wordsLink).toHaveAttribute('data-active', 'true');
-  });
-
   it('highlights home button when on /', () => {
     mockUsePathname.mockReturnValue('/');
     render(<AppShellNav />);
@@ -53,5 +45,22 @@ describe('AppShellNav', () => {
     const homeLink = screen.getByRole('link', { name: /home/i });
     expect(homeLink).toHaveAttribute('aria-current', 'page');
     expect(homeLink).toHaveAttribute('data-active', 'true');
+  });
+
+  it('hides the game tabs on grown-up pages but keeps Home and Grown-ups', () => {
+    mockUsePathname.mockReturnValue('/parent/profile/prof_1/connect');
+    render(<AppShellNav />);
+
+    expect(screen.queryByTestId('nav-words')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('nav-rhyme')).not.toBeInTheDocument();
+    expect(screen.getByTestId('nav-home')).toBeInTheDocument();
+    expect(screen.getByTestId('nav-grown-ups')).toHaveAttribute('aria-current', 'page');
+  });
+
+  it('renders nothing inside the child play route', () => {
+    mockUsePathname.mockReturnValue('/play/ABC123');
+    render(<AppShellNav />);
+    expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 });
