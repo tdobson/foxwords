@@ -103,6 +103,30 @@ STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${BASE_URL}/api/profile
 check "POST /api/profiles/[profileId]/assets without session returns 401" "401" "${STATUS}"
 
 echo
+echo "5. Voice (TTS) Endpoint"
+echo "------------------------------------------"
+
+# Markup in the word is rejected before any upstream call -> 400
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" -G "${BASE_URL}/api/tts" \
+  --data-urlencode "text=<script>")
+check "GET /api/tts with markup returns 400" "400" "${STATUS}"
+
+# A plain name is spoken as WAV, or 503 when the OpenRouter key is not configured
+TTS_HEADERS=$(mktemp)
+STATUS=$(curl -s -o /dev/null -D "${TTS_HEADERS}" -w "%{http_code}" -G "${BASE_URL}/api/tts" \
+  --data-urlencode "text=Juniper")
+if [ "${STATUS}" = "503" ]; then
+  echo "  ⚠️  WARN: GET /api/tts returned 503 (OPENROUTER_API_KEY not configured or upstream unavailable)"
+else
+  check "GET /api/tts for a name returns 200 audio/wav" "200" "${STATUS}"
+  if ! grep -qi "^content-type: audio/wav" "${TTS_HEADERS}"; then
+    echo "  ❌ FAIL: GET /api/tts did not return Content-Type audio/wav"
+    FAILED=$((FAILED + 1))
+  fi
+fi
+rm -f "${TTS_HEADERS}"
+
+echo
 echo "=========================================="
 if [ ${FAILED} -eq 0 ]; then
   echo "🎉 All API smoke tests PASSED!"

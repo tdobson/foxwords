@@ -11,6 +11,7 @@ export interface RuntimeEnv {
   AWS_SECRET_ACCESS_KEY?: string;
   SES_SENDER_EMAIL?: string;
   SESSION_SECRET?: string;
+  OPENROUTER_API_KEY?: string;
 }
 
 let mockRuntimeEnv: RuntimeEnv | null = null;
@@ -45,5 +46,6 @@ export async function getRuntimeEnv(): Promise<RuntimeEnv> {
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     SES_SENDER_EMAIL: process.env.SES_SENDER_EMAIL || 'noreply@foxwords.net',
     SESSION_SECRET: process.env.SESSION_SECRET,
+    OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
   };
 }
