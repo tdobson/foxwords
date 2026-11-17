@@ -28,6 +28,8 @@ const LEVEL_SIZE = 6;
 const FEEDBACK_DURATION_MS = 350;
 const WORD_COMPLETE_MS = 1500;
 const WORD_COMPLETE_MAX_MS = 6000;
+// Quiet gap after the finished word, so it doesn't run into the next one.
+const PAUSE_AFTER_WORD_MS = 900;
 const LEVEL_TOAST_DURATION_MS = 1200;
 // Pause between the last letter's sound and the whole word.
 const WORD_SOUND_DELAY_MS = 500;
@@ -360,7 +362,10 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
     let cancelled = false;
     const minDelay = new Promise<void>((resolve) => setTimeout(resolve, WORD_COMPLETE_MS));
     const maxDelay = new Promise<void>((resolve) => setTimeout(resolve, WORD_COMPLETE_MAX_MS));
-    Promise.race([Promise.all([minDelay, completionAudioRef.current]), maxDelay]).then(() => {
+    const afterWord = completionAudioRef.current.then(
+      () => new Promise<void>((resolve) => setTimeout(resolve, PAUSE_AFTER_WORD_MS))
+    );
+    Promise.race([Promise.all([minDelay, afterWord]), maxDelay]).then(() => {
       if (!cancelled) handleNextWord();
     });
     return () => {
