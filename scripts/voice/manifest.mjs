@@ -94,15 +94,6 @@ const LETTER_NAMES = {
   z: 'zed',
 };
 
-const PRAISE = [
-  ['praise_great_job', 'Great job!'],
-  ['praise_brilliant', 'Brilliant spelling!'],
-  ['praise_well_done', 'Well done!'],
-  ['praise_super_star', 'Super star!'],
-  ['praise_fantastic', 'Fantastic!'],
-  ['praise_try_again', 'Have another go!'],
-];
-
 const clips = [];
 const add = (entry) => {
   if (recordedKeys.has(entry.key)) return;
@@ -124,10 +115,6 @@ for (const word of words) {
 // James and Sarah are family names from the old single-family prototype, not plurals.
 for (const word of words) {
   add({ key: `plural_${word.id}`, kind: 'plural', text: getObjectSpokenLabel({ word, count: 2 }) });
-}
-
-for (const [key, text] of PRAISE) {
-  add({ key, kind: 'praise', text });
 }
 
 const clockByKey = new Map();

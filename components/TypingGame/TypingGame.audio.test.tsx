@@ -103,4 +103,35 @@ describe('TypingGame audio', () => {
 
     await waitFor(() => expect(srcs()).toContain('/audio/phonemes/b.webm'));
   });
+
+  it('says the whole word after the last letter has finished, with no praise', async () => {
+    const at: LearningWord = { ...big, id: 'at', word: 'AT', ipa: ['æ', 't'] };
+    render(
+      <ProfileProvider initialProfile={{ ...family, words: [at], audioOverrides: {} }}>
+        <TypingGame />
+      </ProfileProvider>
+    );
+    await waitFor(() => expect(srcs()).toContain('/api/tts?text=AT'));
+    FakeAudio.instances = [];
+
+    fireEvent.keyDown(window, { key: 'a' });
+    fireEvent.keyDown(window, { key: 't' });
+    await waitFor(() => expect(srcs()).toContain('/audio/phonemes/t.webm'));
+
+    // The word must not start while the last letter is still playing.
+    await new Promise((resolve) => setTimeout(resolve, 700));
+    expect(srcs()).not.toContain('/api/tts?text=AT');
+
+    // Finish each clip as it starts (letter sounds, then letter names, then the pause).
+    await waitFor(
+      () => {
+        act(() => {
+          for (const audio of FakeAudio.instances) audio.end();
+        });
+        expect(srcs()).toContain('/api/tts?text=AT');
+      },
+      { timeout: 3000 }
+    );
+    expect(srcs().some((src) => src.includes('praise'))).toBe(false);
+  });
 });

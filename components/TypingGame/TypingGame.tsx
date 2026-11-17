@@ -29,23 +29,13 @@ const FEEDBACK_DURATION_MS = 350;
 const WORD_COMPLETE_MS = 1500;
 const WORD_COMPLETE_MAX_MS = 6000;
 const LEVEL_TOAST_DURATION_MS = 1200;
-const WORD_SOUND_DELAY_MS = 700;
+// Pause between the last letter's sound and the whole word.
+const WORD_SOUND_DELAY_MS = 500;
 const COUNT_HINT_DELAY_MS = 14000;
 const COUNT_OBJECT_AUDIO_DELAY_MS = 600;
 const LETTER_SOUND_GAP_MS = 120;
-const PRAISE_KEYS = [
-  'praise_great_job',
-  'praise_brilliant',
-  'praise_well_done',
-  'praise_super_star',
-  'praise_fantastic',
-];
 
 const ignoreBackspace = () => {};
-
-function pickPraiseKey(): string {
-  return PRAISE_KEYS[Math.floor(Math.random() * PRAISE_KEYS.length)];
-}
 
 function pickNewCount(diff: CountDifficulty, prevCount?: number): number {
   const { minCount, maxCount } = COUNT_DIFFICULTIES[diff];
@@ -114,7 +104,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
       if (/^[a-z]$/.test(letter)) {
         steps.push(`letter_${letter}`);
       }
-      audio.playSequence(steps, LETTER_SOUND_GAP_MS);
+      return audio.playSequence(steps, LETTER_SOUND_GAP_MS);
     },
     [audio]
   );
@@ -182,7 +172,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
           return;
         }
         if (key === currentWord.word[0]) {
-          completionAudioRef.current = audio.playSequence([currentWord, pickPraiseKey()]);
+          completionAudioRef.current = audio.playWord(currentWord);
           setIsCompleted(true);
           setFeedback('celebrate');
         } else {
@@ -260,15 +250,14 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
         setNextIndex(result.nextIndex);
         setFeedback('none');
         // The phonic sound, then the letter name (e.g. "kuh" then "kay").
-        playLetterSound(currentWord, nextIndex);
+        const letterSound = playLetterSound(currentWord, nextIndex);
 
         if (result.completed) {
-          // A short pause after the last letter, then the whole word and some praise.
-          completionAudioRef.current = new Promise<void>((resolve) => {
-            setTimeout(() => {
-              audio.playSequence([currentWord, pickPraiseKey()]).then(resolve, resolve);
-            }, WORD_SOUND_DELAY_MS);
-          });
+          // Once the last letter has finished, a short pause, then the whole word.
+          completionAudioRef.current = letterSound
+            .then(() => new Promise<void>((resolve) => setTimeout(resolve, WORD_SOUND_DELAY_MS)))
+            .then(() => audio.playWord(currentWord))
+            .catch(() => undefined);
           setIsCompleted(true);
           setFeedback('celebrate');
           if ((wordIndex + 1) % LEVEL_SIZE === 0) {
@@ -366,7 +355,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
     if (!isCompleted) {
       return undefined;
     }
-    // Move on once the word and praise have been heard (never sooner than WORD_COMPLETE_MS,
+    // Move on once the whole word has been heard (never sooner than WORD_COMPLETE_MS,
     // never later than WORD_COMPLETE_MAX_MS if audio stalls).
     let cancelled = false;
     const minDelay = new Promise<void>((resolve) => setTimeout(resolve, WORD_COMPLETE_MS));

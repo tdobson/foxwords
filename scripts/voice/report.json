@@ -2871,60 +2871,6 @@
     "transcript": " Zips.",
     "verified": true
   },
-  "praise_brilliant": {
-    "attempts": 1,
-    "bytes": 10988,
-    "kind": "praise",
-    "spoken": "Brilliant spelling!",
-    "text": "Brilliant spelling!",
-    "transcript": " Brilliant spelling!",
-    "verified": true
-  },
-  "praise_fantastic": {
-    "attempts": 2,
-    "bytes": 10124,
-    "kind": "praise",
-    "spoken": "Fantastic!",
-    "text": "Fantastic!",
-    "transcript": " Fantastic!",
-    "verified": true
-  },
-  "praise_great_job": {
-    "attempts": 1,
-    "bytes": 9836,
-    "kind": "praise",
-    "spoken": "Great job!",
-    "text": "Great job!",
-    "transcript": " Great job!",
-    "verified": true
-  },
-  "praise_super_star": {
-    "attempts": 1,
-    "bytes": 10556,
-    "kind": "praise",
-    "spoken": "Super star!",
-    "text": "Super star!",
-    "transcript": " Superstar!",
-    "verified": true
-  },
-  "praise_try_again": {
-    "attempts": 1,
-    "bytes": 10844,
-    "kind": "praise",
-    "spoken": "Have another go!",
-    "text": "Have another go!",
-    "transcript": " Have another go.",
-    "verified": true
-  },
-  "praise_well_done": {
-    "attempts": 1,
-    "bytes": 9980,
-    "kind": "praise",
-    "spoken": "Well done!",
-    "text": "Well done!",
-    "transcript": " Well done!",
-    "verified": true
-  },
   "word_bat": {
     "attempts": 1,
     "bytes": 6236,

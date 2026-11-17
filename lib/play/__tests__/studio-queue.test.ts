@@ -75,16 +75,8 @@ describe('buildStudioQueue', () => {
     expect(plurals.find((i) => i.clipKey === 'plural_bus')?.displayWord).toBe('buses');
   });
 
-  it('includes every praise phrase, including try again', () => {
-    const praise = buildStudioQueue({ childName: 'Leo' }).filter((i) => i.kind === 'praise');
-    expect(praise.map((i) => i.clipKey)).toEqual([
-      'praise_great_job',
-      'praise_brilliant',
-      'praise_well_done',
-      'praise_super_star',
-      'praise_fantastic',
-      'praise_try_again',
-    ]);
+  it('has no praise prompts, because the games do not play praise', () => {
+    expect(buildStudioQueue({ childName: 'Leo' }).some((i) => i.kind === 'praise')).toBe(false);
   });
 
   it('keeps the four chapters in order and marks only Family as required', () => {
@@ -101,7 +93,7 @@ describe('buildStudioQueue', () => {
       expect(item.promptLabel).toBeTruthy();
       expect(item.instruction).toBeTruthy();
       expect(item.hint).toBeTruthy();
-      expect(item.clipKey).toMatch(/^(word|phoneme|letter|number|plural|praise)_/);
+      expect(item.clipKey).toMatch(/^(word|phoneme|letter|number|plural)_/);
       expect(['word-audio', 'system-audio']).toContain(item.assetKind);
     }
   });

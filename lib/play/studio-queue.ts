@@ -60,8 +60,8 @@ export const STUDIO_CHAPTERS: StudioChapter[] = [
   },
   {
     id: 4,
-    title: 'Words and praise',
-    description: 'Starter words and the cheers the game gives',
+    title: 'Words',
+    description: 'Starter words in your voice',
     mandatory: false,
   },
 ];
@@ -155,15 +155,6 @@ const STARTER_WORD_IDS = [
   'van',
   'boat',
   'car',
-];
-
-const PRAISE_ITEMS: Array<{ clipKey: string; phrase: string }> = [
-  { clipKey: 'praise_great_job', phrase: 'Great job!' },
-  { clipKey: 'praise_brilliant', phrase: 'Brilliant!' },
-  { clipKey: 'praise_well_done', phrase: 'Well done!' },
-  { clipKey: 'praise_super_star', phrase: 'Super star!' },
-  { clipKey: 'praise_fantastic', phrase: 'Fantastic!' },
-  { clipKey: 'praise_try_again', phrase: 'Try again!' },
 ];
 
 function sanitizeKey(text: string): string {
@@ -277,7 +268,7 @@ export function buildStudioQueue(options: BuildStudioQueueOptions): StudioPrompt
     });
   }
 
-  // Chapter 4: starter words (kept as family overrides), then praise
+  // Chapter 4: starter words (kept as family overrides)
   for (const wordId of options.starterWords ?? STARTER_WORD_IDS) {
     const word = LEARNING_WORDS.find((w) => w.id === wordId);
     if (!word) continue;
@@ -292,20 +283,6 @@ export function buildStudioQueue(options: BuildStudioQueueOptions): StudioPrompt
       hint: 'Word',
       kind: 'word',
       clipKey: `word_${wordId}`,
-      assetKind: 'system-audio',
-    });
-  }
-  for (const praise of PRAISE_ITEMS) {
-    items.push({
-      key: `ch4_${praise.clipKey}`,
-      chapter: 4,
-      targetWord: praise.phrase.toUpperCase(),
-      displayWord: praise.phrase,
-      promptLabel: praise.phrase,
-      instruction: `Say: ${praise.phrase}`,
-      hint: 'Praise',
-      kind: 'praise',
-      clipKey: praise.clipKey,
       assetKind: 'system-audio',
     });
   }
