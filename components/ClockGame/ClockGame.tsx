@@ -1,20 +1,23 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { CLOCK_CURRICULUM } from '../../constants/clock-curriculum';
 import { usePlayAudio } from '../../lib/audio/clips';
+import { useChildInput } from '../../lib/play/use-child-input';
 import type {
   ClockDifficulty,
   ClockProgressionState,
   ClockTargetTime,
 } from '../../types/clock.types';
 import { getClockProgressionResult } from '../../utils/clock-progression';
+import { ChildKeyboard } from '../ChildKeyboard/ChildKeyboard';
 import { ClockFace } from './ClockFace';
 import classes from './ClockGame.module.css';
 
 const HINT_DELAY_MS = 30000;
 const CELEBRATE_ADVANCE_MS = 1200;
 const SHAKE_RESET_MS = 400;
+const ignoreBackspace = () => {};
 
 interface ClockGameProps {
   initialDifficulty?: ClockDifficulty;
@@ -32,6 +35,8 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
   const [showHint, setShowHint] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<'none' | 'shake' | 'celebrate'>('none');
   const [isAdvancing, setIsAdvancing] = useState<boolean>(false);
+  const [typing, setTyping] = useState<boolean>(false);
+  const stageRef = useRef<HTMLDivElement>(null);
   const audio = usePlayAudio();
 
   const curriculumPool = CLOCK_CURRICULUM[difficulty];
@@ -79,14 +84,14 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
     audio.playClip(`clock_${currentTarget.audioSlug}`);
   };
 
-  // Process key input
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
+  // One handler for every input path: physical keys, the native keyboard and the on-screen keypad.
+  const handleCharacter = useCallback(
+    (rawKey: string) => {
       if (isAdvancing) {
         return;
       }
 
-      const result = getClockProgressionResult(currentTarget, progressionState, e.key);
+      const result = getClockProgressionResult(currentTarget, progressionState, rawKey);
 
       if (result.kind === 'ignored') {
         return;
@@ -117,6 +122,34 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
     [currentTarget, progressionState, isAdvancing, nextTarget, onTargetComplete]
   );
 
+  // Easy targets are digits only; later levels also need the Q, H, P and T shortcuts.
+  const needsLetters = difficulty !== 'easy';
+  const childInput = useChildInput({
+    onChar: handleCharacter,
+    onBackspace: ignoreBackspace,
+    numeric: !needsLetters,
+  });
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+      }
+      // Keys typed into the hidden child input arrive through its onChar, so skip them here.
+      if (e.target instanceof HTMLInputElement) {
+        return;
+      }
+      handleCharacter(e.key);
+    },
+    [handleCharacter]
+  );
+
+  useEffect(() => {
+    if (typing) {
+      stageRef.current?.scrollIntoView?.({ block: 'start', behavior: 'smooth' });
+    }
+  }, [typing]);
+
   // Global keyboard listener
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -133,7 +166,7 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
   ];
 
   return (
-    <div className={classes.gameContainer}>
+    <div className={typing ? `${classes.gameContainer} ${classes.typing}` : classes.gameContainer}>
       {/* Top Bar: Difficulty Selector & Action Buttons */}
       <div className={classes.topBar}>
         <div className={classes.difficultyGroup} role="radiogroup" aria-label="Difficulty Level">
@@ -177,6 +210,7 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
           feedback === 'shake' ? classes.shake : feedback === 'celebrate' ? classes.celebrate : ''
         }`}
         data-testid="clock-stage"
+        ref={stageRef}
       >
         <ClockFace
           hour={currentTarget.hour}
@@ -202,6 +236,19 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
           <div className={classes.ghostPrompt} data-testid="ghost-hint">
             Hint: &quot;{currentTarget.spokenPhrase}&quot;
           </div>
+        )}
+      </div>
+
+      <div
+        className={classes.childInput}
+        role="group"
+        aria-label="Your answer"
+        onFocus={() => setTyping(true)}
+        onBlur={() => setTyping(false)}
+      >
+        {childInput.inputElement}
+        {childInput.mode === 'onscreen-keypad' && needsLetters && (
+          <ChildKeyboard numeric onChar={handleCharacter} onBackspace={ignoreBackspace} />
         )}
       </div>
 

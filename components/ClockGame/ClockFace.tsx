@@ -69,24 +69,6 @@ export function ClockFace({
           y2={center + radius - 10}
         />
 
-        {/* PAST & TO Zone Labels */}
-        <text
-          x={center + 50}
-          y={center - 35}
-          className={`${classes.zoneBadgeText} ${classes.pastBadgeText}`}
-          data-testid="past-label"
-        >
-          PAST ➔
-        </text>
-        <text
-          x={center - 50}
-          y={center - 35}
-          className={`${classes.zoneBadgeText} ${classes.toBadgeText}`}
-          data-testid="to-label"
-        >
-          ⬅ TO
-        </text>
-
         {/* Ticks for each minute */}
         {Array.from({ length: 60 }).map((_, i) => {
           const isFiveMinute = i % 5 === 0;
@@ -232,6 +214,24 @@ export function ClockFace({
             strokeLinecap="round"
           />
         </g>
+
+        {/* PAST & TO zone labels sit above the hands so they stay readable when a hand passes */}
+        <text
+          x={center + 50}
+          y={center - 35}
+          className={`${classes.zoneBadgeText} ${classes.pastBadgeText}`}
+          data-testid="past-label"
+        >
+          PAST ➔
+        </text>
+        <text
+          x={center - 50}
+          y={center - 35}
+          className={`${classes.zoneBadgeText} ${classes.toBadgeText}`}
+          data-testid="to-label"
+        >
+          ⬅ TO
+        </text>
 
         {/* Center arbor nut */}
         <circle className={classes.pin} cx={center} cy={center} r={10} />

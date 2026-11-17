@@ -15,6 +15,12 @@
   flex-wrap: wrap;
 }
 
+.controlsRow button {
+  min-height: 48px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
 .segmentedControl {
   background-color: #fff;
   border: 1px solid #e2e8f0;

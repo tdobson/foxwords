@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { COUNT_DIFFICULTIES } from '../../constants/count-difficulties';
 import { QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
 import { getPhonemeSlug } from '../../constants/phonemes';
 import { usePlayAudio } from '../../lib/audio/clips';
 import { useProfile } from '../../lib/play/profile-context';
+import { useChildInput } from '../../lib/play/use-child-input';
 import type {
   CountDifficulty,
   DifficultyLevel,
@@ -37,6 +38,8 @@ const PRAISE_KEYS = [
   'praise_super_star',
   'praise_fantastic',
 ];
+
+const ignoreBackspace = () => {};
 
 function pickPraiseKey(): string {
   return PRAISE_KEYS[Math.floor(Math.random() * PRAISE_KEYS.length)];
@@ -74,6 +77,8 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
   const [showLevelToast, setShowLevelToast] = useState(false);
   const [completedLevelNumber, setCompletedLevelNumber] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<'none' | 'shake' | 'celebrate'>('none');
+  const [typing, setTyping] = useState(false);
+  const interactiveRef = useRef<HTMLElement>(null);
 
   const { words: effectiveWords } = useProfile();
   const audio = usePlayAudio();
@@ -158,18 +163,15 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
     return () => clearTimeout(timer);
   }, [mode, numberCompleted, isCompleted, targetCount]);
 
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
-      if (isCompleted || event.repeat || event.ctrlKey || event.metaKey || event.altKey) {
-        return;
-      }
-
-      if (isRhyme) {
+  // One handler for every input path: physical keys, the native keyboard and the on-screen keypad.
+  const handleCharacter = useCallback(
+    (rawKey: string) => {
+      if (isCompleted || isRhyme) {
         return;
       }
 
       if (isQuiz) {
-        const key = event.key.toUpperCase();
+        const key = rawKey.toUpperCase();
         if (!/^[A-Z]$/.test(key)) {
           return;
         }
@@ -188,7 +190,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
           const result = getCountProgressionResult({
             targetNumber: targetCount,
             nextIndex: numberNextIndex,
-            key: event.key,
+            key: rawKey,
           });
 
           if (result.kind === 'advanced') {
@@ -218,7 +220,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
           const result = getProgressionResult({
             word: currentWord.word,
             nextIndex,
-            key: event.key,
+            key: rawKey,
           });
 
           if (result.kind === 'advanced') {
@@ -245,7 +247,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
       const result = getProgressionResult({
         word: currentWord.word,
         nextIndex,
-        key: event.key,
+        key: rawKey,
       });
 
       if (result.kind === 'advanced') {
@@ -277,6 +279,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
       isCompleted,
       isCount,
       isQuiz,
+      isRhyme,
       nextIndex,
       numberCompleted,
       numberNextIndex,
@@ -286,6 +289,32 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
       wordIndex,
     ]
   );
+
+  const childInput = useChildInput({
+    onChar: handleCharacter,
+    onBackspace: ignoreBackspace,
+    numeric: isCount && !numberCompleted,
+  });
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+      // Keys typed into the hidden child input arrive through its onChar, so skip them here.
+      if (event.target instanceof HTMLInputElement) {
+        return;
+      }
+      handleCharacter(event.key);
+    },
+    [handleCharacter]
+  );
+
+  useEffect(() => {
+    if (typing) {
+      interactiveRef.current?.scrollIntoView?.({ block: 'start', behavior: 'smooth' });
+    }
+  }, [typing]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -337,12 +366,17 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
     countDifficulty === 'hard' ? 'grid' : countDifficulty === 'medium' ? 'tens' : 'row';
 
   return (
-    <main className={classes.gameWrapper}>
+    <main className={typing ? `${classes.gameWrapper} ${classes.typing}` : classes.gameWrapper}>
       {isRhyme ? (
         <RhymeGame />
       ) : (
         <>
-          <section className={classes.interactiveArea} data-feedback={feedback}>
+          <section
+            ref={interactiveRef}
+            className={classes.interactiveArea}
+            data-feedback={feedback}
+            data-testid="game-area"
+          >
             {isQuiz ? (
               <QuizPrompt word={currentWord} isCorrect={isCompleted} />
             ) : isCount ? (
@@ -365,6 +399,15 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
                 <WordTiles word={currentWord.word} nextIndex={nextIndex} difficulty={difficulty} />
               </>
             )}
+            <div
+              className={classes.childInput}
+              role="group"
+              aria-label="Your answer"
+              onFocus={() => setTyping(true)}
+              onBlur={() => setTyping(false)}
+            >
+              {childInput.inputElement}
+            </div>
           </section>
 
           {!isQuiz && <p className={classes.levelLabel}>Level {levelNumber}</p>}

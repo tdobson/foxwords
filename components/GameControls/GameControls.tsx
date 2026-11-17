@@ -42,7 +42,7 @@ export function GameControls({
   return (
     <div className={classes.controlsContainer}>
       <div className={classes.controlsRow}>
-        <Text size="sm" fw={600} c="dimmed">
+        <Text size="lg" fw={700} c="dimmed">
           {isCount ? 'Count Level:' : 'Difficulty:'}
         </Text>
         {isCount ? (
@@ -50,7 +50,7 @@ export function GameControls({
             value={countDifficulty}
             onChange={(val) => onCountDifficultyChange(val as CountDifficulty)}
             data={countDifficultyData}
-            size="md"
+            size="lg"
             radius="md"
             className={classes.segmentedControl}
             aria-label="Select count difficulty"
@@ -60,7 +60,7 @@ export function GameControls({
             value={difficulty}
             onChange={(val) => onDifficultyChange(val as DifficultyLevel)}
             data={wordDifficultyData}
-            size="md"
+            size="lg"
             radius="md"
             className={classes.segmentedControl}
             aria-label="Select difficulty mode"
@@ -68,7 +68,7 @@ export function GameControls({
         )}
         <Button
           onClick={onNewWord}
-          size="md"
+          size="lg"
           radius="md"
           color="orange"
           className={classes.newWordButton}
@@ -77,7 +77,7 @@ export function GameControls({
         </Button>
         <Button
           onClick={() => onModeChange(mode === 'count' ? 'words' : 'count')}
-          size="md"
+          size="lg"
           radius="md"
           variant={mode === 'count' ? 'filled' : 'outline'}
           color="teal"
@@ -87,13 +87,13 @@ export function GameControls({
         </Button>
         <Button
           onClick={() => onModeChange(mode === 'quiz' ? 'words' : 'quiz')}
-          size="md"
+          size="lg"
           radius="md"
           variant={mode === 'quiz' ? 'filled' : 'outline'}
           disabled={quizLocked}
           title={
             quizLocked
-              ? `Keep practising — quiz unlocks after ${QUIZ_UNLOCK_THRESHOLD} words`
+              ? `Keep practising. The quiz unlocks after ${QUIZ_UNLOCK_THRESHOLD} words`
               : 'Switch to first-letter quiz'
           }
         >
@@ -101,7 +101,7 @@ export function GameControls({
         </Button>
         <Button
           onClick={() => onModeChange(mode === 'rhyme' ? 'words' : 'rhyme')}
-          size="md"
+          size="lg"
           radius="md"
           variant={mode === 'rhyme' ? 'filled' : 'outline'}
           color="violet"

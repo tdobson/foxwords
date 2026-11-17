@@ -40,6 +40,10 @@
   letter-spacing: 0.05em;
   text-anchor: middle;
   dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 4px;
+  stroke-linejoin: round;
 }
 
 .pastBadgeText {
