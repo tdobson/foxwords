@@ -69,6 +69,8 @@ export function ChildTextCapture({
         type="button"
         className={classes.target}
         data-testid="child-type-target"
+        // Focusing the button scrolls the game, which moves it under the lifted finger and loses the tap.
+        onMouseDown={(event) => event.preventDefault()}
         onClick={() => inputRef.current?.focus()}
       >
         {prompt}
