@@ -2,16 +2,27 @@
 
 Foxwords is a personalised, joyful early-learning web application designed for young children (ages ~2–6). It combines multi-sensory phonics spelling, counting practice, interactive teaching clock games, and personalized vocabulary practice.
 
-The app comes loaded with a default starter curriculum voiced by Tim Dobson, and allows families to tailor the experience to their child:
-- Adding the child's name, family members (Mum, Dad, Grandad), siblings, pets, and favourite toys.
-- Uploading photos for personalized photo-quiz identification and spelling cards.
-- Recording family voices directly in the browser so words speak with a parent's voice, falling back gracefully to default voice clips.
-- Children access their customized game on tablets with zero login hurdles via a unique play URL (`/play/[slug]`) or a simple family code (e.g. `LION-9`).
+Children hear the people they love: parents record their own voices for names, letter sounds, numbers and praise in a short guided studio, and anything not recorded falls back to bundled default clips.
+
+- Grown-ups sign in with an email link (no password), add their child's name, brothers and sisters, and who else is in the family.
+- The Voice Studio walks through the recordings one prompt at a time. Everything can be skipped and finished later.
+- Children never need an account. A tablet opens the child's game with a six-letter family code, a play link or a QR code.
+- Works with a keyboard, the pop-up keyboard on iPads, iPhones and Android tablets, and a big on-screen keypad on other touch screens.
+
+## Try it
+
+The test site is https://foxwords-dev.tdobson.net
+
+1. Tap **Set up for my child** and sign in with the link we email you.
+2. Type your child's first name, add the family, and record a few prompts (or skip them).
+3. Tap **Play now on this device**, or **Connect a tablet** and scan the QR code.
+
+Bugs and rough edges are very welcome as [GitHub issues](https://github.com/tdobson/foxwords/issues). Saying which device and browser you used helps a lot.
 
 ## Licensing
 
-- **Code:** GNU Affero General Public License v3.0 (`AGPL-3.0`) — see [LICENSE](LICENSE).
-- **Educational Content & Media:** Creative Commons Attribution-ShareAlike 3.0 Unported (`CC-BY-SA-3.0`) — see [CONTENT-LICENSE](CONTENT-LICENSE), [NOTICE](NOTICE), and [docs/content-manifest.md](docs/content-manifest.md).
+- **Code:** GNU Affero General Public License v3.0 (`AGPL-3.0`): see [LICENSE](LICENSE).
+- **Educational Content & Media:** Creative Commons Attribution-ShareAlike 3.0 Unported (`CC-BY-SA-3.0`): see [CONTENT-LICENSE](CONTENT-LICENSE), [NOTICE](NOTICE), and [docs/content-manifest.md](docs/content-manifest.md).
 
 ## Prerequisites
 
