@@ -29,17 +29,6 @@ export function getPluralAudioPath(wordId: string): string {
   return `${PLURAL_AUDIO_DIR}/${wordId}.webm`;
 }
 
-export function playAudio(path: string): void {
-  const audio = new Audio(path);
-  audio.play().catch(() => {
-    // Ignore playback errors (e.g. missing file or autoplay restrictions)
-  });
-}
-
-export function playWordSound(wordId: string): void {
-  playAudio(getWordAudioPath(wordId));
-}
-
 export async function saveAudio(
   kind: 'phoneme' | 'letter-name' | 'word' | 'number' | 'plural' | 'clock',
   id: string,

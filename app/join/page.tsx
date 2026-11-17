@@ -15,6 +15,7 @@ import { IconArrowLeft, IconBackspace, IconSparkles } from '@tabler/icons-react'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { type PlayPayload, profileFromPlayPayload } from '../../lib/play/profile';
 import { useProfile } from '../../lib/play/profile-context';
 
 const KEYPAD_LETTERS = [
@@ -72,27 +73,11 @@ export default function JoinPage() {
         return;
       }
 
-      // Fetch public play payload for child profile
+      // Store the same profile shape the play page stores, so the games start on the child's list.
       const playRes = await fetch(`/api/play/${encodeURIComponent(data.play.playCode)}`);
       if (playRes.ok) {
-        const playData: any = await playRes.json();
-        setProfile({
-          profileId: data.play.profileId,
-          childName: playData.childName,
-          items: playData.words
-            .filter((w: any) => w.id.startsWith('custom_'))
-            .map((w: any) => ({
-              id: w.id.replace(/^custom_/, ''),
-              word: w.word,
-              promptLabel: w.promptLabel,
-              category: 'custom',
-              promptEmoji: w.promptImage,
-              photoUrl: w.photoUrl,
-              audioUrl: w.audioUrl,
-              ipa: w.ipa,
-            })),
-          audioOverrides: playData.audioOverrides || {},
-        });
+        const playData = (await playRes.json()) as PlayPayload;
+        setProfile(profileFromPlayPayload(data.play.playCode, playData));
       }
 
       router.push(`/play/${encodeURIComponent(data.play.playCode)}`);

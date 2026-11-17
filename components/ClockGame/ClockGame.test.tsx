@@ -1,11 +1,16 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import * as clockAudio from '../../utils/clock-audio';
 import { ClockGame } from './ClockGame';
 
-jest.mock('../../utils/clock-audio', () => ({
-  playClockAudio: jest.fn(),
-  speakClockPhrase: jest.fn(),
+const mockPlayClip = jest.fn();
+const mockAudio = {
+  playClip: mockPlayClip,
+  playWord: jest.fn(),
+  playSequence: jest.fn(),
+};
+
+jest.mock('../../lib/audio/clips', () => ({
+  usePlayAudio: () => mockAudio,
 }));
 
 describe('ClockGame', () => {
@@ -26,7 +31,8 @@ describe('ClockGame', () => {
     expect(screen.getByRole('radio', { name: /hard/i })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /ultra/i })).toBeInTheDocument();
     expect(screen.getByTestId('blank-prompt')).toBeInTheDocument();
-    expect(clockAudio.playClockAudio).toHaveBeenCalledTimes(1);
+    expect(mockPlayClip).toHaveBeenCalledTimes(1);
+    expect(mockPlayClip).toHaveBeenCalledWith('clock_clock-it-is-1-oclock');
   });
 
   it('handles typing progression and completion in easy mode', () => {
@@ -50,7 +56,7 @@ describe('ClockGame', () => {
     });
 
     // Advanced to next question (2 o'clock)
-    expect(clockAudio.playClockAudio).toHaveBeenCalledTimes(2);
+    expect(mockPlayClip).toHaveBeenCalledTimes(2);
   });
 
   it('handles medium mode shortcut keys', () => {
@@ -125,11 +131,11 @@ describe('ClockGame', () => {
   it('re-plays audio on repeat button click', () => {
     render(<ClockGame initialDifficulty="easy" />);
 
-    expect(clockAudio.playClockAudio).toHaveBeenCalledTimes(1);
+    expect(mockPlayClip).toHaveBeenCalledTimes(1);
 
     const repeatBtn = screen.getByRole('button', { name: /repeat time audio/i });
     fireEvent.click(repeatBtn);
 
-    expect(clockAudio.playClockAudio).toHaveBeenCalledTimes(2);
+    expect(mockPlayClip).toHaveBeenCalledTimes(2);
   });
 });

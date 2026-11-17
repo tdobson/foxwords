@@ -1,28 +1,30 @@
 'use client';
 
 import type React from 'react';
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { LEARNING_WORDS } from '../../constants/learning-words';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { LearningWord } from '../../types/learning-word.types';
-import { mergeProfileWithCurriculum, type PlayProfile } from './profile';
+import {
+  DEFAULT_CHILD_NAME,
+  type PlayProfile,
+  parseStoredProfile,
+  wordsForProfile,
+} from './profile';
+
+const STORAGE_KEY = 'foxwords_play_profile';
 
 interface ProfileContextValue {
   profile: PlayProfile | null;
   childName: string;
   words: LearningWord[];
   audioOverrides: Record<string, string>;
-  loading: boolean;
-  error: string | null;
   setProfile: (profile: PlayProfile | null) => void;
 }
 
 const ProfileContext = createContext<ProfileContextValue>({
   profile: null,
-  childName: 'Little Fox',
-  words: LEARNING_WORDS,
+  childName: DEFAULT_CHILD_NAME,
+  words: wordsForProfile(null),
   audioOverrides: {},
-  loading: false,
-  error: null,
   setProfile: () => {},
 });
 
@@ -34,56 +36,49 @@ export function ProfileProvider({
   initialProfile?: PlayProfile | null;
 }) {
   const [profile, setProfileState] = useState<PlayProfile | null>(initialProfile);
-  const [loading] = useState(false);
-  const [error] = useState<string | null>(null);
 
-  const setProfile = useCallback((newProf: PlayProfile | null) => {
-    setProfileState(newProf);
-    if (typeof window !== 'undefined') {
-      try {
-        if (newProf) {
-          sessionStorage.setItem('foxwords_play_profile', JSON.stringify(newProf));
-        } else {
-          sessionStorage.removeItem('foxwords_play_profile');
-        }
-      } catch {
-        // Ignore session storage write errors
+  const setProfile = useCallback((next: PlayProfile | null) => {
+    setProfileState(next);
+    if (typeof window === 'undefined') {
+      return;
+    }
+    try {
+      if (next) {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } else {
+        sessionStorage.removeItem(STORAGE_KEY);
       }
+    } catch {
+      // Storage can be unavailable (private mode); the in-memory profile still works.
     }
   }, []);
 
   useEffect(() => {
-    // Check if client has local cached profile in sessionStorage
-    if (typeof window !== 'undefined') {
-      try {
-        const cached = sessionStorage.getItem('foxwords_play_profile');
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          setProfileState(parsed);
-        }
-      } catch {
-        // Ignore JSON parse errors from local cache
+    try {
+      const cached = sessionStorage.getItem(STORAGE_KEY);
+      if (!cached) {
+        return;
       }
+      const restored = parseStoredProfile(JSON.parse(cached));
+      // Keep a profile that was loaded while this effect was pending.
+      setProfileState((current) => current ?? restored);
+    } catch {
+      sessionStorage.removeItem(STORAGE_KEY);
     }
   }, []);
 
-  const { childName, words, audioOverrides } = mergeProfileWithCurriculum(profile);
-
-  return (
-    <ProfileContext.Provider
-      value={{
-        profile,
-        childName,
-        words,
-        audioOverrides,
-        loading,
-        error,
-        setProfile,
-      }}
-    >
-      {children}
-    </ProfileContext.Provider>
+  const value = useMemo<ProfileContextValue>(
+    () => ({
+      profile,
+      childName: profile?.childName ?? DEFAULT_CHILD_NAME,
+      words: wordsForProfile(profile),
+      audioOverrides: profile?.audioOverrides ?? {},
+      setProfile,
+    }),
+    [profile, setProfile]
   );
+
+  return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>;
 }
 
 export function useProfile() {

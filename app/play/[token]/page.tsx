@@ -22,22 +22,31 @@ import {
   IconTypography,
 } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import {
+  isSamePlayCode,
+  type PlayPayload,
+  profileFromPlayPayload,
+} from '../../../lib/play/profile';
 import { useProfile } from '../../../lib/play/profile-context';
 
 export default function ChildPlayLauncherPage() {
   const params = useParams();
   const token = params.token as string;
-  const router = useRouter();
-  const { setProfile, childName, words } = useProfile();
+  const { profile, setProfile, childName, words } = useProfile();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Games and back-navigation keep the loaded profile, so don't refetch it.
+  const alreadyLoaded = isSamePlayCode(profile, token ?? '');
+  const showSkeleton = loading && !alreadyLoaded;
 
   useEffect(() => {
+    if (!token || alreadyLoaded) return;
+
+    let cancelled = false;
     async function loadPlayProfile() {
-      if (!token) return;
       setLoading(true);
       setError(null);
 
@@ -48,35 +57,28 @@ export default function ChildPlayLauncherPage() {
           return;
         }
 
-        const data: any = await res.json();
-        setProfile({
-          profileId: token,
-          childName: data.childName,
-          items: data.words
-            .filter((w: any) => w.id.startsWith('custom_'))
-            .map((w: any) => ({
-              id: w.id.replace(/^custom_/, ''),
-              word: w.word,
-              promptLabel: w.promptLabel,
-              category: 'custom',
-              promptEmoji: w.promptImage,
-              photoUrl: w.photoUrl,
-              audioUrl: w.audioUrl,
-              ipa: w.ipa,
-            })),
-          audioOverrides: data.audioOverrides || {},
-        });
+        const data = (await res.json()) as PlayPayload;
+        if (!cancelled) {
+          setProfile(profileFromPlayPayload(token, data));
+        }
       } catch {
-        setError('Could not load your game space right now.');
+        if (!cancelled) {
+          setError('Could not load your game space right now.');
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
     loadPlayProfile();
-  }, [token, setProfile]);
+    return () => {
+      cancelled = true;
+    };
+  }, [token, alreadyLoaded, setProfile]);
 
-  const customCount = words.filter((w) => w.id.startsWith('custom_')).length;
+  const familyWordCount = words.filter((word) => word.id.startsWith('custom_')).length;
 
   return (
     <Container size="sm" py="xl" data-testid="child-play-launcher">
@@ -101,7 +103,7 @@ export default function ChildPlayLauncherPage() {
             Enter another code
           </Button>
         </Alert>
-      ) : loading ? (
+      ) : showSkeleton ? (
         <Stack gap="md">
           <Skeleton height={60} radius="md" />
           <Skeleton height={200} radius="md" />
@@ -115,9 +117,9 @@ export default function ChildPlayLauncherPage() {
             <Text c="dimmed" size="md">
               Choose a game to play
             </Text>
-            {customCount > 0 && (
+            {familyWordCount > 0 && (
               <Text size="xs" c="teal" fw={600} mt={4}>
-                ✨ {customCount} familiar words & voices loaded!
+                ✨ {familyWordCount} words from your family are ready
               </Text>
             )}
           </div>
@@ -188,10 +190,6 @@ export default function ChildPlayLauncherPage() {
               Rhyme
             </Button>
           </SimpleGrid>
-
-          <Text size="xs" c="dimmed" ta="center">
-            Tim&apos;s voice plays automatically for every sound not recorded by your family.
-          </Text>
         </Stack>
       )}
     </Container>

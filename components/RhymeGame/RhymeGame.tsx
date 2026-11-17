@@ -3,8 +3,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { LEARNING_WORDS } from '../../constants/learning-words';
 import { RHYME_LEVELS } from '../../constants/rhyme-levels';
+import { usePlayAudio } from '../../lib/audio/clips';
 import type { LearningWord, RhymeQuestion } from '../../types/learning-word.types';
-import { playWordSound } from '../../utils/audio';
 import { type RhymeSide, resolveRhymeInput } from '../../utils/rhyme-progression';
 import classes from './RhymeGame.module.css';
 
@@ -39,6 +39,7 @@ export function RhymeGame() {
   const [completedLevelNumber, setCompletedLevelNumber] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
 
+  const audio = usePlayAudio();
   const currentLevel = RHYME_LEVELS[levelIndex];
   const question: RhymeQuestion = currentLevel.questions[questionIndex];
   const target = useMemo(() => getWord(question.targetWordId), [question.targetWordId]);
@@ -58,13 +59,13 @@ export function RhymeGame() {
       if (isCorrect) {
         setIsShake(false);
         setIsCorrectPick(true);
-        playWordSound(side === 'left' ? leftWord.id : rightWord.id);
+        audio.playWord(side === 'left' ? leftWord : rightWord);
       } else {
         setIsShake(true);
         setIsCorrectPick(false);
       }
     },
-    [finished, isCorrectPick, leftWord.id, rightWord.id]
+    [audio, finished, isCorrectPick, leftWord, rightWord]
   );
 
   const handleKeyDown = useCallback(
@@ -101,8 +102,8 @@ export function RhymeGame() {
   }, [handleKeyDown]);
 
   useEffect(() => {
-    playWordSound(target.id);
-  }, [target.id]);
+    audio.playWord(target);
+  }, [audio, target]);
 
   useEffect(() => {
     if (!isShake) {
@@ -193,7 +194,7 @@ export function RhymeGame() {
             type="button"
             className={classes.audioReplayBtn}
             aria-label="Replay sound"
-            onClick={() => playWordSound(target.id)}
+            onClick={() => audio.playWord(target)}
           >
             🔊
           </button>

@@ -1,12 +1,16 @@
 import React from 'react';
 import { act, fireEvent, render, screen } from '@/test-utils';
-import { playWordSound } from '../../utils/audio';
 import { RhymeGame } from './RhymeGame';
 
-jest.mock('../../utils/audio', () => ({
-  playAudio: jest.fn(),
-  getWordAudioPath: (id: string) => `/audio/words/${id}.webm`,
-  playWordSound: jest.fn(),
+const mockPlayWord = jest.fn();
+const mockAudio = {
+  playClip: jest.fn(),
+  playWord: mockPlayWord,
+  playSequence: jest.fn(),
+};
+
+jest.mock('../../lib/audio/clips', () => ({
+  usePlayAudio: () => mockAudio,
 }));
 
 function completeQuestion(side: 'left' | 'right') {
@@ -41,7 +45,7 @@ describe('RhymeGame', () => {
     fireEvent.keyDown(window, { key: 'ArrowLeft' });
 
     expect(screen.getByTestId('rhyme-choice-left')).toHaveAttribute('data-correct', 'true');
-    expect(playWordSound).toHaveBeenCalledWith('hat');
+    expect(mockPlayWord).toHaveBeenCalledWith(expect.objectContaining({ id: 'hat' }));
   });
 
   it('selects the right card with the right arrow key', () => {
@@ -90,7 +94,7 @@ describe('RhymeGame', () => {
     render(<RhymeGame />);
 
     fireEvent.keyDown(window, { key: 'ArrowLeft' });
-    expect(playWordSound).toHaveBeenCalledWith('hat');
+    expect(mockPlayWord).toHaveBeenCalledWith(expect.objectContaining({ id: 'hat' }));
 
     act(() => {
       jest.advanceTimersByTime(1200);

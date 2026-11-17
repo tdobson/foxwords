@@ -2,12 +2,12 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { CLOCK_CURRICULUM } from '../../constants/clock-curriculum';
+import { usePlayAudio } from '../../lib/audio/clips';
 import type {
   ClockDifficulty,
   ClockProgressionState,
   ClockTargetTime,
 } from '../../types/clock.types';
-import { playClockAudio } from '../../utils/clock-audio';
 import { getClockProgressionResult } from '../../utils/clock-progression';
 import { ClockFace } from './ClockFace';
 import classes from './ClockGame.module.css';
@@ -32,6 +32,7 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
   const [showHint, setShowHint] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<'none' | 'shake' | 'celebrate'>('none');
   const [isAdvancing, setIsAdvancing] = useState<boolean>(false);
+  const audio = usePlayAudio();
 
   const curriculumPool = CLOCK_CURRICULUM[difficulty];
   const currentTarget: ClockTargetTime =
@@ -64,18 +65,18 @@ export function ClockGame({ initialDifficulty = 'easy', onTargetComplete }: Cloc
   // Play audio on current target change & reset 30s hint timer
   useEffect(() => {
     setShowHint(false);
-    playClockAudio(currentTarget);
+    audio.playClip(`clock_${currentTarget.audioSlug}`);
 
     const timer = setTimeout(() => {
       setShowHint(true);
     }, HINT_DELAY_MS);
 
     return () => clearTimeout(timer);
-  }, [currentTarget]);
+  }, [audio, currentTarget]);
 
   // Repeat audio button handler
   const handleRepeatAudio = () => {
-    playClockAudio(currentTarget);
+    audio.playClip(`clock_${currentTarget.audioSlug}`);
   };
 
   // Process key input

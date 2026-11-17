@@ -2,9 +2,9 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { COUNT_DIFFICULTIES } from '../../constants/count-difficulties';
-import { getCountNumberSlug } from '../../constants/count-numbers';
-import { LEARNING_WORDS, QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
+import { QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
 import { getPhonemeSlug } from '../../constants/phonemes';
+import { usePlayAudio } from '../../lib/audio/clips';
 import { useProfile } from '../../lib/play/profile-context';
 import type {
   CountDifficulty,
@@ -12,14 +12,6 @@ import type {
   GameMode,
   LearningWord,
 } from '../../types/learning-word.types';
-import {
-  getLetterNameAudioPath,
-  getNumberAudioPath,
-  getPhonemeAudioPath,
-  getPluralAudioPath,
-  getWordAudioPath,
-  playAudio,
-} from '../../utils/audio';
 import { getCountProgressionResult } from '../../utils/count-progression';
 import { getProgressionResult } from '../../utils/progression';
 import { CountPrompt } from '../CountPrompt/CountPrompt';
@@ -37,6 +29,18 @@ const LEVEL_TOAST_DURATION_MS = 1200;
 const WORD_SOUND_DELAY_MS = 700;
 const COUNT_HINT_DELAY_MS = 14000;
 const COUNT_OBJECT_AUDIO_DELAY_MS = 600;
+const LETTER_SOUND_GAP_MS = 120;
+const PRAISE_KEYS = [
+  'praise_great_job',
+  'praise_brilliant',
+  'praise_well_done',
+  'praise_super_star',
+  'praise_fantastic',
+];
+
+function pickPraiseKey(): string {
+  return PRAISE_KEYS[Math.floor(Math.random() * PRAISE_KEYS.length)];
+}
 
 function pickNewCount(diff: CountDifficulty, prevCount?: number): number {
   const { minCount, maxCount } = COUNT_DIFFICULTIES[diff];
@@ -71,8 +75,8 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
   const [completedLevelNumber, setCompletedLevelNumber] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<'none' | 'shake' | 'celebrate'>('none');
 
-  const { words: activeWords, audioOverrides } = useProfile();
-  const effectiveWords = activeWords && activeWords.length > 0 ? activeWords : LEARNING_WORDS;
+  const { words: effectiveWords } = useProfile();
+  const audio = usePlayAudio();
   const currentWord = effectiveWords[wordIndex % effectiveWords.length];
   const levelNumber = Math.floor(wordIndex / LEVEL_SIZE) + 1;
   const isQuiz = mode === 'quiz';
@@ -80,21 +84,29 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
   const isRhyme = mode === 'rhyme';
   const quizLocked = completedCount < QUIZ_UNLOCK_THRESHOLD;
 
-  const playCountAudio = useCallback((count: number, word: LearningWord) => {
-    const slug = getCountNumberSlug(count);
-    if (slug) {
-      playAudio(getNumberAudioPath(slug));
-    }
-    setTimeout(() => {
-      if (word.audioUrl) {
-        playAudio(word.audioUrl);
-      } else if (count === 1) {
-        playAudio(getWordAudioPath(word.id));
-      } else {
-        playAudio(getPluralAudioPath(word.id));
+  const playCountAudio = useCallback(
+    (count: number, word: LearningWord) => {
+      const objectStep = count === 1 ? word : `plural_${word.id}`;
+      audio.playSequence([`number_${count}`, objectStep], COUNT_OBJECT_AUDIO_DELAY_MS);
+    },
+    [audio]
+  );
+
+  const playLetterSound = useCallback(
+    (word: LearningWord, index: number) => {
+      const steps: string[] = [];
+      const phonemeSlug = getPhonemeSlug(word.ipa[index] ?? '');
+      if (phonemeSlug) {
+        steps.push(`phoneme_${phonemeSlug}`);
       }
-    }, COUNT_OBJECT_AUDIO_DELAY_MS);
-  }, []);
+      const letter = (word.word[index] ?? '').toLowerCase();
+      if (/^[a-z]$/.test(letter)) {
+        steps.push(`letter_${letter}`);
+      }
+      audio.playSequence(steps, LETTER_SOUND_GAP_MS);
+    },
+    [audio]
+  );
 
   const handleNextWord = useCallback(() => {
     setWordIndex((prev) => (prev + 1) % effectiveWords.length);
@@ -164,7 +176,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
         if (key === currentWord.word[0]) {
           setIsCompleted(true);
           setFeedback('celebrate');
-          playAudio(getWordAudioPath(currentWord.id));
+          audio.playSequence([pickPraiseKey(), currentWord]);
         } else {
           setFeedback('shake');
         }
@@ -212,12 +224,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
           if (result.kind === 'advanced') {
             setNextIndex(result.nextIndex);
             setFeedback('none');
-
-            const phonemeSlug = getPhonemeSlug(currentWord.ipa[nextIndex] ?? '');
-            if (phonemeSlug) {
-              playAudio(getPhonemeAudioPath(phonemeSlug));
-              playAudio(getLetterNameAudioPath(phonemeSlug));
-            }
+            playLetterSound(currentWord, nextIndex);
 
             if (result.completed) {
               setIsCompleted(true);
@@ -244,24 +251,15 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
       if (result.kind === 'advanced') {
         setNextIndex(result.nextIndex);
         setFeedback('none');
-
-        // Play the phonic sound, then the letter name (e.g. "kuh" then "kay").
-        const phonemeSlug = getPhonemeSlug(currentWord.ipa[nextIndex] ?? '');
-        if (phonemeSlug) {
-          playAudio(getPhonemeAudioPath(phonemeSlug));
-          playAudio(getLetterNameAudioPath(phonemeSlug));
-        }
+        // The phonic sound, then the letter name (e.g. "kuh" then "kay").
+        playLetterSound(currentWord, nextIndex);
 
         if (result.completed) {
           setIsCompleted(true);
           setFeedback('celebrate');
           // A short pause after the last letter, then the whole word.
           setTimeout(() => {
-            if (currentWord.audioUrl) {
-              playAudio(currentWord.audioUrl);
-            } else {
-              playAudio(getWordAudioPath(currentWord.id));
-            }
+            audio.playSequence([pickPraiseKey(), currentWord]);
           }, WORD_SOUND_DELAY_MS);
           if ((wordIndex + 1) % LEVEL_SIZE === 0) {
             setCompletedLevelNumber(levelNumber);
@@ -273,6 +271,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
       }
     },
     [
+      audio,
       countDifficulty,
       currentWord,
       isCompleted,
@@ -282,6 +281,7 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
       numberCompleted,
       numberNextIndex,
       playCountAudio,
+      playLetterSound,
       targetCount,
       wordIndex,
     ]
@@ -311,9 +311,9 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
     if (mode === 'count') {
       playCountAudio(targetCount, currentWord);
     } else {
-      playAudio(getWordAudioPath(currentWord.id));
+      audio.playWord(currentWord);
     }
-  }, [currentWord, mode, playCountAudio, targetCount]);
+  }, [audio, currentWord, mode, playCountAudio, targetCount]);
 
   useEffect(() => {
     if (!showLevelToast) {

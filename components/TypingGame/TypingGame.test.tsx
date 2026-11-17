@@ -1,7 +1,22 @@
-import React from 'react';
+import type React from 'react';
 import { act, fireEvent, render, screen, userEvent } from '@/test-utils';
-import { QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
+import { LEARNING_WORDS, QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
+import type { PlayProfile } from '../../lib/play/profile';
+import { ProfileProvider } from '../../lib/play/profile-context';
 import { TypingGame } from './TypingGame';
+
+// These tests script the original word order (JAMES first), so they pass the full list
+// explicitly rather than the starter list that games use without a profile.
+const scriptedProfile: PlayProfile = {
+  playCode: 'TESTCODE',
+  childName: 'Test',
+  words: LEARNING_WORDS,
+  audioOverrides: {},
+};
+
+function renderGame(ui: React.ReactElement) {
+  return render(<ProfileProvider initialProfile={scriptedProfile}>{ui}</ProfileProvider>);
+}
 
 const firstLevelWords = ['JAMES', 'GRANDMA', 'GRANDAD', 'MUMMY', 'DADDY', 'SARAH'];
 const unlockWords = [...firstLevelWords, 'BABY', 'GRANDPA', 'GRANNY', 'MEG'];
@@ -27,7 +42,7 @@ describe('TypingGame', () => {
   };
 
   it('renders initial game state with JAMES prompt and reveal as default difficulty', () => {
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     expect(screen.getByRole('region', { name: /prompt for james/i })).toBeInTheDocument();
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'hidden');
@@ -35,14 +50,14 @@ describe('TypingGame', () => {
   });
 
   it('fills the next letter when the matching physical key is pressed', () => {
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     fireEvent.keyDown(window, { key: 'j' });
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'completed');
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'active');
   });
 
   it('does not reveal the next letter until the previous one completes', () => {
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'hidden');
     fireEvent.keyDown(window, { key: 'j' });
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'active');
@@ -50,7 +65,7 @@ describe('TypingGame', () => {
   });
 
   it('ignores modifier key combinations', () => {
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     fireEvent.keyDown(window, { key: 'j', ctrlKey: true });
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
 
@@ -62,7 +77,7 @@ describe('TypingGame', () => {
   });
 
   it('leaves progress unchanged for an incorrect key', () => {
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     fireEvent.keyDown(window, { key: 'x' });
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'hidden');
@@ -70,7 +85,7 @@ describe('TypingGame', () => {
 
   it('starts the next word after the final letter with celebration', () => {
     jest.useFakeTimers();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
 
     for (const key of 'JAMES') {
       fireEvent.keyDown(window, { key });
@@ -86,7 +101,7 @@ describe('TypingGame', () => {
 
   it('resets and moves to the next word when New word is selected', async () => {
     const user = userEvent.setup();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     await user.click(screen.getByRole('button', { name: /new word/i }));
     expect(screen.getByRole('region', { name: /prompt for grandma/i })).toBeInTheDocument();
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
@@ -94,7 +109,7 @@ describe('TypingGame', () => {
 
   it('shows Level 2 after completing six words', () => {
     jest.useFakeTimers();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
 
     completeWords(firstLevelWords);
 
@@ -104,7 +119,7 @@ describe('TypingGame', () => {
 
   it('shows a level-complete celebration toast when a level finishes and auto-dismisses', () => {
     jest.useFakeTimers();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
 
     completeWords(firstLevelWords, [1600, 1600, 1600, 1600, 1600, 0]);
 
@@ -125,7 +140,7 @@ describe('TypingGame', () => {
 
   it('locks quiz mode until enough words are completed', async () => {
     const user = userEvent.setup();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     const quizButton = screen.getByRole('button', { name: /quiz/i });
     expect(quizButton).toBeDisabled();
     expect(quizButton).toHaveAttribute(
@@ -138,7 +153,7 @@ describe('TypingGame', () => {
 
   it('unlocks quiz mode after completing enough words', () => {
     jest.useFakeTimers();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
 
     for (let i = 0; i < QUIZ_UNLOCK_THRESHOLD; i += 1) {
       for (const key of unlockWords[i]) {
@@ -158,7 +173,7 @@ describe('TypingGame', () => {
 
   it('asks for the first letter in quiz mode and advances on a correct answer', () => {
     jest.useFakeTimers();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
 
     completeWords(unlockWords);
 
@@ -184,7 +199,7 @@ describe('TypingGame', () => {
   });
 
   it('allows switching to Count mode immediately with zero completed words', () => {
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     const countBtn = screen.getByRole('button', { name: /^count$/i });
     expect(countBtn).toBeEnabled();
     fireEvent.click(countBtn);
@@ -193,7 +208,7 @@ describe('TypingGame', () => {
   });
 
   it('allows switching to Rhyme mode immediately and displays RhymeGame', () => {
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     const rhymeBtn = screen.getByRole('button', { name: /^rhyme$/i });
     expect(rhymeBtn).toBeEnabled();
     fireEvent.click(rhymeBtn);
@@ -203,7 +218,7 @@ describe('TypingGame', () => {
 
   it('advances count on correct digit in easy mode and reveals 14s hint if delayed', () => {
     jest.useFakeTimers();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
 
     const tile = screen.getByTestId('number-tile-0');
@@ -230,7 +245,7 @@ describe('TypingGame', () => {
 
   it('hard mode requires typing the number then spelling the word', () => {
     jest.useFakeTimers();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
 
     // Switch to Hard
@@ -267,7 +282,7 @@ describe('TypingGame', () => {
 
   it('completing number before 14s clears hint timer and does not reveal faint hint', () => {
     jest.useFakeTimers();
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
 
     const tile = screen.getByTestId('number-tile-0');
@@ -292,7 +307,7 @@ describe('TypingGame', () => {
   });
 
   it('medium mode switches to tens layout and requires two-digit progression', () => {
-    render(<TypingGame />);
+    renderGame(<TypingGame />);
     fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
     fireEvent.click(screen.getByRole('radio', { name: /medium/i }));
 
