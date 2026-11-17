@@ -13,6 +13,7 @@
     "jest": "scripts/low-priority.sh jest --runInBand",
     "jest:watch": "scripts/low-priority.sh jest --watch",
     "e2e": "scripts/low-priority.sh playwright test",
+    "e2e:install": "playwright install chromium",
     "format:test": "scripts/low-priority.sh biome check --formatter-enabled=true .",
     "format:write": "scripts/low-priority.sh biome format --write .",
     "test": "yarn format:test && yarn lint && yarn typecheck && yarn jest",

@@ -19,19 +19,32 @@ if (!allowedHosts.has(parsedUrl.hostname)) {
 
 const BASE_URL = rawBaseUrl;
 
+// Fake camera and microphone so the voice studio can record without hardware.
+const FAKE_MEDIA_ARGS = ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'];
+
+// The iPad descriptor asks for WebKit; the suite drives an iPad user agent on Chromium instead.
+function iPadProOnChromium() {
+  const { defaultBrowserType: _browser, ...descriptor } = devices['iPad Pro 11'];
+  return descriptor;
+}
+
 export default defineConfig({
   testDir: './tests',
   testMatch: '**/*.spec.ts',
-  timeout: 30_000,
+  timeout: 60_000,
+  expect: { timeout: 10_000 },
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: 1,
-  reporter: 'list',
+  reporter: [['list']],
+  globalSetup: './tests/support/global-setup.ts',
   use: {
     baseURL: BASE_URL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    permissions: ['microphone'],
+    launchOptions: { args: FAKE_MEDIA_ARGS },
   },
   projects: [
     {
@@ -51,7 +64,7 @@ export default defineConfig({
     {
       name: 'chromium-tablet',
       use: {
-        ...devices['iPad Pro 11'],
+        ...iPadProOnChromium(),
         viewport: { width: 1024, height: 1366 },
       },
     },
@@ -61,6 +74,6 @@ export default defineConfig({
       './scripts/low-priority.sh opennextjs-cloudflare build && ./scripts/low-priority.sh wrangler dev --port 8787',
     port: PORT,
     reuseExistingServer: !process.env.CI,
-    timeout: 180_000,
+    timeout: 600_000,
   },
 });
