@@ -177,6 +177,65 @@ export class ProfileRepository {
     };
   }
 
+  /**
+   * Creates the word for this profile, or updates the existing row for the same word.
+   * Audio and photo are only replaced when a new id is given, so a parent who skips
+   * recording keeps any earlier recording.
+   */
+  async upsertWordOwned(
+    userId: string,
+    input: CreateCustomWordInput
+  ): Promise<{ item: CustomWordRow; created: boolean } | null> {
+    const profile = await this.findOwnedById(userId, input.profileId);
+    if (!profile) return null;
+
+    const word = input.word.toUpperCase().trim();
+    const existing = await this.db
+      .prepare(
+        'SELECT id, profile_id, word, category, prompt_label, prompt_emoji, photo_asset_id, audio_asset_id, sort_order, created_at, updated_at FROM custom_words WHERE profile_id = ? AND word = ? ORDER BY created_at ASC LIMIT 1'
+      )
+      .bind(input.profileId, word)
+      .first<CustomWordRow>();
+
+    const now = Date.now();
+    if (existing) {
+      const promptLabel = input.promptLabel.trim();
+      const promptEmoji = input.promptEmoji ?? existing.prompt_emoji;
+      const audioAssetId = input.audioAssetId ?? existing.audio_asset_id;
+      const photoAssetId = input.photoAssetId ?? existing.photo_asset_id;
+      await this.db
+        .prepare(
+          'UPDATE custom_words SET prompt_label = ?, category = ?, prompt_emoji = ?, photo_asset_id = ?, audio_asset_id = ?, updated_at = ? WHERE id = ? AND profile_id = ?'
+        )
+        .bind(
+          promptLabel,
+          input.category,
+          promptEmoji,
+          photoAssetId,
+          audioAssetId,
+          now,
+          existing.id,
+          input.profileId
+        )
+        .run();
+      return {
+        created: false,
+        item: {
+          ...existing,
+          prompt_label: promptLabel,
+          category: input.category,
+          prompt_emoji: promptEmoji,
+          photo_asset_id: photoAssetId,
+          audio_asset_id: audioAssetId,
+          updated_at: now,
+        },
+      };
+    }
+
+    const item = await this.createWord(userId, { ...input, word });
+    return item ? { item, created: true } : null;
+  }
+
   async updateWordOwned(
     userId: string,
     profileId: string,

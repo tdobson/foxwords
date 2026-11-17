@@ -82,19 +82,19 @@ export async function POST(
     return jsonError(400, 'invalid_request', err.message);
   }
 
-  const itemId = `word_${randomToken(16)}`;
+  // Same word for the same profile updates the existing row instead of duplicating it.
   try {
-    const created = await profileRepo.createWord(user.id, {
-      id: itemId,
+    const result = await profileRepo.upsertWordOwned(user.id, {
+      id: `word_${randomToken(16)}`,
       profileId,
       ...validatedInput,
     });
 
-    if (!created) {
+    if (!result) {
       return jsonError(404, 'not_found', 'Profile not found.');
     }
 
-    return jsonSuccess(201, { item: created });
+    return jsonSuccess(result.created ? 201 : 200, { item: result.item });
   } catch (err: any) {
     // If foreign key constraint failed (e.g. invalid asset ID)
     if (err?.message?.includes('FOREIGN KEY') || err?.message?.includes('SQLITE_CONSTRAINT')) {

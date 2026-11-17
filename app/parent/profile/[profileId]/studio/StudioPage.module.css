@@ -59,3 +59,18 @@
   min-width: 48px;
   touch-action: manipulation;
 }
+
+.levelMeter {
+  width: 100%;
+  max-width: 320px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--mantine-color-gray-2);
+  overflow: hidden;
+}
+
+.levelBar {
+  height: 100%;
+  background: var(--mantine-color-red-5);
+  transition: width 60ms linear;
+}
