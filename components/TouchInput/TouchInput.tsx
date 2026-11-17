@@ -1,6 +1,7 @@
 import { Button, TextInput } from '@mantine/core';
 import type React from 'react';
 import { useState } from 'react';
+import { useInputMode } from '../../lib/device/input-mode';
 import classes from './TouchInput.module.css';
 
 export interface TouchInputProps {
@@ -32,6 +33,8 @@ export function TouchInput({
   id,
   disabled = false,
 }: TouchInputProps) {
+  const mode = useInputMode();
+  const showKeypadControls = mode === 'onscreen-keypad';
   const [isKeypadOpen, setIsKeypadOpen] = useState(initialShowKeypad);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,23 +70,29 @@ export function TouchInput({
           disabled={disabled}
           className={classes.textInput}
           size="md"
+          autoCapitalize="words"
+          autoCorrect="off"
           autoComplete="off"
+          spellCheck={false}
+          enterKeyHint="done"
         />
-        <Button
-          type="button"
-          variant="subtle"
-          color="gray"
-          className={classes.toggleButton}
-          onClick={() => setIsKeypadOpen((prev) => !prev)}
-          aria-label={isKeypadOpen ? 'Hide touch keypad' : 'Show touch keypad'}
-          aria-expanded={isKeypadOpen}
-          disabled={disabled}
-        >
-          {isKeypadOpen ? 'Hide Keypad' : 'Touch Keypad'}
-        </Button>
+        {showKeypadControls && (
+          <Button
+            type="button"
+            variant="subtle"
+            color="gray"
+            className={classes.toggleButton}
+            onClick={() => setIsKeypadOpen((prev) => !prev)}
+            aria-label={isKeypadOpen ? 'Hide touch keypad' : 'Show touch keypad'}
+            aria-expanded={isKeypadOpen}
+            disabled={disabled}
+          >
+            {isKeypadOpen ? 'Hide Keypad' : 'Touch Keypad'}
+          </Button>
+        )}
       </div>
 
-      {isKeypadOpen && (
+      {showKeypadControls && isKeypadOpen && (
         <div className={classes.keypad} role="group" aria-label="Touch keypad">
           {KEYBOARD_ROWS.map((row, rowIndex) => (
             <div key={`row-${rowIndex}`} className={classes.row}>

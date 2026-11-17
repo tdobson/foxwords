@@ -1,0 +1,38 @@
+.target {
+  display: block;
+  width: 100%;
+  min-height: 72px;
+  padding: 16px 24px;
+  border: 3px dashed var(--mantine-color-orange-5, #f08c00);
+  border-radius: 20px;
+  background: var(--mantine-color-orange-0, #fff4e6);
+  color: var(--mantine-color-orange-9, #9c3d00);
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.target:focus-visible {
+  outline: 3px solid var(--mantine-color-blue-6, #228be6);
+  outline-offset: 3px;
+}
+
+/* 16px font stops iOS zooming in; opacity keeps it focusable and on screen. */
+.hiddenInput {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  opacity: 0.01;
+  font-size: 16px;
+  color: transparent;
+  background: transparent;
+  caret-color: transparent;
+  outline: none;
+  pointer-events: none;
+}
