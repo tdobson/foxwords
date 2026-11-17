@@ -1,0 +1,3637 @@
+{
+  "clock_clock-it-is-1-oclock": {
+    "attempts": 1,
+    "bytes": 17036,
+    "kind": "clock",
+    "spoken": "It is 1 o'clock",
+    "text": "It is 1 o'clock",
+    "transcript": " It is one o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-oclock": {
+    "attempts": 1,
+    "bytes": 12140,
+    "kind": "clock",
+    "spoken": "It is 10 o'clock",
+    "text": "It is 10 o'clock",
+    "transcript": " It is 10 o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-1": {
+    "attempts": 1,
+    "bytes": 17468,
+    "kind": "clock",
+    "spoken": "It is 10 past 1",
+    "text": "It is 10 past 1",
+    "transcript": " It is ten past one.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-10": {
+    "attempts": 2,
+    "bytes": 15740,
+    "kind": "clock",
+    "spoken": "It is 10 past 10",
+    "text": "It is 10 past 10",
+    "transcript": " It is ten past ten.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-11": {
+    "attempts": 1,
+    "bytes": 15308,
+    "kind": "clock",
+    "spoken": "It is 10 past 11",
+    "text": "It is 10 past 11",
+    "transcript": " It is ten past eleven.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-12": {
+    "attempts": 1,
+    "bytes": 16172,
+    "kind": "clock",
+    "spoken": "It is 10 past 12",
+    "text": "It is 10 past 12",
+    "transcript": " It is ten past twelve.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-2": {
+    "attempts": 1,
+    "bytes": 13868,
+    "kind": "clock",
+    "spoken": "It is 10 past 2",
+    "text": "It is 10 past 2",
+    "transcript": " It is ten past two.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-3": {
+    "attempts": 1,
+    "bytes": 19052,
+    "kind": "clock",
+    "spoken": "It is 10 past 3",
+    "text": "It is 10 past 3",
+    "transcript": " It is ten past three.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-4": {
+    "attempts": 1,
+    "bytes": 14876,
+    "kind": "clock",
+    "spoken": "It is 10 past 4",
+    "text": "It is 10 past 4",
+    "transcript": " It is ten past four.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-5": {
+    "attempts": 1,
+    "bytes": 15740,
+    "kind": "clock",
+    "spoken": "It is 10 past 5",
+    "text": "It is 10 past 5",
+    "transcript": " It is ten past five.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-6": {
+    "attempts": 1,
+    "bytes": 14156,
+    "kind": "clock",
+    "spoken": "It is 10 past 6",
+    "text": "It is 10 past 6",
+    "transcript": " It is ten past six.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-7": {
+    "attempts": 1,
+    "bytes": 14300,
+    "kind": "clock",
+    "spoken": "It is 10 past 7",
+    "text": "It is 10 past 7",
+    "transcript": " It is ten past seven.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-8": {
+    "attempts": 2,
+    "bytes": 15020,
+    "kind": "clock",
+    "spoken": "It is 10 past 8",
+    "text": "It is 10 past 8",
+    "transcript": " It is ten past eight.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-past-9": {
+    "attempts": 1,
+    "bytes": 19484,
+    "kind": "clock",
+    "spoken": "It is 10 past 9",
+    "text": "It is 10 past 9",
+    "transcript": " It is ten past nine.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-1": {
+    "attempts": 1,
+    "bytes": 17324,
+    "kind": "clock",
+    "spoken": "It is 10 to 1",
+    "text": "It is 10 to 1",
+    "transcript": " It is ten to one.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-10": {
+    "attempts": 1,
+    "bytes": 17324,
+    "kind": "clock",
+    "spoken": "It is 10 to 10",
+    "text": "It is 10 to 10",
+    "transcript": " It is 10 to 10.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-11": {
+    "attempts": 1,
+    "bytes": 13004,
+    "kind": "clock",
+    "spoken": "It is 10 to 11",
+    "text": "It is 10 to 11",
+    "transcript": " It is 10 to 11.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-12": {
+    "attempts": 1,
+    "bytes": 14876,
+    "kind": "clock",
+    "spoken": "It is 10 to 12",
+    "text": "It is 10 to 12",
+    "transcript": " It is 10 to 12.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-2": {
+    "attempts": 1,
+    "bytes": 14732,
+    "kind": "clock",
+    "spoken": "It is 10 to 2",
+    "text": "It is 10 to 2",
+    "transcript": " It is ten to two.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-3": {
+    "attempts": 1,
+    "bytes": 14876,
+    "kind": "clock",
+    "spoken": "It is 10 to 3",
+    "text": "It is 10 to 3",
+    "transcript": " It is ten to three.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-4": {
+    "attempts": 1,
+    "bytes": 14300,
+    "kind": "clock",
+    "spoken": "It is 10 to 4",
+    "text": "It is 10 to 4",
+    "transcript": " It is ten to four.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-5": {
+    "attempts": 1,
+    "bytes": 18332,
+    "kind": "clock",
+    "spoken": "It is 10 to 5",
+    "text": "It is 10 to 5",
+    "transcript": " It is ten to five.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-6": {
+    "attempts": 1,
+    "bytes": 14876,
+    "kind": "clock",
+    "spoken": "It is 10 to 6",
+    "text": "It is 10 to 6",
+    "transcript": " It is ten to six.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-7": {
+    "attempts": 1,
+    "bytes": 15596,
+    "kind": "clock",
+    "spoken": "It is 10 to 7",
+    "text": "It is 10 to 7",
+    "transcript": " It is ten to seven.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-8": {
+    "attempts": 1,
+    "bytes": 12140,
+    "kind": "clock",
+    "spoken": "It is 10 to 8",
+    "text": "It is 10 to 8",
+    "transcript": " It is 10 to 8.",
+    "verified": true
+  },
+  "clock_clock-it-is-10-to-9": {
+    "attempts": 1,
+    "bytes": 14588,
+    "kind": "clock",
+    "spoken": "It is 10 to 9",
+    "text": "It is 10 to 9",
+    "transcript": " It is ten to nine.",
+    "verified": true
+  },
+  "clock_clock-it-is-11-oclock": {
+    "attempts": 1,
+    "bytes": 15308,
+    "kind": "clock",
+    "spoken": "It is 11 o'clock",
+    "text": "It is 11 o'clock",
+    "transcript": " It is 11 o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-12-oclock": {
+    "attempts": 1,
+    "bytes": 15020,
+    "kind": "clock",
+    "spoken": "It is 12 o'clock",
+    "text": "It is 12 o'clock",
+    "transcript": " It is 12 o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-2-oclock": {
+    "attempts": 1,
+    "bytes": 15740,
+    "kind": "clock",
+    "spoken": "It is 2 o'clock",
+    "text": "It is 2 o'clock",
+    "transcript": " It is two o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-1": {
+    "attempts": 1,
+    "bytes": 15020,
+    "kind": "clock",
+    "spoken": "It is 20 past 1",
+    "text": "It is 20 past 1",
+    "transcript": " It is twenty past one.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-10": {
+    "attempts": 1,
+    "bytes": 16460,
+    "kind": "clock",
+    "spoken": "It is 20 past 10",
+    "text": "It is 20 past 10",
+    "transcript": " It is twenty past ten.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-11": {
+    "attempts": 1,
+    "bytes": 15164,
+    "kind": "clock",
+    "spoken": "It is 20 past 11",
+    "text": "It is 20 past 11",
+    "transcript": " It is twenty past eleven.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-12": {
+    "attempts": 1,
+    "bytes": 16604,
+    "kind": "clock",
+    "spoken": "It is 20 past 12",
+    "text": "It is 20 past 12",
+    "transcript": " It is twenty past twelve.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-2": {
+    "attempts": 1,
+    "bytes": 21356,
+    "kind": "clock",
+    "spoken": "It is 20 past 2",
+    "text": "It is 20 past 2",
+    "transcript": " It is twenty past two.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-3": {
+    "attempts": 1,
+    "bytes": 15740,
+    "kind": "clock",
+    "spoken": "It is 20 past 3",
+    "text": "It is 20 past 3",
+    "transcript": " It is twenty past three.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-4": {
+    "attempts": 2,
+    "bytes": 16748,
+    "kind": "clock",
+    "spoken": "It is 20 past 4",
+    "text": "It is 20 past 4",
+    "transcript": " It is twenty past four.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-5": {
+    "attempts": 1,
+    "bytes": 17180,
+    "kind": "clock",
+    "spoken": "It is 20 past 5",
+    "text": "It is 20 past 5",
+    "transcript": " It is twenty past five.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-6": {
+    "attempts": 1,
+    "bytes": 16892,
+    "kind": "clock",
+    "spoken": "It is 20 past 6",
+    "text": "It is 20 past 6",
+    "transcript": " It is twenty past six.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-7": {
+    "attempts": 1,
+    "bytes": 18188,
+    "kind": "clock",
+    "spoken": "It is 20 past 7",
+    "text": "It is 20 past 7",
+    "transcript": " It is twenty past seven.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-8": {
+    "attempts": 1,
+    "bytes": 15452,
+    "kind": "clock",
+    "spoken": "It is 20 past 8",
+    "text": "It is 20 past 8",
+    "transcript": " It is twenty past eight.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-past-9": {
+    "attempts": 1,
+    "bytes": 20780,
+    "kind": "clock",
+    "spoken": "It is 20 past 9",
+    "text": "It is 20 past 9",
+    "transcript": " It is twenty past nine.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-1": {
+    "attempts": 1,
+    "bytes": 15596,
+    "kind": "clock",
+    "spoken": "It is 20 to 1",
+    "text": "It is 20 to 1",
+    "transcript": " It is 20 to 1.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-10": {
+    "attempts": 1,
+    "bytes": 18332,
+    "kind": "clock",
+    "spoken": "It is 20 to 10",
+    "text": "It is 20 to 10",
+    "transcript": " It is 20 to 10.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-11": {
+    "attempts": 1,
+    "bytes": 14444,
+    "kind": "clock",
+    "spoken": "It is 20 to 11",
+    "text": "It is 20 to 11",
+    "transcript": " It is 20 to 11.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-12": {
+    "attempts": 3,
+    "bytes": 14300,
+    "kind": "clock",
+    "spoken": "It is 20 to 12",
+    "text": "It is 20 to 12",
+    "transcript": " It is 20 to 12.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-2": {
+    "attempts": 1,
+    "bytes": 14012,
+    "kind": "clock",
+    "spoken": "It is 20 to 2",
+    "text": "It is 20 to 2",
+    "transcript": " It is 20 to 2.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-3": {
+    "attempts": 1,
+    "bytes": 13724,
+    "kind": "clock",
+    "spoken": "It is 20 to 3",
+    "text": "It is 20 to 3",
+    "transcript": " It is 20 to 3.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-4": {
+    "attempts": 1,
+    "bytes": 14012,
+    "kind": "clock",
+    "spoken": "It is 20 to 4",
+    "text": "It is 20 to 4",
+    "transcript": " It is 20 to 4.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-5": {
+    "attempts": 1,
+    "bytes": 20204,
+    "kind": "clock",
+    "spoken": "It is 20 to 5",
+    "text": "It is 20 to 5",
+    "transcript": " It is 20 to 5.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-6": {
+    "attempts": 1,
+    "bytes": 15452,
+    "kind": "clock",
+    "spoken": "It is 20 to 6",
+    "text": "It is 20 to 6",
+    "transcript": " It is 20 to 6.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-7": {
+    "attempts": 1,
+    "bytes": 14012,
+    "kind": "clock",
+    "spoken": "It is 20 to 7",
+    "text": "It is 20 to 7",
+    "transcript": " It is 20 to 7.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-8": {
+    "attempts": 2,
+    "bytes": 13292,
+    "kind": "clock",
+    "spoken": "It is 20 to 8",
+    "text": "It is 20 to 8",
+    "transcript": " It is 20 to 8.",
+    "verified": true
+  },
+  "clock_clock-it-is-20-to-9": {
+    "attempts": 1,
+    "bytes": 15020,
+    "kind": "clock",
+    "spoken": "It is 20 to 9",
+    "text": "It is 20 to 9",
+    "transcript": " It is twenty to nine.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-1": {
+    "attempts": 1,
+    "bytes": 19916,
+    "kind": "clock",
+    "spoken": "It is 25 past 1",
+    "text": "It is 25 past 1",
+    "transcript": " It is twenty-five past one.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-10": {
+    "attempts": 1,
+    "bytes": 23804,
+    "kind": "clock",
+    "spoken": "It is 25 past 10",
+    "text": "It is 25 past 10",
+    "transcript": " It is twenty-five past ten.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-11": {
+    "attempts": 1,
+    "bytes": 16172,
+    "kind": "clock",
+    "spoken": "It is 25 past 11",
+    "text": "It is 25 past 11",
+    "transcript": " It is twenty-five past eleven.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-12": {
+    "attempts": 1,
+    "bytes": 19340,
+    "kind": "clock",
+    "spoken": "It is 25 past 12",
+    "text": "It is 25 past 12",
+    "transcript": " It is twenty-five past twelve.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-2": {
+    "attempts": 1,
+    "bytes": 17900,
+    "kind": "clock",
+    "spoken": "It is 25 past 2",
+    "text": "It is 25 past 2",
+    "transcript": " It is twenty-five past two.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-3": {
+    "attempts": 1,
+    "bytes": 23660,
+    "kind": "clock",
+    "spoken": "It is 25 past 3",
+    "text": "It is 25 past 3",
+    "transcript": " It is twenty-five past three.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-4": {
+    "attempts": 1,
+    "bytes": 16604,
+    "kind": "clock",
+    "spoken": "It is 25 past 4",
+    "text": "It is 25 past 4",
+    "transcript": " It is twenty-five past four.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-5": {
+    "attempts": 1,
+    "bytes": 22364,
+    "kind": "clock",
+    "spoken": "It is 25 past 5",
+    "text": "It is 25 past 5",
+    "transcript": " It is twenty-five past five.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-6": {
+    "attempts": 1,
+    "bytes": 21932,
+    "kind": "clock",
+    "spoken": "It is 25 past 6",
+    "text": "It is 25 past 6",
+    "transcript": " It is twenty-five past six.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-7": {
+    "attempts": 1,
+    "bytes": 18332,
+    "kind": "clock",
+    "spoken": "It is 25 past 7",
+    "text": "It is 25 past 7",
+    "transcript": " It is twenty-five past seven.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-8": {
+    "attempts": 1,
+    "bytes": 19052,
+    "kind": "clock",
+    "spoken": "It is 25 past 8",
+    "text": "It is 25 past 8",
+    "transcript": " It is twenty-five past eight.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-past-9": {
+    "attempts": 1,
+    "bytes": 20204,
+    "kind": "clock",
+    "spoken": "It is 25 past 9",
+    "text": "It is 25 past 9",
+    "transcript": " It is twenty-five past nine.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-1": {
+    "attempts": 1,
+    "bytes": 20780,
+    "kind": "clock",
+    "spoken": "It is 25 to 1",
+    "text": "It is 25 to 1",
+    "transcript": " It is 25 to 1.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-10": {
+    "attempts": 2,
+    "bytes": 18908,
+    "kind": "clock",
+    "spoken": "It is 25 to 10",
+    "text": "It is 25 to 10",
+    "transcript": " It is 25 to 10.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-11": {
+    "attempts": 2,
+    "bytes": 15452,
+    "kind": "clock",
+    "spoken": "It is 25 to 11",
+    "text": "It is 25 to 11",
+    "transcript": " It is 25 to 11.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-12": {
+    "attempts": 1,
+    "bytes": 15596,
+    "kind": "clock",
+    "spoken": "It is 25 to 12",
+    "text": "It is 25 to 12",
+    "transcript": " It is 25 to 12.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-2": {
+    "attempts": 3,
+    "bytes": 16892,
+    "kind": "clock",
+    "spoken": "It is 25 to 2",
+    "text": "It is 25 to 2",
+    "transcript": " It is 25 to 2.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-3": {
+    "attempts": 1,
+    "bytes": 20636,
+    "kind": "clock",
+    "spoken": "It is 25 to 3",
+    "text": "It is 25 to 3",
+    "transcript": " It is 25 to 3.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-4": {
+    "attempts": 1,
+    "bytes": 16748,
+    "kind": "clock",
+    "spoken": "It is 25 to 4",
+    "text": "It is 25 to 4",
+    "transcript": " It is 25 to 4.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-5": {
+    "attempts": 2,
+    "bytes": 20060,
+    "kind": "clock",
+    "spoken": "It is 25 to 5",
+    "text": "It is 25 to 5",
+    "transcript": " It is 25 to 5.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-6": {
+    "attempts": 1,
+    "bytes": 17324,
+    "kind": "clock",
+    "spoken": "It is 25 to 6",
+    "text": "It is 25 to 6",
+    "transcript": " It is 25 to 6.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-7": {
+    "attempts": 1,
+    "bytes": 16892,
+    "kind": "clock",
+    "spoken": "It is 25 to 7",
+    "text": "It is 25 to 7",
+    "transcript": " It is 25 to 7.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-8": {
+    "attempts": 1,
+    "bytes": 14876,
+    "kind": "clock",
+    "spoken": "It is 25 to 8",
+    "text": "It is 25 to 8",
+    "transcript": " It is 25 to 8.",
+    "verified": true
+  },
+  "clock_clock-it-is-25-to-9": {
+    "attempts": 1,
+    "bytes": 15452,
+    "kind": "clock",
+    "spoken": "It is 25 to 9",
+    "text": "It is 25 to 9",
+    "transcript": " It is 25 to 9.",
+    "verified": true
+  },
+  "clock_clock-it-is-3-oclock": {
+    "attempts": 1,
+    "bytes": 13292,
+    "kind": "clock",
+    "spoken": "It is 3 o'clock",
+    "text": "It is 3 o'clock",
+    "transcript": " It is three o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-4-oclock": {
+    "attempts": 1,
+    "bytes": 15740,
+    "kind": "clock",
+    "spoken": "It is 4 o'clock",
+    "text": "It is 4 o'clock",
+    "transcript": " It is four o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-oclock": {
+    "attempts": 1,
+    "bytes": 13292,
+    "kind": "clock",
+    "spoken": "It is 5 o'clock",
+    "text": "It is 5 o'clock",
+    "transcript": " It is five o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-1": {
+    "attempts": 1,
+    "bytes": 19484,
+    "kind": "clock",
+    "spoken": "It is 5 past 1",
+    "text": "It is 5 past 1",
+    "transcript": " It is five past one.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-10": {
+    "attempts": 1,
+    "bytes": 19772,
+    "kind": "clock",
+    "spoken": "It is 5 past 10",
+    "text": "It is 5 past 10",
+    "transcript": " It is five past ten.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-11": {
+    "attempts": 1,
+    "bytes": 16172,
+    "kind": "clock",
+    "spoken": "It is 5 past 11",
+    "text": "It is 5 past 11",
+    "transcript": " It is five past eleven.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-12": {
+    "attempts": 1,
+    "bytes": 16748,
+    "kind": "clock",
+    "spoken": "It is 5 past 12",
+    "text": "It is 5 past 12",
+    "transcript": " It is five past twelve.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-2": {
+    "attempts": 1,
+    "bytes": 15308,
+    "kind": "clock",
+    "spoken": "It is 5 past 2",
+    "text": "It is 5 past 2",
+    "transcript": " It is five past two.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-3": {
+    "attempts": 1,
+    "bytes": 13148,
+    "kind": "clock",
+    "spoken": "It is 5 past 3",
+    "text": "It is 5 past 3",
+    "transcript": " It is five past three.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-4": {
+    "attempts": 1,
+    "bytes": 15452,
+    "kind": "clock",
+    "spoken": "It is 5 past 4",
+    "text": "It is 5 past 4",
+    "transcript": " It is five past four.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-5": {
+    "attempts": 1,
+    "bytes": 16028,
+    "kind": "clock",
+    "spoken": "It is 5 past 5",
+    "text": "It is 5 past 5",
+    "transcript": " It is five past five.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-6": {
+    "attempts": 1,
+    "bytes": 20348,
+    "kind": "clock",
+    "spoken": "It is 5 past 6",
+    "text": "It is 5 past 6",
+    "transcript": " It is five past six.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-7": {
+    "attempts": 1,
+    "bytes": 15164,
+    "kind": "clock",
+    "spoken": "It is 5 past 7",
+    "text": "It is 5 past 7",
+    "transcript": " It is five past seven.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-8": {
+    "attempts": 1,
+    "bytes": 16604,
+    "kind": "clock",
+    "spoken": "It is 5 past 8",
+    "text": "It is 5 past 8",
+    "transcript": " It is five past eight.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-past-9": {
+    "attempts": 1,
+    "bytes": 14732,
+    "kind": "clock",
+    "spoken": "It is 5 past 9",
+    "text": "It is 5 past 9",
+    "transcript": " It is five past nine.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-1": {
+    "attempts": 1,
+    "bytes": 15020,
+    "kind": "clock",
+    "spoken": "It is 5 to 1",
+    "text": "It is 5 to 1",
+    "transcript": " It is five to one.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-10": {
+    "attempts": 1,
+    "bytes": 17180,
+    "kind": "clock",
+    "spoken": "It is 5 to 10",
+    "text": "It is 5 to 10",
+    "transcript": " It is five to ten.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-11": {
+    "attempts": 1,
+    "bytes": 19052,
+    "kind": "clock",
+    "spoken": "It is 5 to 11",
+    "text": "It is 5 to 11",
+    "transcript": " It is 5 to 11.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-12": {
+    "attempts": 1,
+    "bytes": 19916,
+    "kind": "clock",
+    "spoken": "It is 5 to 12",
+    "text": "It is 5 to 12",
+    "transcript": " It is five to twelve.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-2": {
+    "attempts": 1,
+    "bytes": 16028,
+    "kind": "clock",
+    "spoken": "It is 5 to 2",
+    "text": "It is 5 to 2",
+    "transcript": " It is five to two.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-3": {
+    "attempts": 1,
+    "bytes": 14444,
+    "kind": "clock",
+    "spoken": "It is 5 to 3",
+    "text": "It is 5 to 3",
+    "transcript": " It is five to three.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-4": {
+    "attempts": 1,
+    "bytes": 16604,
+    "kind": "clock",
+    "spoken": "It is 5 to 4",
+    "text": "It is 5 to 4",
+    "transcript": " It is five to four.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-5": {
+    "attempts": 1,
+    "bytes": 14300,
+    "kind": "clock",
+    "spoken": "It is 5 to 5",
+    "text": "It is 5 to 5",
+    "transcript": " It is five to five.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-6": {
+    "attempts": 1,
+    "bytes": 19052,
+    "kind": "clock",
+    "spoken": "It is 5 to 6",
+    "text": "It is 5 to 6",
+    "transcript": " It is five to six.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-7": {
+    "attempts": 2,
+    "bytes": 23516,
+    "kind": "clock",
+    "spoken": "It is 5 to 7",
+    "text": "It is 5 to 7",
+    "transcript": " It is five to seven.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-8": {
+    "attempts": 1,
+    "bytes": 12428,
+    "kind": "clock",
+    "spoken": "It is 5 to 8",
+    "text": "It is 5 to 8",
+    "transcript": " It is five to eight.",
+    "verified": true
+  },
+  "clock_clock-it-is-5-to-9": {
+    "attempts": 1,
+    "bytes": 14588,
+    "kind": "clock",
+    "spoken": "It is 5 to 9",
+    "text": "It is 5 to 9",
+    "transcript": " It is five to nine.",
+    "verified": true
+  },
+  "clock_clock-it-is-6-oclock": {
+    "attempts": 1,
+    "bytes": 14012,
+    "kind": "clock",
+    "spoken": "It is 6 o'clock",
+    "text": "It is 6 o'clock",
+    "transcript": " It is six o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-7-oclock": {
+    "attempts": 1,
+    "bytes": 15164,
+    "kind": "clock",
+    "spoken": "It is 7 o'clock",
+    "text": "It is 7 o'clock",
+    "transcript": " It is seven o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-8-oclock": {
+    "attempts": 1,
+    "bytes": 13292,
+    "kind": "clock",
+    "spoken": "It is 8 o'clock",
+    "text": "It is 8 o'clock",
+    "transcript": " It is eight o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-9-oclock": {
+    "attempts": 1,
+    "bytes": 12572,
+    "kind": "clock",
+    "spoken": "It is 9 o'clock",
+    "text": "It is 9 o'clock",
+    "transcript": " It is nine o'clock.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-1": {
+    "attempts": 1,
+    "bytes": 17900,
+    "kind": "clock",
+    "spoken": "It is half past 1",
+    "text": "It is half past 1",
+    "transcript": " It is half past one.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-10": {
+    "attempts": 1,
+    "bytes": 14732,
+    "kind": "clock",
+    "spoken": "It is half past 10",
+    "text": "It is half past 10",
+    "transcript": " It is half past ten.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-11": {
+    "attempts": 1,
+    "bytes": 16028,
+    "kind": "clock",
+    "spoken": "It is half past 11",
+    "text": "It is half past 11",
+    "transcript": " It is half past eleven.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-12": {
+    "attempts": 1,
+    "bytes": 17612,
+    "kind": "clock",
+    "spoken": "It is half past 12",
+    "text": "It is half past 12",
+    "transcript": " It is half past twelve.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-2": {
+    "attempts": 1,
+    "bytes": 15308,
+    "kind": "clock",
+    "spoken": "It is half past 2",
+    "text": "It is half past 2",
+    "transcript": " It is half past two.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-3": {
+    "attempts": 1,
+    "bytes": 13148,
+    "kind": "clock",
+    "spoken": "It is half past 3",
+    "text": "It is half past 3",
+    "transcript": " It is half past three.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-4": {
+    "attempts": 1,
+    "bytes": 15884,
+    "kind": "clock",
+    "spoken": "It is half past 4",
+    "text": "It is half past 4",
+    "transcript": " It is half past four.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-5": {
+    "attempts": 1,
+    "bytes": 15020,
+    "kind": "clock",
+    "spoken": "It is half past 5",
+    "text": "It is half past 5",
+    "transcript": " It is half past five.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-6": {
+    "attempts": 1,
+    "bytes": 16748,
+    "kind": "clock",
+    "spoken": "It is half past 6",
+    "text": "It is half past 6",
+    "transcript": " It is half past six.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-7": {
+    "attempts": 1,
+    "bytes": 18908,
+    "kind": "clock",
+    "spoken": "It is half past 7",
+    "text": "It is half past 7",
+    "transcript": " It is half past seven.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-8": {
+    "attempts": 1,
+    "bytes": 18620,
+    "kind": "clock",
+    "spoken": "It is half past 8",
+    "text": "It is half past 8",
+    "transcript": " It is half past eight.",
+    "verified": true
+  },
+  "clock_clock-it-is-half-past-9": {
+    "attempts": 1,
+    "bytes": 13436,
+    "kind": "clock",
+    "spoken": "It is half past 9",
+    "text": "It is half past 9",
+    "transcript": " It is half past nine.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-1": {
+    "attempts": 1,
+    "bytes": 15884,
+    "kind": "clock",
+    "spoken": "It is quarter past 1",
+    "text": "It is quarter past 1",
+    "transcript": " It is quarter past one.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-10": {
+    "attempts": 1,
+    "bytes": 15452,
+    "kind": "clock",
+    "spoken": "It is quarter past 10",
+    "text": "It is quarter past 10",
+    "transcript": " It is quarter past ten.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-11": {
+    "attempts": 1,
+    "bytes": 17036,
+    "kind": "clock",
+    "spoken": "It is quarter past 11",
+    "text": "It is quarter past 11",
+    "transcript": " It is quarter past eleven.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-12": {
+    "attempts": 1,
+    "bytes": 15596,
+    "kind": "clock",
+    "spoken": "It is quarter past 12",
+    "text": "It is quarter past 12",
+    "transcript": " It is quarter past twelve.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-2": {
+    "attempts": 1,
+    "bytes": 15020,
+    "kind": "clock",
+    "spoken": "It is quarter past 2",
+    "text": "It is quarter past 2",
+    "transcript": " It is quarter past two.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-3": {
+    "attempts": 1,
+    "bytes": 15740,
+    "kind": "clock",
+    "spoken": "It is quarter past 3",
+    "text": "It is quarter past 3",
+    "transcript": " It is quarter past three.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-4": {
+    "attempts": 1,
+    "bytes": 17756,
+    "kind": "clock",
+    "spoken": "It is quarter past 4",
+    "text": "It is quarter past 4",
+    "transcript": " It is quarter past four.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-5": {
+    "attempts": 1,
+    "bytes": 16028,
+    "kind": "clock",
+    "spoken": "It is quarter past 5",
+    "text": "It is quarter past 5",
+    "transcript": " It is quarter past five.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-6": {
+    "attempts": 1,
+    "bytes": 17468,
+    "kind": "clock",
+    "spoken": "It is quarter past 6",
+    "text": "It is quarter past 6",
+    "transcript": " It is quarter past six.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-7": {
+    "attempts": 1,
+    "bytes": 18044,
+    "kind": "clock",
+    "spoken": "It is quarter past 7",
+    "text": "It is quarter past 7",
+    "transcript": " It is quarter past seven.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-8": {
+    "attempts": 1,
+    "bytes": 15884,
+    "kind": "clock",
+    "spoken": "It is quarter past 8",
+    "text": "It is quarter past 8",
+    "transcript": " It is quarter past eight.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-past-9": {
+    "attempts": 1,
+    "bytes": 15740,
+    "kind": "clock",
+    "spoken": "It is quarter past 9",
+    "text": "It is quarter past 9",
+    "transcript": " It is quarter past nine.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-1": {
+    "attempts": 1,
+    "bytes": 14732,
+    "kind": "clock",
+    "spoken": "It is quarter to 1",
+    "text": "It is quarter to 1",
+    "transcript": " It is quarter to one.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-10": {
+    "attempts": 1,
+    "bytes": 13436,
+    "kind": "clock",
+    "spoken": "It is quarter to 10",
+    "text": "It is quarter to 10",
+    "transcript": " It is quarter to ten.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-11": {
+    "attempts": 1,
+    "bytes": 13292,
+    "kind": "clock",
+    "spoken": "It is quarter to 11",
+    "text": "It is quarter to 11",
+    "transcript": " It is quarter to eleven.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-12": {
+    "attempts": 1,
+    "bytes": 17900,
+    "kind": "clock",
+    "spoken": "It is quarter to 12",
+    "text": "It is quarter to 12",
+    "transcript": " It is quarter to twelve.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-2": {
+    "attempts": 1,
+    "bytes": 13724,
+    "kind": "clock",
+    "spoken": "It is quarter to 2",
+    "text": "It is quarter to 2",
+    "transcript": " It is quarter to two.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-3": {
+    "attempts": 1,
+    "bytes": 12860,
+    "kind": "clock",
+    "spoken": "It is quarter to 3",
+    "text": "It is quarter to 3",
+    "transcript": " It is quarter to three.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-4": {
+    "attempts": 1,
+    "bytes": 17036,
+    "kind": "clock",
+    "spoken": "It is quarter to 4",
+    "text": "It is quarter to 4",
+    "transcript": " It is quarter to four.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-5": {
+    "attempts": 1,
+    "bytes": 20492,
+    "kind": "clock",
+    "spoken": "It is quarter to 5",
+    "text": "It is quarter to 5",
+    "transcript": " It is quarter to five.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-6": {
+    "attempts": 1,
+    "bytes": 13724,
+    "kind": "clock",
+    "spoken": "It is quarter to 6",
+    "text": "It is quarter to 6",
+    "transcript": " It is quarter to six.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-7": {
+    "attempts": 1,
+    "bytes": 17900,
+    "kind": "clock",
+    "spoken": "It is quarter to 7",
+    "text": "It is quarter to 7",
+    "transcript": " It is quarter to seven.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-8": {
+    "attempts": 1,
+    "bytes": 16748,
+    "kind": "clock",
+    "spoken": "It is quarter to 8",
+    "text": "It is quarter to 8",
+    "transcript": " It is quarter to eight.",
+    "verified": true
+  },
+  "clock_clock-it-is-quarter-to-9": {
+    "attempts": 1,
+    "bytes": 17612,
+    "kind": "clock",
+    "spoken": "It is quarter to 9",
+    "text": "It is quarter to 9",
+    "transcript": " It is quarter to nine.",
+    "verified": true
+  },
+  "letter_a": {
+    "attempts": 1,
+    "bytes": 6236,
+    "kind": "letter",
+    "spoken": "ay",
+    "text": "ay",
+    "transcript": " A.",
+    "verified": true
+  },
+  "letter_b": {
+    "attempts": 1,
+    "bytes": 5948,
+    "kind": "letter",
+    "spoken": "bee",
+    "text": "bee",
+    "transcript": " B.",
+    "verified": true
+  },
+  "letter_c": {
+    "attempts": 1,
+    "bytes": 8828,
+    "kind": "letter",
+    "spoken": "see",
+    "text": "see",
+    "transcript": " See",
+    "verified": true
+  },
+  "letter_d": {
+    "attempts": 1,
+    "bytes": 6668,
+    "kind": "letter",
+    "spoken": "dee",
+    "text": "dee",
+    "transcript": " D.",
+    "verified": true
+  },
+  "letter_e": {
+    "attempts": 1,
+    "bytes": 5948,
+    "kind": "letter",
+    "spoken": "ee",
+    "text": "ee",
+    "transcript": " E.",
+    "verified": true
+  },
+  "letter_f": {
+    "attempts": 1,
+    "bytes": 5948,
+    "kind": "letter",
+    "spoken": "eff",
+    "text": "eff",
+    "transcript": " F",
+    "verified": true
+  },
+  "letter_g": {
+    "attempts": 1,
+    "bytes": 7676,
+    "kind": "letter",
+    "spoken": "jee",
+    "text": "jee",
+    "transcript": " G",
+    "verified": true
+  },
+  "letter_h": {
+    "attempts": 1,
+    "bytes": 6380,
+    "kind": "letter",
+    "spoken": "aitch",
+    "text": "aitch",
+    "transcript": " H.",
+    "verified": true
+  },
+  "letter_i": {
+    "attempts": 1,
+    "bytes": 6236,
+    "kind": "letter",
+    "spoken": "eye",
+    "text": "eye",
+    "transcript": " I.",
+    "verified": true
+  },
+  "letter_j": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "letter",
+    "spoken": "jay",
+    "text": "jay",
+    "transcript": " Jay.",
+    "verified": true
+  },
+  "letter_k": {
+    "attempts": 1,
+    "bytes": 6668,
+    "kind": "letter",
+    "spoken": "kay",
+    "text": "kay",
+    "transcript": " K.",
+    "verified": true
+  },
+  "letter_l": {
+    "attempts": 1,
+    "bytes": 6380,
+    "kind": "letter",
+    "spoken": "el",
+    "text": "el",
+    "transcript": " L",
+    "verified": true
+  },
+  "letter_m": {
+    "attempts": 2,
+    "bytes": 7244,
+    "kind": "letter",
+    "spoken": "em",
+    "text": "em",
+    "transcript": " M",
+    "verified": true
+  },
+  "letter_n": {
+    "attempts": 1,
+    "bytes": 6524,
+    "kind": "letter",
+    "spoken": "en",
+    "text": "en",
+    "transcript": " N.",
+    "verified": true
+  },
+  "letter_o": {
+    "attempts": 1,
+    "bytes": 6236,
+    "kind": "letter",
+    "spoken": "oh",
+    "text": "oh",
+    "transcript": " O",
+    "verified": true
+  },
+  "letter_p": {
+    "attempts": 1,
+    "bytes": 6668,
+    "kind": "letter",
+    "spoken": "pee",
+    "text": "pee",
+    "transcript": " P",
+    "verified": true
+  },
+  "letter_q": {
+    "attempts": 1,
+    "bytes": 6956,
+    "kind": "letter",
+    "spoken": "cue",
+    "text": "cue",
+    "transcript": " Q",
+    "verified": true
+  },
+  "letter_r": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Aw."
+      },
+      {
+        "match": false,
+        "transcript": " Aw."
+      },
+      {
+        "match": false,
+        "transcript": " Aww."
+      },
+      {
+        "match": false,
+        "transcript": " Aww."
+      }
+    ],
+    "kind": "letter",
+    "spoken": "ar",
+    "text": "ar",
+    "verified": false
+  },
+  "letter_s": {
+    "attempts": 1,
+    "bytes": 6092,
+    "kind": "letter",
+    "spoken": "ess",
+    "text": "ess",
+    "transcript": " S.",
+    "verified": true
+  },
+  "letter_t": {
+    "attempts": 3,
+    "bytes": 6236,
+    "kind": "letter",
+    "spoken": "tee",
+    "text": "tee",
+    "transcript": " T",
+    "verified": true
+  },
+  "letter_u": {
+    "attempts": 1,
+    "bytes": 908,
+    "kind": "letter",
+    "spoken": "you",
+    "text": "you",
+    "transcript": " you",
+    "verified": true
+  },
+  "letter_v": {
+    "attempts": 3,
+    "bytes": 7532,
+    "kind": "letter",
+    "spoken": "vee",
+    "text": "vee",
+    "transcript": " V.",
+    "verified": true
+  },
+  "letter_w": {
+    "attempts": 1,
+    "bytes": 7964,
+    "kind": "letter",
+    "spoken": "double you",
+    "text": "double you",
+    "transcript": " W.",
+    "verified": true
+  },
+  "letter_x": {
+    "attempts": 1,
+    "bytes": 6812,
+    "kind": "letter",
+    "spoken": "ex",
+    "text": "ex",
+    "transcript": " X.",
+    "verified": true
+  },
+  "letter_y": {
+    "attempts": 1,
+    "bytes": 6380,
+    "kind": "letter",
+    "spoken": "why",
+    "text": "why",
+    "transcript": " Why?",
+    "verified": true
+  },
+  "letter_z": {
+    "attempts": 1,
+    "bytes": 6524,
+    "kind": "letter",
+    "spoken": "zed",
+    "text": "zed",
+    "transcript": " Zed.",
+    "verified": true
+  },
+  "number_1": {
+    "attempts": 1,
+    "bytes": 6524,
+    "kind": "number",
+    "spoken": "one",
+    "text": "one",
+    "transcript": " One.",
+    "verified": true
+  },
+  "number_10": {
+    "attempts": 1,
+    "bytes": 6956,
+    "kind": "number",
+    "spoken": "ten",
+    "text": "ten",
+    "transcript": " 10",
+    "verified": true
+  },
+  "number_11": {
+    "attempts": 1,
+    "bytes": 7964,
+    "kind": "number",
+    "spoken": "eleven",
+    "text": "eleven",
+    "transcript": " 11.",
+    "verified": true
+  },
+  "number_12": {
+    "attempts": 1,
+    "bytes": 8828,
+    "kind": "number",
+    "spoken": "twelve",
+    "text": "twelve",
+    "transcript": " 12.",
+    "verified": true
+  },
+  "number_13": {
+    "attempts": 1,
+    "bytes": 9836,
+    "kind": "number",
+    "spoken": "thirteen",
+    "text": "thirteen",
+    "transcript": " Thirteen.",
+    "verified": true
+  },
+  "number_14": {
+    "attempts": 1,
+    "bytes": 9980,
+    "kind": "number",
+    "spoken": "fourteen",
+    "text": "fourteen",
+    "transcript": " 14",
+    "verified": true
+  },
+  "number_15": {
+    "attempts": 1,
+    "bytes": 9548,
+    "kind": "number",
+    "spoken": "fifteen",
+    "text": "fifteen",
+    "transcript": " 15",
+    "verified": true
+  },
+  "number_16": {
+    "attempts": 1,
+    "bytes": 10412,
+    "kind": "number",
+    "spoken": "sixteen",
+    "text": "sixteen",
+    "transcript": " 16",
+    "verified": true
+  },
+  "number_17": {
+    "attempts": 1,
+    "bytes": 12140,
+    "kind": "number",
+    "spoken": "seventeen",
+    "text": "seventeen",
+    "transcript": " 17.",
+    "verified": true
+  },
+  "number_18": {
+    "attempts": 1,
+    "bytes": 8828,
+    "kind": "number",
+    "spoken": "eighteen",
+    "text": "eighteen",
+    "transcript": " 18.",
+    "verified": true
+  },
+  "number_19": {
+    "attempts": 1,
+    "bytes": 9404,
+    "kind": "number",
+    "spoken": "nineteen",
+    "text": "nineteen",
+    "transcript": " 19.",
+    "verified": true
+  },
+  "number_2": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "number",
+    "spoken": "two",
+    "text": "two",
+    "transcript": " Two.",
+    "verified": true
+  },
+  "number_20": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "number",
+    "spoken": "twenty",
+    "text": "twenty",
+    "transcript": " 20.",
+    "verified": true
+  },
+  "number_3": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "number",
+    "spoken": "three",
+    "text": "three",
+    "transcript": " Three.",
+    "verified": true
+  },
+  "number_4": {
+    "attempts": 1,
+    "bytes": 7820,
+    "kind": "number",
+    "spoken": "four",
+    "text": "four",
+    "transcript": " Four.",
+    "verified": true
+  },
+  "number_5": {
+    "attempts": 1,
+    "bytes": 6380,
+    "kind": "number",
+    "spoken": "five",
+    "text": "five",
+    "transcript": " Five.",
+    "verified": true
+  },
+  "number_6": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "number",
+    "spoken": "six",
+    "text": "six",
+    "transcript": " Six.",
+    "verified": true
+  },
+  "number_7": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "number",
+    "spoken": "seven",
+    "text": "seven",
+    "transcript": " Seven.",
+    "verified": true
+  },
+  "number_8": {
+    "attempts": 1,
+    "bytes": 5228,
+    "kind": "number",
+    "spoken": "eight",
+    "text": "eight",
+    "transcript": " Eight.",
+    "verified": true
+  },
+  "number_9": {
+    "attempts": 1,
+    "bytes": 8972,
+    "kind": "number",
+    "spoken": "nine",
+    "text": "nine",
+    "transcript": " Nine.",
+    "verified": true
+  },
+  "plural_apple": {
+    "attempts": 1,
+    "bytes": 7820,
+    "kind": "plural",
+    "spoken": "Apples",
+    "text": "Apples",
+    "transcript": " Apples",
+    "verified": true
+  },
+  "plural_baby": {
+    "attempts": 1,
+    "bytes": 7820,
+    "kind": "plural",
+    "spoken": "Babies",
+    "text": "Babies",
+    "transcript": " Babies.",
+    "verified": true
+  },
+  "plural_banana": {
+    "attempts": 1,
+    "bytes": 8972,
+    "kind": "plural",
+    "spoken": "Bananas",
+    "text": "Bananas",
+    "transcript": " Bananas.",
+    "verified": true
+  },
+  "plural_bat": {
+    "attempts": 2,
+    "bytes": 7388,
+    "kind": "plural",
+    "spoken": "Bats",
+    "text": "Bats",
+    "transcript": " Bats.",
+    "verified": true
+  },
+  "plural_bath": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Baths",
+    "text": "Baths",
+    "transcript": " Baths.",
+    "verified": true
+  },
+  "plural_big": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Biggs."
+      },
+      {
+        "match": false,
+        "transcript": " Biggs."
+      },
+      {
+        "match": false,
+        "transcript": " Biggs."
+      },
+      {
+        "match": false,
+        "transcript": " Biggs."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Bigs",
+    "text": "Bigs",
+    "verified": false
+  },
+  "plural_bike": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Bikes",
+    "text": "Bikes",
+    "transcript": " bikes.",
+    "verified": true
+  },
+  "plural_black": {
+    "attempts": 4,
+    "bytes": 8252,
+    "kind": "plural",
+    "spoken": "Blacks",
+    "text": "Blacks",
+    "transcript": " Blacks.",
+    "verified": true
+  },
+  "plural_blue": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "plural",
+    "spoken": "Blues",
+    "text": "Blues",
+    "transcript": " Blues",
+    "verified": true
+  },
+  "plural_boat": {
+    "attempts": 2,
+    "bytes": 7100,
+    "kind": "plural",
+    "spoken": "Boats",
+    "text": "Boats",
+    "transcript": " Boats.",
+    "verified": true
+  },
+  "plural_boats": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Oops."
+      },
+      {
+        "match": false,
+        "transcript": " Boots."
+      },
+      {
+        "match": false,
+        "transcript": " Bugs."
+      },
+      {
+        "match": false,
+        "transcript": " Boots."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Boatss",
+    "text": "Boatss",
+    "verified": false
+  },
+  "plural_book": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "plural",
+    "spoken": "Books",
+    "text": "Books",
+    "transcript": " books.",
+    "verified": true
+  },
+  "plural_boot": {
+    "attempts": 2,
+    "bytes": 7676,
+    "kind": "plural",
+    "spoken": "Boots",
+    "text": "Boots",
+    "transcript": " Boots.",
+    "verified": true
+  },
+  "plural_box": {
+    "attempts": 1,
+    "bytes": 9116,
+    "kind": "plural",
+    "spoken": "Boxes",
+    "text": "Boxes",
+    "transcript": " Boxes.",
+    "verified": true
+  },
+  "plural_boxes": {
+    "attempts": 2,
+    "bytes": 9548,
+    "kind": "plural",
+    "spoken": "Boxess",
+    "text": "Boxess",
+    "transcript": " Boxess.",
+    "verified": true
+  },
+  "plural_bug": {
+    "attempts": 1,
+    "bytes": 7820,
+    "kind": "plural",
+    "spoken": "Bugs",
+    "text": "Bugs",
+    "transcript": " Bugs.",
+    "verified": true
+  },
+  "plural_bus": {
+    "attempts": 2,
+    "bytes": 6668,
+    "kind": "plural",
+    "spoken": "Buses",
+    "text": "Buses",
+    "transcript": " Buses.",
+    "verified": true
+  },
+  "plural_buses": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Bosses."
+      },
+      {
+        "match": false,
+        "transcript": " buses."
+      },
+      {
+        "match": false,
+        "transcript": " buses."
+      },
+      {
+        "match": false,
+        "transcript": " Busses."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Busess",
+    "text": "Busess",
+    "verified": false
+  },
+  "plural_button": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Buttons",
+    "text": "Buttons",
+    "transcript": " buttons",
+    "verified": true
+  },
+  "plural_car": {
+    "attempts": 1,
+    "bytes": 7676,
+    "kind": "plural",
+    "spoken": "Cars",
+    "text": "Cars",
+    "transcript": " Cars.",
+    "verified": true
+  },
+  "plural_cars": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " course."
+      },
+      {
+        "match": false,
+        "transcript": " course"
+      },
+      {
+        "match": false,
+        "transcript": " C.A.R.S."
+      },
+      {
+        "match": false,
+        "transcript": " Coss."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Carss",
+    "text": "Carss",
+    "verified": false
+  },
+  "plural_cat": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "plural",
+    "spoken": "Cats",
+    "text": "Cats",
+    "transcript": " Cats.",
+    "verified": true
+  },
+  "plural_cats": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Cats."
+      },
+      {
+        "match": false,
+        "transcript": " Cuts."
+      },
+      {
+        "match": false,
+        "transcript": " Cats."
+      },
+      {
+        "match": false,
+        "transcript": " Cats."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Catss",
+    "text": "Catss",
+    "verified": false
+  },
+  "plural_chair": {
+    "attempts": 1,
+    "bytes": 7100,
+    "kind": "plural",
+    "spoken": "Chairs",
+    "text": "Chairs",
+    "transcript": " Chairs.",
+    "verified": true
+  },
+  "plural_chick": {
+    "attempts": 1,
+    "bytes": 7100,
+    "kind": "plural",
+    "spoken": "Chicks",
+    "text": "Chicks",
+    "transcript": " Chicks.",
+    "verified": true
+  },
+  "plural_coin": {
+    "attempts": 1,
+    "bytes": 7676,
+    "kind": "plural",
+    "spoken": "Coins",
+    "text": "Coins",
+    "transcript": " Coins",
+    "verified": true
+  },
+  "plural_cow": {
+    "attempts": 1,
+    "bytes": 8540,
+    "kind": "plural",
+    "spoken": "Cows",
+    "text": "Cows",
+    "transcript": " Cows",
+    "verified": true
+  },
+  "plural_crane": {
+    "attempts": 1,
+    "bytes": 9116,
+    "kind": "plural",
+    "spoken": "Cranes",
+    "text": "Cranes",
+    "transcript": " Cranes",
+    "verified": true
+  },
+  "plural_cup": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "plural",
+    "spoken": "Cups",
+    "text": "Cups",
+    "transcript": " Cups.",
+    "verified": true
+  },
+  "plural_cups": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Cops."
+      },
+      {
+        "match": false,
+        "transcript": " Cops."
+      },
+      {
+        "match": false,
+        "transcript": " Cups."
+      },
+      {
+        "match": false,
+        "transcript": " Cups."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Cupss",
+    "text": "Cupss",
+    "verified": false
+  },
+  "plural_daddy": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Daddies",
+    "text": "Daddies",
+    "transcript": " Daddies.",
+    "verified": true
+  },
+  "plural_digger": {
+    "attempts": 2,
+    "bytes": 7964,
+    "kind": "plural",
+    "spoken": "Diggers",
+    "text": "Diggers",
+    "transcript": " Diggers.",
+    "verified": true
+  },
+  "plural_dobson": {
+    "attempts": 1,
+    "bytes": 8684,
+    "kind": "plural",
+    "spoken": "Dobsons",
+    "text": "Dobsons",
+    "transcript": " Dobsons",
+    "verified": true
+  },
+  "plural_dog": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Dogs",
+    "text": "Dogs",
+    "transcript": " Dogs.",
+    "verified": true
+  },
+  "plural_dogs": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Dogs."
+      },
+      {
+        "match": false,
+        "transcript": " Dogs."
+      },
+      {
+        "match": false,
+        "transcript": " Dogs."
+      },
+      {
+        "match": false,
+        "transcript": " Dogs."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Dogss",
+    "text": "Dogss",
+    "verified": false
+  },
+  "plural_down": {
+    "attempts": 1,
+    "bytes": 7100,
+    "kind": "plural",
+    "spoken": "Downs",
+    "text": "Downs",
+    "transcript": " Downs",
+    "verified": true
+  },
+  "plural_duck": {
+    "attempts": 1,
+    "bytes": 7100,
+    "kind": "plural",
+    "spoken": "Ducks",
+    "text": "Ducks",
+    "transcript": " Ducks.",
+    "verified": true
+  },
+  "plural_ducks": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Ducks."
+      },
+      {
+        "match": false,
+        "transcript": " Ducks."
+      },
+      {
+        "match": false,
+        "transcript": " Docs."
+      },
+      {
+        "match": false,
+        "transcript": " Ducks."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Duckss",
+    "text": "Duckss",
+    "verified": false
+  },
+  "plural_feet": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Feats"
+      },
+      {
+        "match": false,
+        "transcript": " Feats."
+      },
+      {
+        "match": false,
+        "transcript": " Feats"
+      },
+      {
+        "match": false,
+        "transcript": " Feats."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Feets",
+    "text": "Feets",
+    "verified": false
+  },
+  "plural_fish": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "plural",
+    "spoken": "Fish",
+    "text": "Fish",
+    "transcript": " Fish",
+    "verified": true
+  },
+  "plural_fork": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "plural",
+    "spoken": "Forks",
+    "text": "Forks",
+    "transcript": " Forks.",
+    "verified": true
+  },
+  "plural_fox": {
+    "attempts": 1,
+    "bytes": 8684,
+    "kind": "plural",
+    "spoken": "Foxes",
+    "text": "Foxes",
+    "transcript": " Foxes.",
+    "verified": true
+  },
+  "plural_frog": {
+    "attempts": 2,
+    "bytes": 7676,
+    "kind": "plural",
+    "spoken": "Frogs",
+    "text": "Frogs",
+    "transcript": " Frogs.",
+    "verified": true
+  },
+  "plural_games": {
+    "attempts": 1,
+    "bytes": 7676,
+    "kind": "plural",
+    "spoken": "Games",
+    "text": "Games",
+    "transcript": " Games.",
+    "verified": true
+  },
+  "plural_grandad": {
+    "attempts": 2,
+    "bytes": 8972,
+    "kind": "plural",
+    "spoken": "Grandads",
+    "text": "Grandads",
+    "transcript": " Grandads.",
+    "verified": true
+  },
+  "plural_grandma": {
+    "attempts": 1,
+    "bytes": 8828,
+    "kind": "plural",
+    "spoken": "Grandmas",
+    "text": "Grandmas",
+    "transcript": " Grandmas",
+    "verified": true
+  },
+  "plural_grandpa": {
+    "attempts": 1,
+    "bytes": 9692,
+    "kind": "plural",
+    "spoken": "Grandpas",
+    "text": "Grandpas",
+    "transcript": " Grandpas.",
+    "verified": true
+  },
+  "plural_granny": {
+    "attempts": 1,
+    "bytes": 9260,
+    "kind": "plural",
+    "spoken": "Grannies",
+    "text": "Grannies",
+    "transcript": " Grannies.",
+    "verified": true
+  },
+  "plural_green": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "plural",
+    "spoken": "Greens",
+    "text": "Greens",
+    "transcript": " Greens.",
+    "verified": true
+  },
+  "plural_hat": {
+    "attempts": 1,
+    "bytes": 5516,
+    "kind": "plural",
+    "spoken": "Hats",
+    "text": "Hats",
+    "transcript": " Hats.",
+    "verified": true
+  },
+  "plural_hen": {
+    "attempts": 1,
+    "bytes": 6812,
+    "kind": "plural",
+    "spoken": "Hens",
+    "text": "Hens",
+    "transcript": " Hens",
+    "verified": true
+  },
+  "plural_jam": {
+    "attempts": 1,
+    "bytes": 8540,
+    "kind": "plural",
+    "spoken": "Jams",
+    "text": "Jams",
+    "transcript": " jams",
+    "verified": true
+  },
+  "plural_jet": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "plural",
+    "spoken": "Jets",
+    "text": "Jets",
+    "transcript": " Jets.",
+    "verified": true
+  },
+  "plural_jigsaw": {
+    "attempts": 1,
+    "bytes": 9260,
+    "kind": "plural",
+    "spoken": "Jigsaws",
+    "text": "Jigsaws",
+    "transcript": " Jigsaws",
+    "verified": true
+  },
+  "plural_kitten": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "plural",
+    "spoken": "Kittens",
+    "text": "Kittens",
+    "transcript": " Kittens",
+    "verified": true
+  },
+  "plural_left": {
+    "attempts": 1,
+    "bytes": 7964,
+    "kind": "plural",
+    "spoken": "Lefts",
+    "text": "Lefts",
+    "transcript": " Lefts.",
+    "verified": true
+  },
+  "plural_log": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "plural",
+    "spoken": "Logs",
+    "text": "Logs",
+    "transcript": " Logs.",
+    "verified": true
+  },
+  "plural_meg": {
+    "attempts": 1,
+    "bytes": 6668,
+    "kind": "plural",
+    "spoken": "Megs",
+    "text": "Megs",
+    "transcript": " Megs.",
+    "verified": true
+  },
+  "plural_mice": {
+    "attempts": 1,
+    "bytes": 8972,
+    "kind": "plural",
+    "spoken": "Mices",
+    "text": "Mices",
+    "transcript": " Mices",
+    "verified": true
+  },
+  "plural_milk": {
+    "attempts": 1,
+    "bytes": 7676,
+    "kind": "plural",
+    "spoken": "Milks",
+    "text": "Milks",
+    "transcript": " Milks.",
+    "verified": true
+  },
+  "plural_monkey": {
+    "attempts": 1,
+    "bytes": 9116,
+    "kind": "plural",
+    "spoken": "Monkeys",
+    "text": "Monkeys",
+    "transcript": " Monkeys.",
+    "verified": true
+  },
+  "plural_moon": {
+    "attempts": 1,
+    "bytes": 9116,
+    "kind": "plural",
+    "spoken": "Moons",
+    "text": "Moons",
+    "transcript": " Moons.",
+    "verified": true
+  },
+  "plural_mug": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Mugs",
+    "text": "Mugs",
+    "transcript": " Mugs",
+    "verified": true
+  },
+  "plural_mummy": {
+    "attempts": 1,
+    "bytes": 9404,
+    "kind": "plural",
+    "spoken": "Mummies",
+    "text": "Mummies",
+    "transcript": " Mummies.",
+    "verified": true
+  },
+  "plural_nut": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "plural",
+    "spoken": "Nuts",
+    "text": "Nuts",
+    "transcript": " Nuts.",
+    "verified": true
+  },
+  "plural_orange": {
+    "attempts": 1,
+    "bytes": 7964,
+    "kind": "plural",
+    "spoken": "Oranges",
+    "text": "Oranges",
+    "transcript": " Oranges.",
+    "verified": true
+  },
+  "plural_owl": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Owls",
+    "text": "Owls",
+    "transcript": " Owls",
+    "verified": true
+  },
+  "plural_pan": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "plural",
+    "spoken": "Pans",
+    "text": "Pans",
+    "transcript": " Pans",
+    "verified": true
+  },
+  "plural_penguin": {
+    "attempts": 1,
+    "bytes": 8828,
+    "kind": "plural",
+    "spoken": "Penguins",
+    "text": "Penguins",
+    "transcript": " Penguins",
+    "verified": true
+  },
+  "plural_pig": {
+    "attempts": 1,
+    "bytes": 6812,
+    "kind": "plural",
+    "spoken": "Pigs",
+    "text": "Pigs",
+    "transcript": " Pigs.",
+    "verified": true
+  },
+  "plural_pink": {
+    "attempts": 1,
+    "bytes": 7100,
+    "kind": "plural",
+    "spoken": "Pinks",
+    "text": "Pinks",
+    "transcript": " Pinks.",
+    "verified": true
+  },
+  "plural_pocket": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "plural",
+    "spoken": "Pockets",
+    "text": "Pockets",
+    "transcript": " pockets",
+    "verified": true
+  },
+  "plural_pot": {
+    "attempts": 1,
+    "bytes": 7676,
+    "kind": "plural",
+    "spoken": "Pots",
+    "text": "Pots",
+    "transcript": " POTS",
+    "verified": true
+  },
+  "plural_puppy": {
+    "attempts": 2,
+    "bytes": 8108,
+    "kind": "plural",
+    "spoken": "Puppies",
+    "text": "Puppies",
+    "transcript": " Puppies.",
+    "verified": true
+  },
+  "plural_rabbit": {
+    "attempts": 1,
+    "bytes": 8972,
+    "kind": "plural",
+    "spoken": "Rabbits",
+    "text": "Rabbits",
+    "transcript": " Rabbits.",
+    "verified": true
+  },
+  "plural_rail": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "plural",
+    "spoken": "Rails",
+    "text": "Rails",
+    "transcript": " Rails.",
+    "verified": true
+  },
+  "plural_rain": {
+    "attempts": 2,
+    "bytes": 8108,
+    "kind": "plural",
+    "spoken": "Rains",
+    "text": "Rains",
+    "transcript": " rains",
+    "verified": true
+  },
+  "plural_rat": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Rats",
+    "text": "Rats",
+    "transcript": " Rats.",
+    "verified": true
+  },
+  "plural_red": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "plural",
+    "spoken": "Reds",
+    "text": "Reds",
+    "transcript": " Reds.",
+    "verified": true
+  },
+  "plural_right": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "plural",
+    "spoken": "Rights",
+    "text": "Rights",
+    "transcript": " Rights.",
+    "verified": true
+  },
+  "plural_ring": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Rings",
+    "text": "Rings",
+    "transcript": " Rings",
+    "verified": true
+  },
+  "plural_rocket": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "plural",
+    "spoken": "Rockets",
+    "text": "Rockets",
+    "transcript": " Rockets.",
+    "verified": true
+  },
+  "plural_sheep": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "plural",
+    "spoken": "Sheep",
+    "text": "Sheep",
+    "transcript": " Sheep.",
+    "verified": true
+  },
+  "plural_ship": {
+    "attempts": 1,
+    "bytes": 8396,
+    "kind": "plural",
+    "spoken": "Ships",
+    "text": "Ships",
+    "transcript": " ships",
+    "verified": true
+  },
+  "plural_small": {
+    "attempts": 1,
+    "bytes": 8828,
+    "kind": "plural",
+    "spoken": "Smalls",
+    "text": "Smalls",
+    "transcript": " Smalls",
+    "verified": true
+  },
+  "plural_sock": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "plural",
+    "spoken": "Socks",
+    "text": "Socks",
+    "transcript": " Socks.",
+    "verified": true
+  },
+  "plural_splash": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "plural",
+    "spoken": "Splashes",
+    "text": "Splashes",
+    "transcript": " Splashes.",
+    "verified": true
+  },
+  "plural_spoon": {
+    "attempts": 1,
+    "bytes": 9260,
+    "kind": "plural",
+    "spoken": "Spoons",
+    "text": "Spoons",
+    "transcript": " spoons",
+    "verified": true
+  },
+  "plural_star": {
+    "attempts": 1,
+    "bytes": 9548,
+    "kind": "plural",
+    "spoken": "Stars",
+    "text": "Stars",
+    "transcript": " STARS",
+    "verified": true
+  },
+  "plural_sun": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " SONS"
+      },
+      {
+        "match": false,
+        "transcript": " Sons"
+      },
+      {
+        "match": false,
+        "transcript": " Sons."
+      },
+      {
+        "match": false,
+        "transcript": " Sons"
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Suns",
+    "text": "Suns",
+    "verified": false
+  },
+  "plural_tall": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Tolls."
+      },
+      {
+        "match": false,
+        "transcript": " Tools"
+      },
+      {
+        "match": false,
+        "transcript": " Tolls."
+      },
+      {
+        "match": false,
+        "transcript": " Tools"
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Talls",
+    "text": "Talls",
+    "verified": false
+  },
+  "plural_teddy": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Teddies",
+    "text": "Teddies",
+    "transcript": " teddies",
+    "verified": true
+  },
+  "plural_teeth": {
+    "attempts": 2,
+    "bytes": 6812,
+    "kind": "plural",
+    "spoken": "Teeths",
+    "text": "Teeths",
+    "transcript": " Teeths.",
+    "verified": true
+  },
+  "plural_tiger": {
+    "attempts": 1,
+    "bytes": 9116,
+    "kind": "plural",
+    "spoken": "Tigers",
+    "text": "Tigers",
+    "transcript": " Tigers.",
+    "verified": true
+  },
+  "plural_track": {
+    "attempts": 2,
+    "bytes": 7964,
+    "kind": "plural",
+    "spoken": "Tracks",
+    "text": "Tracks",
+    "transcript": " Tracks.",
+    "verified": true
+  },
+  "plural_tractor": {
+    "attempts": 1,
+    "bytes": 8828,
+    "kind": "plural",
+    "spoken": "Tractors",
+    "text": "Tractors",
+    "transcript": " tractors",
+    "verified": true
+  },
+  "plural_train": {
+    "attempts": 1,
+    "bytes": 8396,
+    "kind": "plural",
+    "spoken": "Trains",
+    "text": "Trains",
+    "transcript": " trains",
+    "verified": true
+  },
+  "plural_tram": {
+    "attempts": 2,
+    "bytes": 7964,
+    "kind": "plural",
+    "spoken": "Trams",
+    "text": "Trams",
+    "transcript": " Trams",
+    "verified": true
+  },
+  "plural_tub": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "plural",
+    "spoken": "Tubs",
+    "text": "Tubs",
+    "transcript": " Tubs",
+    "verified": true
+  },
+  "plural_up": {
+    "attempts": 2,
+    "bytes": 6236,
+    "kind": "plural",
+    "spoken": "Ups",
+    "text": "Ups",
+    "transcript": " Ups.",
+    "verified": true
+  },
+  "plural_van": {
+    "attempts": 1,
+    "bytes": 7964,
+    "kind": "plural",
+    "spoken": "Vans",
+    "text": "Vans",
+    "transcript": " Vans.",
+    "verified": true
+  },
+  "plural_web": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "plural",
+    "spoken": "Webs",
+    "text": "Webs",
+    "transcript": " Webs.",
+    "verified": true
+  },
+  "plural_white": {
+    "attempts": 1,
+    "bytes": 7964,
+    "kind": "plural",
+    "spoken": "Whites",
+    "text": "Whites",
+    "transcript": " Whites.",
+    "verified": true
+  },
+  "plural_yak": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Yucks."
+      },
+      {
+        "match": false,
+        "transcript": " Yikes!"
+      },
+      {
+        "match": false,
+        "transcript": " Yikes."
+      },
+      {
+        "match": false,
+        "transcript": " Yucks."
+      }
+    ],
+    "kind": "plural",
+    "spoken": "Yaks",
+    "text": "Yaks",
+    "verified": false
+  },
+  "plural_zebra": {
+    "attempts": 1,
+    "bytes": 8396,
+    "kind": "plural",
+    "spoken": "Zebras",
+    "text": "Zebras",
+    "transcript": " Zebras",
+    "verified": true
+  },
+  "plural_zip": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "plural",
+    "spoken": "Zips",
+    "text": "Zips",
+    "transcript": " Zips.",
+    "verified": true
+  },
+  "praise_brilliant": {
+    "attempts": 1,
+    "bytes": 10988,
+    "kind": "praise",
+    "spoken": "Brilliant spelling!",
+    "text": "Brilliant spelling!",
+    "transcript": " Brilliant spelling!",
+    "verified": true
+  },
+  "praise_fantastic": {
+    "attempts": 2,
+    "bytes": 10124,
+    "kind": "praise",
+    "spoken": "Fantastic!",
+    "text": "Fantastic!",
+    "transcript": " Fantastic!",
+    "verified": true
+  },
+  "praise_great_job": {
+    "attempts": 1,
+    "bytes": 9836,
+    "kind": "praise",
+    "spoken": "Great job!",
+    "text": "Great job!",
+    "transcript": " Great job!",
+    "verified": true
+  },
+  "praise_super_star": {
+    "attempts": 1,
+    "bytes": 10556,
+    "kind": "praise",
+    "spoken": "Super star!",
+    "text": "Super star!",
+    "transcript": " Superstar!",
+    "verified": true
+  },
+  "praise_try_again": {
+    "attempts": 1,
+    "bytes": 10844,
+    "kind": "praise",
+    "spoken": "Have another go!",
+    "text": "Have another go!",
+    "transcript": " Have another go.",
+    "verified": true
+  },
+  "praise_well_done": {
+    "attempts": 1,
+    "bytes": 9980,
+    "kind": "praise",
+    "spoken": "Well done!",
+    "text": "Well done!",
+    "transcript": " Well done!",
+    "verified": true
+  },
+  "word_bat": {
+    "attempts": 1,
+    "bytes": 6236,
+    "kind": "word",
+    "spoken": "Bat",
+    "text": "Bat",
+    "transcript": " bat",
+    "verified": true
+  },
+  "word_bath": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "word",
+    "spoken": "Bath",
+    "text": "Bath",
+    "transcript": " Bath.",
+    "verified": true
+  },
+  "word_black": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "word",
+    "spoken": "Black",
+    "text": "Black",
+    "transcript": " Black.",
+    "verified": true
+  },
+  "word_blue": {
+    "attempts": 1,
+    "bytes": 7820,
+    "kind": "word",
+    "spoken": "Blue",
+    "text": "Blue",
+    "transcript": " Blue.",
+    "verified": true
+  },
+  "word_boat": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "word",
+    "spoken": "Boat",
+    "text": "Boat",
+    "transcript": " Boat.",
+    "verified": true
+  },
+  "word_boats": {
+    "attempts": 4,
+    "bytes": 8540,
+    "kind": "word",
+    "spoken": "Boats",
+    "text": "Boats",
+    "transcript": " Boats.",
+    "verified": true
+  },
+  "word_boot": {
+    "attempts": 1,
+    "bytes": 6956,
+    "kind": "word",
+    "spoken": "Boot",
+    "text": "Boot",
+    "transcript": " Boot.",
+    "verified": true
+  },
+  "word_box": {
+    "attempts": 1,
+    "bytes": 5372,
+    "kind": "word",
+    "spoken": "Box",
+    "text": "Box",
+    "transcript": " Box.",
+    "verified": true
+  },
+  "word_boxes": {
+    "attempts": 3,
+    "bytes": 7676,
+    "kind": "word",
+    "spoken": "Boxes",
+    "text": "Boxes",
+    "transcript": " Boxes.",
+    "verified": true
+  },
+  "word_bug": {
+    "attempts": 1,
+    "bytes": 5804,
+    "kind": "word",
+    "spoken": "Bug",
+    "text": "Bug",
+    "transcript": " Bug.",
+    "verified": true
+  },
+  "word_bus": {
+    "attempts": 4,
+    "history": [
+      {
+        "match": false,
+        "transcript": " Boss."
+      },
+      {
+        "match": false,
+        "transcript": " Bots."
+      },
+      {
+        "match": false,
+        "transcript": " Buss."
+      },
+      {
+        "match": false,
+        "transcript": " Boss."
+      }
+    ],
+    "kind": "word",
+    "spoken": "Bus",
+    "text": "Bus",
+    "verified": false
+  },
+  "word_buses": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "word",
+    "spoken": "Buses",
+    "text": "Buses",
+    "transcript": " Buses.",
+    "verified": true
+  },
+  "word_button": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "word",
+    "spoken": "Button",
+    "text": "Button",
+    "transcript": " button.",
+    "verified": true
+  },
+  "word_car": {
+    "attempts": 1,
+    "bytes": 6956,
+    "kind": "word",
+    "spoken": "Car",
+    "text": "Car",
+    "transcript": " car",
+    "verified": true
+  },
+  "word_cars": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "word",
+    "spoken": "Cars",
+    "text": "Cars",
+    "transcript": " Cars.",
+    "verified": true
+  },
+  "word_cats": {
+    "attempts": 2,
+    "bytes": 7388,
+    "kind": "word",
+    "spoken": "Cats",
+    "text": "Cats",
+    "transcript": " Cats.",
+    "verified": true
+  },
+  "word_chair": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "word",
+    "spoken": "Chair",
+    "text": "Chair",
+    "transcript": " Chair",
+    "verified": true
+  },
+  "word_chick": {
+    "attempts": 1,
+    "bytes": 6380,
+    "kind": "word",
+    "spoken": "Chick",
+    "text": "Chick",
+    "transcript": " Chick.",
+    "verified": true
+  },
+  "word_coin": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "word",
+    "spoken": "Coin",
+    "text": "Coin",
+    "transcript": " Coin.",
+    "verified": true
+  },
+  "word_cow": {
+    "attempts": 1,
+    "bytes": 8684,
+    "kind": "word",
+    "spoken": "Cow",
+    "text": "Cow",
+    "transcript": " Cow",
+    "verified": true
+  },
+  "word_cup": {
+    "attempts": 1,
+    "bytes": 6380,
+    "kind": "word",
+    "spoken": "Cup",
+    "text": "Cup",
+    "transcript": " Cup",
+    "verified": true
+  },
+  "word_cups": {
+    "attempts": 1,
+    "bytes": 6956,
+    "kind": "word",
+    "spoken": "Cups",
+    "text": "Cups",
+    "transcript": " Cups.",
+    "verified": true
+  },
+  "word_digger": {
+    "attempts": 3,
+    "bytes": 6236,
+    "kind": "word",
+    "spoken": "Digger",
+    "text": "Digger",
+    "transcript": " Digger.",
+    "verified": true
+  },
+  "word_dobson": {
+    "attempts": 2,
+    "bytes": 8108,
+    "kind": "word",
+    "spoken": "Dobson",
+    "text": "Dobson",
+    "transcript": " Dobson.",
+    "verified": true
+  },
+  "word_dogs": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "word",
+    "spoken": "Dogs",
+    "text": "Dogs",
+    "transcript": " Dogs.",
+    "verified": true
+  },
+  "word_down": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "word",
+    "spoken": "Down",
+    "text": "Down",
+    "transcript": " Down.",
+    "verified": true
+  },
+  "word_duck": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "word",
+    "spoken": "Duck",
+    "text": "Duck",
+    "transcript": " Duck.",
+    "verified": true
+  },
+  "word_ducks": {
+    "attempts": 1,
+    "bytes": 6524,
+    "kind": "word",
+    "spoken": "Ducks",
+    "text": "Ducks",
+    "transcript": " Ducks.",
+    "verified": true
+  },
+  "word_feet": {
+    "attempts": 1,
+    "bytes": 6236,
+    "kind": "word",
+    "spoken": "Feet",
+    "text": "Feet",
+    "transcript": " Feet.",
+    "verified": true
+  },
+  "word_fish": {
+    "attempts": 3,
+    "bytes": 7820,
+    "kind": "word",
+    "spoken": "Fish",
+    "text": "Fish",
+    "transcript": " Fish",
+    "verified": true
+  },
+  "word_fork": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "word",
+    "spoken": "Fork",
+    "text": "Fork",
+    "transcript": " fork",
+    "verified": true
+  },
+  "word_frog": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "word",
+    "spoken": "Frog",
+    "text": "Frog",
+    "transcript": " frog",
+    "verified": true
+  },
+  "word_green": {
+    "attempts": 1,
+    "bytes": 7676,
+    "kind": "word",
+    "spoken": "Green",
+    "text": "Green",
+    "transcript": " Green.",
+    "verified": true
+  },
+  "word_hat": {
+    "attempts": 1,
+    "bytes": 6812,
+    "kind": "word",
+    "spoken": "Hat",
+    "text": "Hat",
+    "transcript": " hat",
+    "verified": true
+  },
+  "word_hen": {
+    "attempts": 1,
+    "bytes": 6524,
+    "kind": "word",
+    "spoken": "Hen",
+    "text": "Hen",
+    "transcript": " Hen.",
+    "verified": true
+  },
+  "word_jet": {
+    "attempts": 1,
+    "bytes": 6524,
+    "kind": "word",
+    "spoken": "Jet",
+    "text": "Jet",
+    "transcript": " Jet.",
+    "verified": true
+  },
+  "word_kitten": {
+    "attempts": 1,
+    "bytes": 6812,
+    "kind": "word",
+    "spoken": "Kitten",
+    "text": "Kitten",
+    "transcript": " Kitten",
+    "verified": true
+  },
+  "word_left": {
+    "attempts": 1,
+    "bytes": 7820,
+    "kind": "word",
+    "spoken": "Left",
+    "text": "Left",
+    "transcript": " left",
+    "verified": true
+  },
+  "word_log": {
+    "attempts": 1,
+    "bytes": 6812,
+    "kind": "word",
+    "spoken": "Log",
+    "text": "Log",
+    "transcript": " Log",
+    "verified": true
+  },
+  "word_mice": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "word",
+    "spoken": "Mice",
+    "text": "Mice",
+    "transcript": " Mice.",
+    "verified": true
+  },
+  "word_monkey": {
+    "attempts": 1,
+    "bytes": 7964,
+    "kind": "word",
+    "spoken": "Monkey",
+    "text": "Monkey",
+    "transcript": " Monkey.",
+    "verified": true
+  },
+  "word_moon": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "word",
+    "spoken": "Moon",
+    "text": "Moon",
+    "transcript": " Moon.",
+    "verified": true
+  },
+  "word_mug": {
+    "attempts": 1,
+    "bytes": 7100,
+    "kind": "word",
+    "spoken": "Mug",
+    "text": "Mug",
+    "transcript": " Mug.",
+    "verified": true
+  },
+  "word_nut": {
+    "attempts": 3,
+    "bytes": 6380,
+    "kind": "word",
+    "spoken": "Nut",
+    "text": "Nut",
+    "transcript": " Nut.",
+    "verified": true
+  },
+  "word_owl": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "word",
+    "spoken": "Owl",
+    "text": "Owl",
+    "transcript": " Owl.",
+    "verified": true
+  },
+  "word_pan": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "word",
+    "spoken": "Pan",
+    "text": "Pan",
+    "transcript": " Pan.",
+    "verified": true
+  },
+  "word_penguin": {
+    "attempts": 1,
+    "bytes": 7820,
+    "kind": "word",
+    "spoken": "Penguin",
+    "text": "Penguin",
+    "transcript": " Penguin.",
+    "verified": true
+  },
+  "word_pig": {
+    "attempts": 1,
+    "bytes": 6236,
+    "kind": "word",
+    "spoken": "Pig",
+    "text": "Pig",
+    "transcript": " Pig",
+    "verified": true
+  },
+  "word_pink": {
+    "attempts": 1,
+    "bytes": 6380,
+    "kind": "word",
+    "spoken": "Pink",
+    "text": "Pink",
+    "transcript": " Pink.",
+    "verified": true
+  },
+  "word_pocket": {
+    "attempts": 2,
+    "bytes": 6524,
+    "kind": "word",
+    "spoken": "Pocket",
+    "text": "Pocket",
+    "transcript": " Pocket",
+    "verified": true
+  },
+  "word_pot": {
+    "attempts": 1,
+    "bytes": 6092,
+    "kind": "word",
+    "spoken": "Pot",
+    "text": "Pot",
+    "transcript": " Pot.",
+    "verified": true
+  },
+  "word_puppy": {
+    "attempts": 4,
+    "bytes": 6668,
+    "kind": "word",
+    "spoken": "Puppy",
+    "text": "Puppy",
+    "transcript": " Puppy",
+    "verified": true
+  },
+  "word_rabbit": {
+    "attempts": 1,
+    "bytes": 7244,
+    "kind": "word",
+    "spoken": "Rabbit",
+    "text": "Rabbit",
+    "transcript": " Rabbit",
+    "verified": true
+  },
+  "word_rat": {
+    "attempts": 2,
+    "bytes": 6668,
+    "kind": "word",
+    "spoken": "Rat",
+    "text": "Rat",
+    "transcript": " Rat.",
+    "verified": true
+  },
+  "word_red": {
+    "attempts": 1,
+    "bytes": 6380,
+    "kind": "word",
+    "spoken": "Red",
+    "text": "Red",
+    "transcript": " Red.",
+    "verified": true
+  },
+  "word_right": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "word",
+    "spoken": "Right",
+    "text": "Right",
+    "transcript": " Right.",
+    "verified": true
+  },
+  "word_ring": {
+    "attempts": 1,
+    "bytes": 7388,
+    "kind": "word",
+    "spoken": "Ring",
+    "text": "Ring",
+    "transcript": " Ring.",
+    "verified": true
+  },
+  "word_rocket": {
+    "attempts": 3,
+    "bytes": 7244,
+    "kind": "word",
+    "spoken": "Rocket",
+    "text": "Rocket",
+    "transcript": " Rocket.",
+    "verified": true
+  },
+  "word_sheep": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "word",
+    "spoken": "Sheep",
+    "text": "Sheep",
+    "transcript": " Sheep.",
+    "verified": true
+  },
+  "word_ship": {
+    "attempts": 1,
+    "bytes": 6668,
+    "kind": "word",
+    "spoken": "Ship",
+    "text": "Ship",
+    "transcript": " Ship.",
+    "verified": true
+  },
+  "word_small": {
+    "attempts": 1,
+    "bytes": 8252,
+    "kind": "word",
+    "spoken": "Small",
+    "text": "Small",
+    "transcript": " small",
+    "verified": true
+  },
+  "word_sock": {
+    "attempts": 4,
+    "bytes": 8108,
+    "kind": "word",
+    "spoken": "Sock",
+    "text": "Sock",
+    "transcript": " sock",
+    "verified": true
+  },
+  "word_spoon": {
+    "attempts": 1,
+    "bytes": 9116,
+    "kind": "word",
+    "spoken": "Spoon",
+    "text": "Spoon",
+    "transcript": " Spoon.",
+    "verified": true
+  },
+  "word_star": {
+    "attempts": 1,
+    "bytes": 8108,
+    "kind": "word",
+    "spoken": "Star",
+    "text": "Star",
+    "transcript": " Star.",
+    "verified": true
+  },
+  "word_sun": {
+    "attempts": 1,
+    "bytes": 8684,
+    "kind": "word",
+    "spoken": "Sun",
+    "text": "Sun",
+    "transcript": " Sun",
+    "verified": true
+  },
+  "word_tall": {
+    "attempts": 3,
+    "bytes": 8396,
+    "kind": "word",
+    "spoken": "Tall",
+    "text": "Tall",
+    "transcript": " Tall.",
+    "verified": true
+  },
+  "word_teddy": {
+    "attempts": 1,
+    "bytes": 6956,
+    "kind": "word",
+    "spoken": "Teddy",
+    "text": "Teddy",
+    "transcript": " Teddy",
+    "verified": true
+  },
+  "word_teeth": {
+    "attempts": 1,
+    "bytes": 6956,
+    "kind": "word",
+    "spoken": "Teeth",
+    "text": "Teeth",
+    "transcript": " teeth",
+    "verified": true
+  },
+  "word_tiger": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "word",
+    "spoken": "Tiger",
+    "text": "Tiger",
+    "transcript": " Tiger",
+    "verified": true
+  },
+  "word_tub": {
+    "attempts": 1,
+    "bytes": 7100,
+    "kind": "word",
+    "spoken": "Tub",
+    "text": "Tub",
+    "transcript": " Tub.",
+    "verified": true
+  },
+  "word_up": {
+    "attempts": 1,
+    "bytes": 5804,
+    "kind": "word",
+    "spoken": "Up",
+    "text": "Up",
+    "transcript": " Up.",
+    "verified": true
+  },
+  "word_van": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "word",
+    "spoken": "Van",
+    "text": "Van",
+    "transcript": " Van",
+    "verified": true
+  },
+  "word_web": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "word",
+    "spoken": "Web",
+    "text": "Web",
+    "transcript": " Web",
+    "verified": true
+  },
+  "word_white": {
+    "attempts": 1,
+    "bytes": 7820,
+    "kind": "word",
+    "spoken": "White",
+    "text": "White",
+    "transcript": " White.",
+    "verified": true
+  },
+  "word_yak": {
+    "attempts": 2,
+    "bytes": 6812,
+    "kind": "word",
+    "spoken": "Yak",
+    "text": "Yak",
+    "transcript": " Yak.",
+    "verified": true
+  },
+  "word_zebra": {
+    "attempts": 1,
+    "bytes": 7532,
+    "kind": "word",
+    "spoken": "Zebra",
+    "text": "Zebra",
+    "transcript": " Zebra.",
+    "verified": true
+  },
+  "word_zip": {
+    "attempts": 1,
+    "bytes": 6380,
+    "kind": "word",
+    "spoken": "Zip",
+    "text": "Zip",
+    "transcript": " Zip.",
+    "verified": true
+  }
+}

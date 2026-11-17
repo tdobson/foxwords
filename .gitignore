@@ -134,4 +134,4 @@ dist
 .pnp.*
 
 .DS_Store
-next-env.d.ts
+next-env.d.ts__pycache__/
