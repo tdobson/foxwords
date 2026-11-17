@@ -6,6 +6,8 @@ export const TTS_SAMPLE_RATE = 24000;
 export const TTS_MAX_CHARS = 40;
 export const TTS_RATE_WINDOW_MS = 60 * 60 * 1000;
 export const TTS_RATE_MAX_GENERATIONS = 60;
+export const TTS_GLOBAL_WINDOW_MS = 24 * 60 * 60 * 1000;
+export const TTS_GLOBAL_MAX_GENERATIONS = 2000;
 export const TTS_UPSTREAM_TIMEOUT_MS = 20000;
 
 export const TTS_SYSTEM_PROMPT =

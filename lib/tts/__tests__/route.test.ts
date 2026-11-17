@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import { GET } from '../../../app/api/tts/route';
 import { type RuntimeEnv, setMockRuntimeEnv } from '../../cloudflare-context';
 import { ttsCacheKey } from '../cache';
-import { TTS_RATE_MAX_GENERATIONS } from '../config';
+import { TTS_GLOBAL_MAX_GENERATIONS, TTS_RATE_MAX_GENERATIONS } from '../config';
 
 class RateLimitOnlyD1 {
   public counts = new Map<string, number>();
@@ -212,5 +212,13 @@ describe('GET /api/tts', () => {
 
     const otherIp = await GET(makeRequest('text=onemore', '198.51.100.9'));
     expect(otherIp.status).toBe(200);
+  });
+
+  it('caps total generations across all IPs per day', async () => {
+    setEnv();
+    db.counts.set('tts:global', TTS_GLOBAL_MAX_GENERATIONS);
+    const res = await GET(makeRequest('text=fresh', '192.0.2.44'));
+    expect(res.status).toBe(429);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

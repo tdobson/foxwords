@@ -4,6 +4,8 @@ import { getRuntimeEnv } from '../../../lib/cloudflare-context';
 import { RateLimitRepository } from '../../../lib/db/repositories/rate-limits';
 import { ttsCacheKey } from '../../../lib/tts/cache';
 import {
+  TTS_GLOBAL_MAX_GENERATIONS,
+  TTS_GLOBAL_WINDOW_MS,
   TTS_RATE_MAX_GENERATIONS,
   TTS_RATE_WINDOW_MS,
   TTS_SAMPLE_RATE,
@@ -43,11 +45,10 @@ export async function GET(request: NextRequest) {
     request.headers.get('cf-connecting-ip') ||
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
     'anon';
-  const allowed = await new RateLimitRepository(env.DB).consume(
-    `tts:${clientIp}`,
-    TTS_RATE_WINDOW_MS,
-    TTS_RATE_MAX_GENERATIONS
-  );
+  const limits = new RateLimitRepository(env.DB);
+  const allowed =
+    (await limits.consume(`tts:${clientIp}`, TTS_RATE_WINDOW_MS, TTS_RATE_MAX_GENERATIONS)) &&
+    (await limits.consume('tts:global', TTS_GLOBAL_WINDOW_MS, TTS_GLOBAL_MAX_GENERATIONS));
   if (!allowed) {
     return jsonError(429, 'rate_limited', 'Too many new words in a short time. Try again soon.');
   }
