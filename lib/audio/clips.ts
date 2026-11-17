@@ -36,7 +36,7 @@ function bundledClipUrl(clipKey: string): string | undefined {
 }
 
 /**
- * Resolves a clip key to a URL: family recording, then Tim's bundled recording,
+ * Resolves a clip key to a URL: family recording, then the bundled recording,
  * then a generated default. Returns null when nothing exists, so the caller stays silent.
  */
 export function resolveClipUrl(clipKey: string, overrides: AudioOverrides = {}): string | null {

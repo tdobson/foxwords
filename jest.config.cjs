@@ -17,6 +17,7 @@ const customJestConfig = {
     '<rootDir>/.next/',
     '<rootDir>/.open-next/',
     '<rootDir>/tests/.*.spec.ts$',
+    '<rootDir>/tests/support/',
   ],
   modulePathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/.open-next/'],
 };

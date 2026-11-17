@@ -86,7 +86,7 @@ describe('ProfileCustomiserPage', () => {
     renderPage();
 
     const group = await screen.findByTestId('voice-group-chapter-1');
-    expect(within(group).getByText('Family & VIPs')).toBeInTheDocument();
+    expect(within(group).getByText('Family')).toBeInTheDocument();
     expect(within(group).getByText('Leo')).toBeInTheDocument();
     expect(screen.queryByText(/Tim/)).not.toBeInTheDocument();
     expect(screen.queryByText(/Custom Voice Overrides/)).not.toBeInTheDocument();

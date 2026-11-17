@@ -7,7 +7,7 @@ export const test = base.extend<{ audioMock: undefined }>({
   audioMock: [
     async ({ context }, use) => {
       await mockAudio(context);
-      await use();
+      await use(undefined);
     },
     { auto: true },
   ],

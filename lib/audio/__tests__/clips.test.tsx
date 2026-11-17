@@ -12,6 +12,12 @@ import {
   usePlayAudio,
 } from '../clips';
 
+// Generated clips are regenerated over time, so pin this suite to an empty set.
+jest.mock('../../../constants/generated-audio.json', () => ({ __esModule: true, default: {} }));
+const mockGenerated: Record<string, string> = jest.requireMock(
+  '../../../constants/generated-audio.json'
+).default;
+
 class FakeAudio {
   static instances: FakeAudio[] = [];
   listeners = new Map<string, Array<() => void>>();
@@ -69,6 +75,10 @@ afterEach(() => {
 });
 
 describe('resolveClipUrl', () => {
+  afterEach(() => {
+    for (const key of Object.keys(mockGenerated)) delete mockGenerated[key];
+  });
+
   it('prefers a family override over the bundled recording', () => {
     expect(resolveClipUrl('phoneme_b', { phoneme_b: '/api/play/X/assets/family' })).toBe(
       '/api/play/X/assets/family'
@@ -101,25 +111,19 @@ describe('resolveClipUrl', () => {
 
   it('falls back to generated audio when nothing else exists', () => {
     jest.isolateModules(() => {
-      jest.doMock('../../../constants/generated-audio.json', () => ({
-        number_3: '/audio/generated/number-3.mp3',
-      }));
+      mockGenerated.number_3 = '/audio/generated/number-3.mp3';
       const isolated = require('../clips') as typeof import('../clips');
       expect(isolated.resolveClipUrl('number_3')).toBe('/audio/generated/number-3.mp3');
       expect(isolated.resolveClipUrl('number_4')).toBeNull();
     });
-    jest.dontMock('../../../constants/generated-audio.json');
   });
 
   it('prefers bundled recordings over generated audio', () => {
     jest.isolateModules(() => {
-      jest.doMock('../../../constants/generated-audio.json', () => ({
-        phoneme_b: '/audio/generated/b.mp3',
-      }));
+      mockGenerated.phoneme_b = '/audio/generated/b.mp3';
       const isolated = require('../clips') as typeof import('../clips');
       expect(isolated.resolveClipUrl('phoneme_b')).toBe('/audio/phonemes/b.webm');
     });
-    jest.dontMock('../../../constants/generated-audio.json');
   });
 });
 

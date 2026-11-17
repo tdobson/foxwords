@@ -35,7 +35,7 @@ export function renderMagicLinkEmail(params: { loginUrl: string }): {
     'If you did not request this login link, you can safely ignore this email.',
     '',
     'Best wishes,',
-    'Tim Dobson & The Foxwords Team',
+    'The Foxwords team',
   ].join(String.fromCharCode(10));
 
   const html = `<!DOCTYPE html>

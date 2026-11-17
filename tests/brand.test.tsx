@@ -8,32 +8,32 @@ describe('Foxwords Brand and Launcher', () => {
     expect(heading).toBeInTheDocument();
   });
 
-  it('renders Play with a family code launcher control linking to /join', () => {
+  it('renders the family code launcher control linking to /join', () => {
     render(<HomePage />);
     const joinLink = screen.getByTestId('join-code-button');
     expect(joinLink).toBeInTheDocument();
     expect(joinLink).toHaveAttribute('href', '/join');
-    expect(joinLink).toHaveTextContent(/Play with a family code/i);
+    expect(joinLink).toHaveTextContent(/I have a family code/i);
   });
 
-  it('renders Set up Foxwords launcher control linking to /parent/login', () => {
+  it('renders the parent set-up launcher control linking to /parent/login', () => {
     render(<HomePage />);
     const parentLink = screen.getByTestId('parent-setup-button');
     expect(parentLink).toBeInTheDocument();
     expect(parentLink).toHaveAttribute('href', '/parent/login');
-    expect(parentLink).toHaveTextContent(/Set up Foxwords/i);
+    expect(parentLink).toHaveTextContent(/Set up for my child/i);
   });
 
-  it("renders Try Tim's starter game control linking to /words", () => {
+  it('renders a demo game link to /words with no family names', () => {
     render(<HomePage />);
-    const starterLink = screen.getByTestId('starter-game-button');
-    expect(starterLink).toBeInTheDocument();
-    expect(starterLink).toHaveAttribute('href', '/words');
-    expect(starterLink).toHaveTextContent(/Try Tim's starter game/i);
+    const demoLink = screen.getByTestId('demo-game-button');
+    expect(demoLink).toHaveAttribute('href', '/words');
+    expect(demoLink).toHaveTextContent(/Try a demo game/i);
+    expect(document.body).not.toHaveTextContent(/\b(Tim|James|Sarah)\b/);
   });
 
   it('renders privacy explanation statement', () => {
     render(<HomePage />);
-    expect(screen.getByText(/No child account is required to play/i)).toBeInTheDocument();
+    expect(screen.getByText(/Children never need an account/i)).toBeInTheDocument();
   });
 });
