@@ -5,7 +5,7 @@ import { defaultLocalMailSink } from '../../../../lib/email/ses';
 import { GET as getMe } from '../../me/route';
 import { POST as logoutAuth } from '../logout/route';
 import { POST as requestAuth } from '../request/route';
-import { GET as verifyAuth } from '../verify/route';
+import { POST as confirmAuth, GET as verifyAuth } from '../verify/route';
 
 class RouteTestD1 implements D1DatabaseLike {
   public users: any[] = [];
@@ -141,6 +141,14 @@ class RouteTestD1 implements D1DatabaseLike {
   }
 }
 
+function createVerifyPost(token: string, origin = 'http://localhost:8787'): NextRequest {
+  return new NextRequest('http://localhost:8787/api/auth/verify', {
+    method: 'POST',
+    headers: { Origin: origin, 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ token }).toString(),
+  });
+}
+
 function createMockRequest(
   url: string,
   init: { method?: string; headers?: Record<string, string>; body?: any } = {}
@@ -249,43 +257,66 @@ describe('Auth API Routes', () => {
     });
   });
 
-  describe('GET /api/auth/verify', () => {
-    it('redirects to /parent/login?error=invalid-link when token is missing or invalid', async () => {
-      const req = createMockRequest('http://localhost:8787/api/auth/verify?token=invalid_token');
-      const res = await verifyAuth(req);
+  describe('/api/auth/verify', () => {
+    it('GET without a token redirects to the login error', async () => {
+      const res = await verifyAuth(createMockRequest('http://localhost:8787/api/auth/verify'));
       expect(res.status).toBe(302);
       expect(res.headers.get('location')).toBe(
         'http://localhost:8787/parent/login?error=invalid-link'
       );
     });
 
-    it('verifies valid token, sets session cookie, and redirects to /parent', async () => {
-      // Create request first
-      const reqAuth = createMockRequest('http://localhost:8787/api/auth/request', {
-        method: 'POST',
-        headers: { Origin: 'http://localhost:8787' },
-        body: { email: 'parent@example.com' },
-      });
-      await requestAuth(reqAuth);
+    it('GET with a token does not consume it (email scanners prefetch links)', async () => {
+      await requestAuth(
+        createMockRequest('http://localhost:8787/api/auth/request', {
+          method: 'POST',
+          headers: { Origin: 'http://localhost:8787' },
+          body: { email: 'parent@example.com' },
+        })
+      );
+      const rawToken = defaultLocalMailSink.getSent()[0].text.match(/token=([A-Za-z0-9_-]+)/)![1];
+      const res = await verifyAuth(
+        createMockRequest(`http://localhost:8787/api/auth/verify?token=${rawToken}`)
+      );
+      expect(res.status).toBe(302);
+      expect(res.headers.get('location')).toBe(
+        `http://localhost:8787/auth/verify?token=${rawToken}`
+      );
+      expect(res.headers.get('Set-Cookie')).toBeNull();
+
+      const confirm = await confirmAuth(createVerifyPost(rawToken));
+      expect(confirm.headers.get('location')).toBe('http://localhost:8787/parent');
+    });
+
+    it('POST rejects invalid tokens and cross-origin posts', async () => {
+      const bad = await confirmAuth(createVerifyPost('invalid_token'));
+      expect(bad.headers.get('location')).toBe(
+        'http://localhost:8787/parent/login?error=invalid-link'
+      );
+      const cross = await confirmAuth(createVerifyPost('x', 'https://evil.example'));
+      expect(cross.headers.get('Set-Cookie')).toBeNull();
+      expect(cross.headers.get('location')).toContain('error=invalid-link');
+    });
+
+    it('POST verifies a valid token once, sets the session cookie and redirects to /parent', async () => {
+      await requestAuth(
+        createMockRequest('http://localhost:8787/api/auth/request', {
+          method: 'POST',
+          headers: { Origin: 'http://localhost:8787' },
+          body: { email: 'parent@example.com' },
+        })
+      );
       const sent = defaultLocalMailSink.getSent();
+      expect(sent[0].text).toContain('/auth/verify?token=');
       const rawToken = sent[0].text.match(/token=([A-Za-z0-9_-]+)/)![1];
 
-      const verifyReq = createMockRequest(
-        `http://localhost:8787/api/auth/verify?token=${rawToken}`
-      );
-      const res = await verifyAuth(verifyReq);
-
-      expect(res.status).toBe(302);
+      const res = await confirmAuth(createVerifyPost(rawToken));
+      expect(res.status).toBe(303);
       expect(res.headers.get('location')).toBe('http://localhost:8787/parent');
       expect(res.headers.get('Set-Cookie')).toContain('__Host-foxwords_session=');
 
-      // Replaying token redirects to error
-      const replayReq = createMockRequest(
-        `http://localhost:8787/api/auth/verify?token=${rawToken}`
-      );
-      const replayRes = await verifyAuth(replayReq);
-      expect(replayRes.status).toBe(302);
-      expect(replayRes.headers.get('location')).toBe(
+      const replay = await confirmAuth(createVerifyPost(rawToken));
+      expect(replay.headers.get('location')).toBe(
         'http://localhost:8787/parent/login?error=invalid-link'
       );
     });
@@ -310,9 +341,7 @@ describe('Auth API Routes', () => {
       await requestAuth(reqAuth);
       const sent = defaultLocalMailSink.getSent();
       const rawToken = sent[0].text.match(/token=([A-Za-z0-9_-]+)/)![1];
-      const verifyRes = await verifyAuth(
-        createMockRequest(`http://localhost:8787/api/auth/verify?token=${rawToken}`)
-      );
+      const verifyRes = await confirmAuth(createVerifyPost(rawToken));
       const cookieHeader = verifyRes.headers.get('Set-Cookie')!;
       const tokenValue = cookieHeader.split(';')[0]; // e.g. "__Host-foxwords_session=..."
 

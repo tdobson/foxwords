@@ -68,7 +68,7 @@ export class AuthService {
     // Form magic link URL pointing to verify endpoint
     const baseOrigin = this.env.APP_ORIGIN || 'http://localhost:8787';
     const origin = baseOrigin.endsWith('/') ? baseOrigin.slice(0, -1) : baseOrigin;
-    const loginUrl = `${origin}/api/auth/verify?token=${encodeURIComponent(rawToken)}`;
+    const loginUrl = `${origin}/auth/verify?token=${encodeURIComponent(rawToken)}`;
 
     try {
       const result = await sendMagicLink(this.env, {

@@ -130,7 +130,7 @@ describe('AuthService', () => {
     const sent = defaultLocalMailSink.getSent();
     expect(sent).toHaveLength(1);
     expect(sent[0].to).toBe('parent@example.com');
-    expect(sent[0].text).toContain('/api/auth/verify?token=');
+    expect(sent[0].text).toContain('/auth/verify?token=');
   });
 
   it('rate limits after 5 requests per bucket within window', async () => {
