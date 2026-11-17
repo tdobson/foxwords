@@ -90,4 +90,17 @@ describe('TypingGame audio', () => {
 
     await waitFor(() => expect(srcs()).toContain('/api/tts?text=LEO'));
   });
+
+  it('plays the usual letter sound for family names that have no phonics data', async () => {
+    const bea: LearningWord = { ...big, id: 'custom_bea', word: 'BEA', ipa: ['', '', ''] };
+    render(
+      <ProfileProvider initialProfile={{ ...family, words: [bea], audioOverrides: {} }}>
+        <TypingGame />
+      </ProfileProvider>
+    );
+
+    fireEvent.keyDown(window, { key: 'b' });
+
+    await waitFor(() => expect(srcs()).toContain('/audio/phonemes/b.webm'));
+  });
 });

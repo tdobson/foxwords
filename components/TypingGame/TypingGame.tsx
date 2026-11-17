@@ -6,6 +6,7 @@ import { QUIZ_UNLOCK_THRESHOLD } from '../../constants/learning-words';
 import { getPhonemeSlug } from '../../constants/phonemes';
 import { usePlayAudio } from '../../lib/audio/clips';
 import { useProfile } from '../../lib/play/profile-context';
+import { defaultPhonemeSlugForLetter } from '../../lib/play/studio-queue';
 import { useChildInput } from '../../lib/play/use-child-input';
 import type {
   CountDifficulty,
@@ -26,6 +27,7 @@ import classes from './TypingGame.module.css';
 const LEVEL_SIZE = 6;
 const FEEDBACK_DURATION_MS = 350;
 const WORD_COMPLETE_MS = 1500;
+const WORD_COMPLETE_MAX_MS = 6000;
 const LEVEL_TOAST_DURATION_MS = 1200;
 const WORD_SOUND_DELAY_MS = 700;
 const COUNT_HINT_DELAY_MS = 14000;
@@ -79,6 +81,8 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
   const [feedback, setFeedback] = useState<'none' | 'shake' | 'celebrate'>('none');
   const [typing, setTyping] = useState(false);
   const interactiveRef = useRef<HTMLElement>(null);
+  // Resolves when the "well done" audio for the finished word has played.
+  const completionAudioRef = useRef<Promise<void>>(Promise.resolve());
 
   const { words: effectiveWords } = useProfile();
   const audio = usePlayAudio();
@@ -100,11 +104,13 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
   const playLetterSound = useCallback(
     (word: LearningWord, index: number) => {
       const steps: string[] = [];
-      const phonemeSlug = getPhonemeSlug(word.ipa[index] ?? '');
+      const letter = (word.word[index] ?? '').toLowerCase();
+      // Family names have no phonics data, so fall back to the letter's usual sound.
+      const phonemeSlug =
+        getPhonemeSlug(word.ipa[index] ?? '') || defaultPhonemeSlugForLetter(letter);
       if (phonemeSlug) {
         steps.push(`phoneme_${phonemeSlug}`);
       }
-      const letter = (word.word[index] ?? '').toLowerCase();
       if (/^[a-z]$/.test(letter)) {
         steps.push(`letter_${letter}`);
       }
@@ -176,9 +182,9 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
           return;
         }
         if (key === currentWord.word[0]) {
+          completionAudioRef.current = audio.playSequence([currentWord, pickPraiseKey()]);
           setIsCompleted(true);
           setFeedback('celebrate');
-          audio.playSequence([pickPraiseKey(), currentWord]);
         } else {
           setFeedback('shake');
         }
@@ -257,12 +263,14 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
         playLetterSound(currentWord, nextIndex);
 
         if (result.completed) {
+          // A short pause after the last letter, then the whole word and some praise.
+          completionAudioRef.current = new Promise<void>((resolve) => {
+            setTimeout(() => {
+              audio.playSequence([currentWord, pickPraiseKey()]).then(resolve, resolve);
+            }, WORD_SOUND_DELAY_MS);
+          });
           setIsCompleted(true);
           setFeedback('celebrate');
-          // A short pause after the last letter, then the whole word.
-          setTimeout(() => {
-            audio.playSequence([pickPraiseKey(), currentWord]);
-          }, WORD_SOUND_DELAY_MS);
           if ((wordIndex + 1) % LEVEL_SIZE === 0) {
             setCompletedLevelNumber(levelNumber);
             setShowLevelToast(true);
@@ -358,8 +366,17 @@ export function TypingGame({ initialMode = 'words' }: TypingGameProps = {}) {
     if (!isCompleted) {
       return undefined;
     }
-    const timer = setTimeout(handleNextWord, WORD_COMPLETE_MS);
-    return () => clearTimeout(timer);
+    // Move on once the word and praise have been heard (never sooner than WORD_COMPLETE_MS,
+    // never later than WORD_COMPLETE_MAX_MS if audio stalls).
+    let cancelled = false;
+    const minDelay = new Promise<void>((resolve) => setTimeout(resolve, WORD_COMPLETE_MS));
+    const maxDelay = new Promise<void>((resolve) => setTimeout(resolve, WORD_COMPLETE_MAX_MS));
+    Promise.race([Promise.all([minDelay, completionAudioRef.current]), maxDelay]).then(() => {
+      if (!cancelled) handleNextWord();
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [isCompleted, handleNextWord]);
 
   const countLayout: 'row' | 'tens' | 'grid' =

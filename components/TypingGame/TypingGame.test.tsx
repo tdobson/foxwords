@@ -5,6 +5,16 @@ import type { PlayProfile } from '../../lib/play/profile';
 import { ProfileProvider } from '../../lib/play/profile-context';
 import { TypingGame } from './TypingGame';
 
+// Audio is covered by TypingGame.audio.test.tsx; here every clip finishes at once.
+jest.mock('../../lib/audio/clips', () => {
+  const audio = {
+    playClip: () => Promise.resolve(),
+    playWord: () => Promise.resolve(),
+    playSequence: () => Promise.resolve(),
+  };
+  return { usePlayAudio: () => audio };
+});
+
 // These tests script the original word order (JAMES first), so they pass the full list
 // explicitly rather than the starter list that games use without a profile.
 const scriptedProfile: PlayProfile = {
@@ -30,18 +40,18 @@ describe('TypingGame', () => {
     jest.useRealTimers();
   });
 
-  const completeWords = (words: string[], advanceMs: number[] = []) => {
+  const completeWords = async (words: string[], advanceMs: number[] = []) => {
     for (let i = 0; i < words.length; i += 1) {
       for (const key of words[i]) {
         fireEvent.keyDown(window, { key });
       }
-      act(() => {
-        jest.advanceTimersByTime(advanceMs[i] ?? 1600);
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(advanceMs[i] ?? 1600);
       });
     }
   };
 
-  it('renders initial game state with JAMES prompt and reveal as default difficulty', () => {
+  it('renders initial game state with JAMES prompt and reveal as default difficulty', async () => {
     renderGame(<TypingGame />);
     expect(screen.getByRole('region', { name: /prompt for james/i })).toBeInTheDocument();
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
@@ -49,14 +59,14 @@ describe('TypingGame', () => {
     expect(screen.getByText(/^Level 1$/)).toBeInTheDocument();
   });
 
-  it('fills the next letter when the matching physical key is pressed', () => {
+  it('fills the next letter when the matching physical key is pressed', async () => {
     renderGame(<TypingGame />);
     fireEvent.keyDown(window, { key: 'j' });
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'completed');
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'active');
   });
 
-  it('does not reveal the next letter until the previous one completes', () => {
+  it('does not reveal the next letter until the previous one completes', async () => {
     renderGame(<TypingGame />);
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'hidden');
     fireEvent.keyDown(window, { key: 'j' });
@@ -64,7 +74,7 @@ describe('TypingGame', () => {
     expect(screen.getByTestId('letter-tile-2')).toHaveAttribute('data-state', 'hidden');
   });
 
-  it('ignores modifier key combinations', () => {
+  it('ignores modifier key combinations', async () => {
     renderGame(<TypingGame />);
     fireEvent.keyDown(window, { key: 'j', ctrlKey: true });
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
@@ -76,14 +86,14 @@ describe('TypingGame', () => {
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
   });
 
-  it('leaves progress unchanged for an incorrect key', () => {
+  it('leaves progress unchanged for an incorrect key', async () => {
     renderGame(<TypingGame />);
     fireEvent.keyDown(window, { key: 'x' });
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
     expect(screen.getByTestId('letter-tile-1')).toHaveAttribute('data-state', 'hidden');
   });
 
-  it('starts the next word after the final letter with celebration', () => {
+  it('starts the next word after the final letter with celebration', async () => {
     jest.useFakeTimers();
     renderGame(<TypingGame />);
 
@@ -91,8 +101,8 @@ describe('TypingGame', () => {
       fireEvent.keyDown(window, { key });
     }
 
-    act(() => {
-      jest.advanceTimersByTime(1500);
+    await act(async () => {
+      await jest.advanceTimersByTimeAsync(1500);
     });
 
     expect(screen.getByRole('region', { name: /prompt for grandma/i })).toBeInTheDocument();
@@ -107,33 +117,33 @@ describe('TypingGame', () => {
     expect(screen.getByTestId('letter-tile-0')).toHaveAttribute('data-state', 'active');
   });
 
-  it('shows Level 2 after completing six words', () => {
+  it('shows Level 2 after completing six words', async () => {
     jest.useFakeTimers();
     renderGame(<TypingGame />);
 
-    completeWords(firstLevelWords);
+    await completeWords(firstLevelWords);
 
     expect(screen.getByText(/^Level 2$/)).toBeInTheDocument();
     expect(screen.getByRole('region', { name: /prompt for baby/i })).toBeInTheDocument();
   });
 
-  it('shows a level-complete celebration toast when a level finishes and auto-dismisses', () => {
+  it('shows a level-complete celebration toast when a level finishes and auto-dismisses', async () => {
     jest.useFakeTimers();
     renderGame(<TypingGame />);
 
-    completeWords(firstLevelWords, [1600, 1600, 1600, 1600, 1600, 0]);
+    await completeWords(firstLevelWords, [1600, 1600, 1600, 1600, 1600, 0]);
 
     expect(screen.getByRole('status')).toHaveTextContent(/level 1 complete/i);
 
     // After 1200ms, the celebration toast disappears
-    act(() => {
-      jest.advanceTimersByTime(1200);
+    await act(async () => {
+      await jest.advanceTimersByTimeAsync(1200);
     });
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
 
     // After remaining word complete time (1500ms total), next word appears
-    act(() => {
-      jest.advanceTimersByTime(300);
+    await act(async () => {
+      await jest.advanceTimersByTimeAsync(300);
     });
     expect(screen.getByRole('region', { name: /prompt for baby/i })).toBeInTheDocument();
   });
@@ -151,7 +161,7 @@ describe('TypingGame', () => {
     expect(screen.getByRole('region', { name: /prompt for james/i })).toBeInTheDocument();
   });
 
-  it('unlocks quiz mode after completing enough words', () => {
+  it('unlocks quiz mode after completing enough words', async () => {
     jest.useFakeTimers();
     renderGame(<TypingGame />);
 
@@ -159,8 +169,8 @@ describe('TypingGame', () => {
       for (const key of unlockWords[i]) {
         fireEvent.keyDown(window, { key });
       }
-      act(() => {
-        jest.advanceTimersByTime(1600);
+      await act(async () => {
+        await jest.advanceTimersByTimeAsync(1600);
       });
     }
 
@@ -171,11 +181,11 @@ describe('TypingGame', () => {
     ).toBeInTheDocument();
   });
 
-  it('asks for the first letter in quiz mode and advances on a correct answer', () => {
+  it('asks for the first letter in quiz mode and advances on a correct answer', async () => {
     jest.useFakeTimers();
     renderGame(<TypingGame />);
 
-    completeWords(unlockWords);
+    await completeWords(unlockWords);
 
     fireEvent.click(screen.getByRole('button', { name: /quiz/i }));
     expect(
@@ -190,15 +200,15 @@ describe('TypingGame', () => {
     expect(screen.getByTestId('quiz-blank')).toHaveAttribute('data-correct', 'true');
     expect(screen.getByTestId('quiz-blank').textContent).toBe('D');
 
-    act(() => {
-      jest.advanceTimersByTime(1600);
+    await act(async () => {
+      await jest.advanceTimersByTimeAsync(1600);
     });
     expect(
       screen.getByRole('region', { name: /what letter does fox start with/i })
     ).toBeInTheDocument();
   });
 
-  it('allows switching to Count mode immediately with zero completed words', () => {
+  it('allows switching to Count mode immediately with zero completed words', async () => {
     renderGame(<TypingGame />);
     const countBtn = screen.getByRole('button', { name: /^count$/i });
     expect(countBtn).toBeEnabled();
@@ -207,7 +217,7 @@ describe('TypingGame', () => {
     expect(screen.getByRole('button', { name: /back to words/i })).toBeInTheDocument();
   });
 
-  it('allows switching to Rhyme mode immediately and displays RhymeGame', () => {
+  it('allows switching to Rhyme mode immediately and displays RhymeGame', async () => {
     renderGame(<TypingGame />);
     const rhymeBtn = screen.getByRole('button', { name: /^rhyme$/i });
     expect(rhymeBtn).toBeEnabled();
@@ -216,7 +226,7 @@ describe('TypingGame', () => {
     expect(screen.getByRole('button', { name: /back to words/i })).toBeInTheDocument();
   });
 
-  it('advances count on correct digit in easy mode and reveals 14s hint if delayed', () => {
+  it('advances count on correct digit in easy mode and reveals 14s hint if delayed', async () => {
     jest.useFakeTimers();
     renderGame(<TypingGame />);
     fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
@@ -225,8 +235,8 @@ describe('TypingGame', () => {
     expect(tile).toHaveAttribute('data-state', 'hidden');
 
     // Fast-forward 14 seconds
-    act(() => {
-      jest.advanceTimersByTime(14000);
+    await act(async () => {
+      await jest.advanceTimersByTimeAsync(14000);
     });
 
     expect(tile).toHaveAttribute('data-state', 'faint');
@@ -243,7 +253,7 @@ describe('TypingGame', () => {
     expect(tile).toHaveAttribute('data-state', 'completed');
   });
 
-  it('hard mode requires typing the number then spelling the word', () => {
+  it('hard mode requires typing the number then spelling the word', async () => {
     jest.useFakeTimers();
     renderGame(<TypingGame />);
     fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
@@ -259,8 +269,8 @@ describe('TypingGame', () => {
     expect(screen.queryByTestId('letter-tile-0')).not.toBeInTheDocument();
 
     // Reveal hint to easily see target digits
-    act(() => {
-      jest.advanceTimersByTime(14000);
+    await act(async () => {
+      await jest.advanceTimersByTimeAsync(14000);
     });
 
     for (let i = 0; i < numTiles.length; i += 1) {
@@ -280,7 +290,7 @@ describe('TypingGame', () => {
     expect(screen.getByTestId('letter-tile-4')).toHaveAttribute('data-state', 'completed');
   });
 
-  it('completing number before 14s clears hint timer and does not reveal faint hint', () => {
+  it('completing number before 14s clears hint timer and does not reveal faint hint', async () => {
     jest.useFakeTimers();
     renderGame(<TypingGame />);
     fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
@@ -298,15 +308,15 @@ describe('TypingGame', () => {
     expect(tile).toHaveAttribute('data-state', 'completed');
 
     // Advance 500ms (still within celebrate, before handleNextWord at 1500ms)
-    act(() => {
-      jest.advanceTimersByTime(500);
+    await act(async () => {
+      await jest.advanceTimersByTimeAsync(500);
     });
 
     // Tile remains completed and not faint
     expect(tile).toHaveAttribute('data-state', 'completed');
   });
 
-  it('medium mode switches to tens layout and requires two-digit progression', () => {
+  it('medium mode switches to tens layout and requires two-digit progression', async () => {
     renderGame(<TypingGame />);
     fireEvent.click(screen.getByRole('button', { name: /^count$/i }));
     fireEvent.click(screen.getByRole('radio', { name: /medium/i }));

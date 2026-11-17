@@ -89,7 +89,7 @@ interface AlphabetEntry {
   letterName: string;
 }
 
-const ALPHABET: AlphabetEntry[] = [
+export const ALPHABET: AlphabetEntry[] = [
   { letter: 'A', phonemeSlug: 'ae', letterSlug: 'a', soundExample: 'cat', letterName: 'ay' },
   { letter: 'B', phonemeSlug: 'b', letterSlug: 'b', soundExample: 'bat', letterName: 'bee' },
   { letter: 'C', phonemeSlug: 'k', letterSlug: 'c', soundExample: 'cat', letterName: 'see' },
@@ -311,4 +311,10 @@ export function buildStudioQueue(options: BuildStudioQueueOptions): StudioPrompt
   }
 
   return items;
+}
+
+/** Default letter sound for a letter, used when a word has no phonics data (e.g. family names). */
+export function defaultPhonemeSlugForLetter(letter: string): string | undefined {
+  const upper = letter.toUpperCase();
+  return ALPHABET.find((entry) => entry.letter === upper)?.phonemeSlug;
 }
